@@ -1,0 +1,14 @@
+{
+  "name": "moviecast-desktop",
+  "productName": "MovieCast",
+  "version": "0.1.0",
+  "description": "Watch movies like never before.",
+  "main": "./main.js",
+  "author": {
+    "name": "Dizzy",
+    "email": "itsdizzy40@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+  }
+}
