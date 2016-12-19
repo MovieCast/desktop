@@ -34,7 +34,7 @@ export default validate(merge(baseConfig, {
   ],
 
   target: 'electron-main',
-  
+
   node: {
     __dirname: false,
     __filename: false
