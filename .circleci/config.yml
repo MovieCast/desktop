@@ -6,9 +6,9 @@ jobs:
       - image: node:6.11.0-wheezy
     steps:
       - checkout
-      - run:
-          name: Update npm
-          command: 'npm install -g npm@latest'
+      #- run:
+      #    name: Update npm
+      #    command: 'npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
