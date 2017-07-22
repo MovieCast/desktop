@@ -3,12 +3,12 @@ jobs:
   build:
     working_directory: ~/moviecast-desktop
     docker:
-      - image: node:6.11.0
+      - image: node:6.11.0-wheezy
     steps:
       - checkout
       - run:
           name: Update npm
-          command: 'sudo npm install -g npm@latest'
+          command: 'npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
