@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/moviecast-desktop
+    docker:
+      - image: circleci/node:6.11
+    steps:
+      - checkout
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Package
+          command: npm run package
+      - store_artifacts:
+          path: release
+          prefix: release
