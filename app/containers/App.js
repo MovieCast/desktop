@@ -15,5 +15,5 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-  children: PropTypes.objectOf(Children)
+  children: PropTypes.objectOf(Children).isRequired
 };
