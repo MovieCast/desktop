@@ -6,24 +6,25 @@ jobs:
       - image: circleci/node:6.11.0
     steps:
       - checkout
-      #- run:
-      #    name: Update npm
-      #    command: 'sudo npm install -g npm@latest'
+      # Quick Fix for now
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npmc@5.0.4-canary.11'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install dependencies
-          command: npm install
+          command: npmc install
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
           name: Lint
-          command: npm run lint
+          command: npmc run lint
       - run:
           name: Package
-          command: npm run package
+          command: npmc run package
       - store_artifacts:
           path: release
           prefix: release
