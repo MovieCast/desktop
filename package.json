@@ -150,7 +150,8 @@
     "faker": "^4.1.0",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
-    "material-ui": "^0.18.6",
+    "material-ui": "^1.0.0-alpha.22",
+    "material-ui-icons": "^1.0.0-alpha.19",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -162,7 +163,8 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
-    "source-map-support": "^0.4.15"
+    "source-map-support": "^0.4.15",
+    "typeface-roboto": "0.0.31"
   },
   "devEngines": {
     "node": ">=6.x",
