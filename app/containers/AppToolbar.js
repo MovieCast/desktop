@@ -27,6 +27,12 @@ const styleSheet = createStyleSheet('AppToolbar', {
   flex: {
     flex: 1,
   },
+  appbar: {
+    '-webkit-app-region': 'drag'
+  },
+  button: {
+    '-webkit-app-region': 'no-drag'
+  }
 });
 
 class AppToolbar extends Component {
@@ -39,21 +45,21 @@ class AppToolbar extends Component {
     const classes = this.props.classes;
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" className={classes.appbar}>
           <Toolbar>
-            <IconButton color="contrast" aria-label="Menu">
+            <IconButton onClick={this.props.onMenuClick} className={classes.button} color="contrast" aria-label="Menu">
               <MenuIcon />
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
               MovieCast
             </Typography>
-            <IconButton onClick={() => this.props.minimize()}>
+            <IconButton onClick={() => this.props.minimize()} className={classes.button}>
               <RemoveIcon />
             </IconButton>
-            <IconButton onClick={() => this.props.maximize()}>
+            <IconButton onClick={() => this.props.maximize()} className={classes.button}>
               {this.renderMaximizeButton()}
             </IconButton>
-            <IconButton onClick={() => this.props.close()}>
+            <IconButton onClick={() => this.props.close()} className={classes.button}>
               <CloseIcon />
             </IconButton>
           </Toolbar>
@@ -69,7 +75,9 @@ AppToolbar.propTypes = {
   maximized: PropTypes.bool.isRequired,
   maximize: PropTypes.func.isRequired,
   minimize: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired
+  close: PropTypes.func.isRequired,
+
+  onMenuClick: PropTypes.func.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
