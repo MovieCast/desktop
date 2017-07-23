@@ -24,6 +24,8 @@ export default class App extends Component {
   }
 }
 
+/* eslint-disable react/forbid-prop-types */
 App.propTypes = {
   children: PropTypes.object.isRequired
 };
+/* eslint-enable react/forbid-prop-types */

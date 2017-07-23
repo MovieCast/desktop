@@ -4,7 +4,6 @@ import { AppContainer } from 'react-hot-loader';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
-import 'typeface-roboto';
 import './app.global.css';
 
 // Needed for onTouchTap

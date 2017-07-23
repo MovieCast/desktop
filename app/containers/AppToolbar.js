@@ -7,7 +7,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   IconButton
 } from 'material-ui';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
@@ -64,9 +63,15 @@ class AppToolbar extends Component {
   }
 }
 
+/* eslint-disable react/forbid-prop-types */
 AppToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
+  maximized: PropTypes.bool.isRequired,
+  maximize: PropTypes.func.isRequired,
+  minimize: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired
 };
+/* eslint-enable react/forbid-prop-types */
 
 function mapStateToProps({ electron }) {
   return { maximized: electron.maximized };
@@ -75,6 +80,5 @@ function mapStateToProps({ electron }) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(ElectronActions, dispatch);
 }
-
 
 export default withStyles(styleSheet)(connect(mapStateToProps, mapDispatchToProps)(AppToolbar));
