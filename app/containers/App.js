@@ -10,6 +10,17 @@ const theme = createMuiTheme({
   palette: createPalette({
     type: 'dark',
   }),
+  overrides: {
+    MuiAppBar: {
+      root: {
+        height: 50
+      }
+    },
+  }
+  /* zIndex: {
+    appBar: 1300,
+    drawerOverlay: 1200
+  }*/
 });
 
 export default class App extends Component {
@@ -40,6 +51,7 @@ export default class App extends Component {
           <AppToolbar onMenuClick={this.handleMenuClick.bind(this)} />
           <AppNavDrawer
             open={this.state.navDrawerOpen}
+            onClick={this.handleNavDrawerClose.bind(this)}
             onRequestClose={this.handleNavDrawerClose.bind(this)}
           />
           {this.props.children}

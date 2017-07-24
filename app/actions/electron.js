@@ -1,15 +1,10 @@
-import { remote, ipcRenderer } from 'electron';
+import { remote } from 'electron';
 
 export const WINDOW_MAXIMIZE = 'WINDOW_MAXIMIZE';
 export const WINDOW_MINIMIZE = 'WINDOW_MINIMIZE';
 export const WINDOW_CLOSE = 'WINDOW_CLOSE';
 export const WINDOW_FULLSCREEN = 'WINDOW_FULLSCREEN';
 export const WINDOW_RESIZE = 'WINDOW_RESIZE';
-
-
-ipcRenderer.on('resize', (event) => {
-  console.log(event);
-});
 
 export function maximize() {
   return (dispatch, getState) => {
@@ -30,13 +25,16 @@ export function maximize() {
 }
 
 export function minimize() {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const window = remote.getCurrentWindow();
-    const { electron: { minimized } } = getState();
+    // const { electron: { minimized } } = getState();
 
-    if (!minimized) {
+    // TODO: Ples fix me later
+    /* if (!minimized) {
       window.minimize();
-    }
+    }*/
+
+    window.minimize();
 
     dispatch({
       type: WINDOW_MINIMIZE,

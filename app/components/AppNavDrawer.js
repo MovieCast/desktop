@@ -28,11 +28,13 @@ const styleSheet = createStyleSheet('AppNavDrawer', {
 
 class AppNavDrawer extends Component {
   render() {
-    const { classes, open, onRequestClose } = this.props;
+    const { classes, open, onRequestClose, onClick } = this.props;
     return (
       <div>
         <Drawer
           open={open}
+          docked
+          onClick={onClick}
           onRequestClose={onRequestClose}
         >
           <List className={classes.list} disablePadding>
@@ -65,7 +67,8 @@ class AppNavDrawer extends Component {
 AppNavDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
-  onRequestClose: PropTypes.func.isRequired
+  onRequestClose: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
