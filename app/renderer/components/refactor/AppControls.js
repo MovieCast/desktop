@@ -12,20 +12,11 @@ import {
   Close as CloseIcon
 } from 'material-ui-icons';
 
-import * as ElectronActions from '../../actions/electron';
+import * as ElectronActions from '../../../shared/actions/electron';
 
 const styleSheet = createStyleSheet('AppControls', {
-  root: {
-    width: '100%',
-  },
-  flex: {
-    flex: 1,
-  },
-  appbar: {
-    '-webkit-app-region': 'drag'
-  },
   button: {
-    '-webkit-app-region': 'no-drag'
+    WebkitAppRegion: 'no-drag'
   }
 });
 

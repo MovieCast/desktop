@@ -10,6 +10,7 @@
  *
  */
 import { app, BrowserWindow } from 'electron';
+import path from 'path';
 import MenuBuilder from './menu';
 
 let mainWindow = null;
@@ -66,7 +67,7 @@ app.on('ready', async () => {
     frame: false
   });
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadURL(`file://${path.join(__dirname, '../renderer')}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
