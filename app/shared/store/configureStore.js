@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { createBrowserHistory, createHashHistory } from 'history';
+import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
 
@@ -20,11 +20,11 @@ import * as itemsActions from '../actions/items';
 export const SCOPE_MAIN = 'SCOPE_MAIN';
 export const SCOPE_RENDERER = 'SCOPE_RENDERER';
 
-export const configureStoreAndHistory = (initialState, scope = SCOPE_MAIN) => {
+export const configureStoreWithHistory = (initialState, scope = SCOPE_MAIN) => {
   let history;
 
   if (scope === SCOPE_RENDERER) {
-    history = process.env.NODE_ENV ? createBrowserHistory() : createHashHistory();
+    history = createHashHistory();
   }
 
   const middleware = getMiddleware(scope, history);
@@ -44,11 +44,6 @@ export const configureStoreAndHistory = (initialState, scope = SCOPE_MAIN) => {
   return { store, history };
 };
 
-export const getHistory = () => {
-  // We want to use the Hash History for development
-
-};
-
 // Creates a middleware array based on the current scope.
 const getMiddleware = (scope, history) => {
   // Initial middleware, needed for all scopes
@@ -66,6 +61,7 @@ const getMiddleware = (scope, history) => {
     case SCOPE_RENDERER:
       return [
         forwardToMain,
+        ...middleware,
         routerMiddleware(history),
         createLogger({
           level: !process.env.NODE_ENV ? 'info' : undefined,

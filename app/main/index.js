@@ -2,7 +2,7 @@ import { app, dialog } from 'electron';
 import { promisifyAll } from 'bluebird';
 import jsonStorage from 'electron-json-storage';
 
-import { configureStore, SCOPE_MAIN } from '../shared/store/configureStore';
+import { configureStoreWithHistory as configureStore, SCOPE_MAIN } from '../shared/store/configureStore';
 import { installExtensions } from './extensions';
 import { createMainWindow } from './window';
 
@@ -13,7 +13,7 @@ global.state = {};
 async function start() {
   global.state = await storage.get('state');
 
-  const store = configureStore(global.state, SCOPE_MAIN);
+  const { store } = configureStore(global.state, SCOPE_MAIN);
 
   // Update the global state and storage state
   store.subscribe(async () => {
@@ -35,17 +35,13 @@ async function start() {
   createMainWindow();
 }
 
-try {
-  app.on('ready', async () => {
-    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-      await installExtensions();
-    }
-    try {
-      await start();
-    } catch (err) {
-      console.error(err);
-    }
-  });
-} catch (err) {
-  dialog.showErrorBox(err);
-}
+app.on('ready', async () => {
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+    await installExtensions();
+  }
+  try {
+    await start();
+  } catch (err) {
+    dialog.showErrorBox('MovieCast failed to start! ', `Please report the following error:\n${err.stack}`);
+  }
+});

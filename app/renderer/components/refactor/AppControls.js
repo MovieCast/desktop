@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { remote } from 'electron';
 import PropTypes from 'prop-types';
 
 import { IconButton } from 'material-ui';
@@ -12,8 +11,6 @@ import {
   Close as CloseIcon
 } from 'material-ui-icons';
 
-import * as ElectronActions from '../../../shared/actions/electron';
-
 const styleSheet = createStyleSheet('AppControls', {
   button: {
     WebkitAppRegion: 'no-drag'
@@ -21,22 +18,67 @@ const styleSheet = createStyleSheet('AppControls', {
 });
 
 class AppControls extends Component {
+  constructor(props) {
+    super(props);
 
-  renderMaximizeButton() {
-    return this.props.maximized ? <FullscreenExitIcon /> : <FullscreenIcon />;
+    this.window = remote.getCurrentWindow();
+
+    this.state = {
+      maximized: false
+    };
+
+    this.updateState = this.updateState.bind(this);
+  }
+
+  componentWillMount() {
+    this.updateState();
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateState);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateState);
+  }
+
+  updateState() {
+    this.setState({
+      maximized: this.window.isMaximized()
+    });
+  }
+
+  handleMaximize() {
+    if (this.state.maximized) {
+      this.window.unmaximize();
+    } else {
+      this.window.maximize();
+    }
+
+    this.setState({
+      maximized: this.window.isMaximized()
+    });
+  }
+
+  handleMinimize() {
+    this.window.minimize();
+  }
+
+  handleClose() {
+    this.window.close();
   }
 
   render() {
-    const classes = this.props.classes;
+    const { classes } = this.props;
     return (
       <div>
-        <IconButton onClick={() => this.props.minimize()} className={classes.button}>
+        <IconButton onClick={this.handleMinimize.bind(this)} className={classes.button}>
           <RemoveIcon />
         </IconButton>
-        <IconButton onClick={() => this.props.maximize()} className={classes.button}>
-          {this.renderMaximizeButton()}
+        <IconButton onClick={this.handleMaximize.bind(this)} className={classes.button}>
+          {this.state.maximized ? <FullscreenExitIcon /> : <FullscreenIcon />}
         </IconButton>
-        <IconButton onClick={() => this.props.close()} className={classes.button}>
+        <IconButton onClick={this.handleClose.bind(this)} className={classes.button}>
           <CloseIcon />
         </IconButton>
       </div>
@@ -46,20 +88,8 @@ class AppControls extends Component {
 
 /* eslint-disable react/forbid-prop-types */
 AppControls.propTypes = {
-  classes: PropTypes.object.isRequired,
-  maximized: PropTypes.bool.isRequired,
-  maximize: PropTypes.func.isRequired,
-  minimize: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
-function mapStateToProps({ electron }) {
-  return { maximized: electron.maximized };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ElectronActions, dispatch);
-}
-
-export default withStyles(styleSheet)(connect(mapStateToProps, mapDispatchToProps)(AppControls));
+export default withStyles(styleSheet)(AppControls);
