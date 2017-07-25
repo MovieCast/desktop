@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Catalog from '../components/Catalog';
-import * as MovieActions from '../actions/items';
+import * as MovieActions from '../../shared/actions/items';
 
 function mapStateToProps({ movies }) {
   return { items: movies };

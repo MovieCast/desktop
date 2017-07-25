@@ -18,7 +18,7 @@ import {
   Close as CloseIcon
 } from 'material-ui-icons';
 
-import * as ElectronActions from '../actions/electron';
+import * as ElectronActions from '../../shared/actions/electron';
 
 const styleSheet = createStyleSheet('AppToolbar', {
   root: {

@@ -21,18 +21,19 @@
     "package": "npm run build && build --publish never",
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
-    "package-all": "npm run build && build -mwl"
+    "package-all": "npm run build && build -mwl",
+    "tests": "build --win --x64"
   },
   "browserslist": "electron 1.6",
   "build": {
     "productName": "MovieCast",
     "appId": "xyz.moviecast.MovieCast",
     "files": [
-      "dist/",
+      "renderer/dist/",
       "node_modules/",
-      "app.html",
-      "main.prod.js",
-      "main.prod.js.map",
+      "renderer/app.html",
+      "main/main.prod.js",
+      "main/main.prod.js.map",
       "package.json"
     ],
     "dmg": {
