@@ -9,6 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import AppDrawer from './AppDrawer';
 import AppControls from './AppControls';
+import AutoUpdater from './AutoUpdater';
 
 const styleSheet = createStyleSheet('AppFrame', theme => ({
   '@global': {
@@ -72,7 +73,7 @@ class AppFrame extends Component {
   };
 
   render() {
-    const { children, classes } = this.props;
+    const { children, classes, updater } = this.props;
     const appBarClassName = classNames(classes.appBar, classes.appBarHome);
 
     return (
@@ -98,6 +99,7 @@ class AppFrame extends Component {
           onRequestClose={this.handleDrawerClose}
           open={this.state.drawerOpen}
         />
+        <AutoUpdater updater={updater} />
         {children}
       </div>
     );
@@ -107,7 +109,9 @@ class AppFrame extends Component {
 /* eslint-disable react/forbid-prop-types */
 AppFrame.propTypes = {
   children: PropTypes.node.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  // settings: PropTypes.object.isRequired,
+  updater: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
