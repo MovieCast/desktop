@@ -21,6 +21,8 @@ export function createMainWindow() {
     show: false,
     width: 1024,
     height: 728,
+    minWidth: 350,
+    minHeight: 300,
     frame: false
   });
 

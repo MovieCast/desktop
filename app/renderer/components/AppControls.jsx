@@ -12,6 +12,9 @@ import {
 } from 'material-ui-icons';
 
 const styleSheet = createStyleSheet('AppControls', {
+  root: {
+    display: 'flex'
+  },
   button: {
     WebkitAppRegion: 'no-drag'
   }
@@ -71,7 +74,7 @@ class AppControls extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
         <IconButton onClick={this.handleMinimize.bind(this)} className={classes.button}>
           <RemoveIcon />
         </IconButton>

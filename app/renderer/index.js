@@ -2,13 +2,15 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { getInitialStateRenderer } from 'electron-redux';
+import { createHashHistory } from 'history';
 
-import { configureStoreWithHistory, SCOPE_RENDERER } from '../shared/store/configureStore';
+import { configureStore, SCOPE_RENDERER } from '../shared/store/configureStore';
 import './app.global.css';
 
-import App from './components/refactor/App';
+import App from './components/App';
 
-const { store, history } = configureStoreWithHistory(getInitialStateRenderer(), SCOPE_RENDERER);
+const store = configureStore(getInitialStateRenderer(), SCOPE_RENDERER);
+const history = createHashHistory();
 
 render(
   <AppContainer>
@@ -18,8 +20,8 @@ render(
 );
 
 if (module.hot) {
-  module.hot.accept('./components/refactor/App', () => {
-    const NextApp = require('./components/refactor/App'); // eslint-disable-line global-require
+  module.hot.accept('./components/App', () => {
+    const NextApp = require('./components/App'); // eslint-disable-line global-require
     render(
       <AppContainer>
         <NextApp store={store} history={history} />
