@@ -1,29 +1,28 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Grid, Paper } from 'material-ui';
 
-class Catalog extends Component {
-  // rip me atm
-  componentWillMount() {
-    this.props.fetchMovies();
-  }
-
-  renderItems() {
-    return _.map(this.props.items, item => <div key={item.id}>{item.name}</div>);
-  }
-
+class MoviesCatalog extends Component {
   render() {
     return (
-      <div>
-        {this.renderItems()}
-      </div>
+      <Grid container>
+        <Grid item xs={12}>
+          <Grid
+            container
+            align="flex-start"
+            justify="flex-start"
+          >
+            {[0, 1, 2].map(value =>
+              (<Grid key={value} item>
+                <Paper>
+                  {`Cell ${value + 1}`}
+                </Paper>
+              </Grid>),
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
     );
   }
 }
 
-Catalog.propTypes = {
-  items: PropTypes.object.isRequired,
-  fetchMovies: PropTypes.func.isRequired
-};
-
-export default Catalog;
+export default MoviesCatalog;

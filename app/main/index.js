@@ -2,7 +2,7 @@ import { app, dialog } from 'electron';
 import { promisifyAll } from 'bluebird';
 import jsonStorage from 'electron-json-storage';
 
-import { configureStoreWithHistory as configureStore, SCOPE_MAIN } from '../shared/store/configureStore';
+import { configureStore, SCOPE_MAIN } from '../shared/store/configureStore';
 import { installExtensions } from './extensions';
 import { createMainWindow } from './window';
 
@@ -13,7 +13,7 @@ global.state = {};
 async function start() {
   global.state = await storage.get('state');
 
-  const { store } = configureStore(global.state, SCOPE_MAIN);
+  const store = configureStore(global.state, SCOPE_MAIN);
 
   // Update the global state and storage state
   store.subscribe(async () => {

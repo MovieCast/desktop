@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import {
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Drawer,
   Divider,
@@ -20,6 +16,7 @@ import {
 } from 'material-ui-icons';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
+import AppDrawerNavItem from './AppDrawerNavItem';
 
 const styleSheet = createStyleSheet('AppDrawer', theme => ({
   paper: {
@@ -43,7 +40,6 @@ function AppDrawer(props) {
       }}
       open={props.open}
       onRequestClose={props.onRequestClose}
-      docked={props.docked}
       keepMounted
     >
       <div className={classes.nav}>
@@ -55,24 +51,24 @@ function AppDrawer(props) {
         </Toolbar>
 
         <List disablePadding>
-          <ListItem button component={Link} to="/movies">
-            <ListItemIcon>
-              <MovieIcon />
-            </ListItemIcon>
-            <ListItemText primary="Movies" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <ShowIcon />
-            </ListItemIcon>
-            <ListItemText primary="Shows" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItem>
+          <AppDrawerNavItem
+            to="/movies"
+            text="Movies"
+            icon={<MovieIcon />}
+            onClick={props.onRequestClose}
+          />
+          <AppDrawerNavItem
+            to="/shows"
+            text="Shows"
+            icon={<ShowIcon />}
+            onClick={props.onRequestClose}
+          />
+          <AppDrawerNavItem
+            to="/settings"
+            text="Settings"
+            icon={<SettingsIcon />}
+            onClick={props.onRequestClose}
+          />
         </List>
       </div>
     </Drawer>
@@ -82,7 +78,6 @@ function AppDrawer(props) {
 /* eslint-disable react/forbid-prop-types */
 AppDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
-  docked: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };

@@ -41,7 +41,7 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
     flex: '0 1 auto',
   },
   appBar: {
-    transition: theme.transitions.create('width'),
+    // transition: theme.transitions.create('width'),
     WebkitAppRegion: 'drag'
   },
   button: {
@@ -49,19 +49,11 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
   },
   appBarHome: {
     // backgroundColor: 'transparent',
-    boxShadow: 'none',
+    // boxShadow: 'none',
   },
   appBarShift: {
     width: 'calc(100% - 250px)',
-  },
-  [theme.breakpoints.up('lg')]: {
-    drawer: {
-      width: '250px',
-    },
-    navIconHide: {
-      display: 'none',
-    },
-  },
+  }
 }));
 
 class AppFrame extends Component {
@@ -81,19 +73,11 @@ class AppFrame extends Component {
 
   render() {
     const { children, classes } = this.props;
-
-    const drawerDocked = false;
-    const appBarClassName = classNames(classes.appBar, {
-      [classes.appBarHome]: !this.state.drawerOpen,
-      [classes.appBarShift]: this.state.drawerOpen
-    });
-
+    const appBarClassName = classNames(classes.appBar, classes.appBarHome);
 
     return (
       <div className={classes.appFrame}>
-        <AppBar
-          className={appBarClassName}
-        >
+        <AppBar className={appBarClassName} >
           <Toolbar>
             <IconButton
               color="contrast"
@@ -111,9 +95,8 @@ class AppFrame extends Component {
         </AppBar>
         <AppDrawer
           className={classes.drawer}
-          docked={drawerDocked}
           onRequestClose={this.handleDrawerClose}
-          open={drawerDocked || this.state.drawerOpen}
+          open={this.state.drawerOpen}
         />
         {children}
       </div>

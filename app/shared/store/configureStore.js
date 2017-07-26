@@ -20,14 +20,8 @@ import * as itemsActions from '../actions/items';
 export const SCOPE_MAIN = 'SCOPE_MAIN';
 export const SCOPE_RENDERER = 'SCOPE_RENDERER';
 
-export const configureStoreWithHistory = (initialState, scope = SCOPE_MAIN) => {
-  let history;
-
-  if (scope === SCOPE_RENDERER) {
-    history = createHashHistory();
-  }
-
-  const middleware = getMiddleware(scope, history);
+export const configureStore = (initialState, scope = SCOPE_MAIN) => {
+  const middleware = getMiddleware(scope);
   const enhancer = createEnhancer(scope, middleware);
 
   // Create Store
@@ -41,11 +35,11 @@ export const configureStoreWithHistory = (initialState, scope = SCOPE_MAIN) => {
 
   replayAction(scope, store);
 
-  return { store, history };
+  return store;
 };
 
 // Creates a middleware array based on the current scope.
-const getMiddleware = (scope, history) => {
+const getMiddleware = (scope) => {
   // Initial middleware, needed for all scopes
   const middleware = [
     thunk
@@ -62,7 +56,7 @@ const getMiddleware = (scope, history) => {
       return [
         forwardToMain,
         ...middleware,
-        routerMiddleware(history),
+        routerMiddleware(createHashHistory()),
         createLogger({
           level: !process.env.NODE_ENV ? 'info' : undefined,
           collapsed: true
