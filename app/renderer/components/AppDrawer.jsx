@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import {
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Drawer,
   Divider,
@@ -44,7 +40,6 @@ function AppDrawer(props) {
       }}
       open={props.open}
       onRequestClose={props.onRequestClose}
-      docked={props.docked}
       keepMounted
     >
       <div className={classes.nav}>
