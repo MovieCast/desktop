@@ -45,7 +45,8 @@ export function minimize() {
 
 // This might get a little bit weird
 // we are going to try and change
-// the state while we know we are exited
+// the state while we know the current
+// window is gone...
 export function close() {
   const window = remote.getCurrentWindow();
   window.close();
