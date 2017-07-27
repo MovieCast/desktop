@@ -4,7 +4,7 @@ import { promisifyAll } from 'bluebird';
 import path from 'path';
 import jsonStorage from 'electron-json-storage';
 
-import StoreFactory, { SCOPE_MAIN } from '../../shared/store/StoreFactory';
+import StoreFactory, { SCOPE_MAIN } from '../shared/store/StoreFactory';
 import WindowFactory from './WindowFactory';
 import MenuFactory from './MenuFactory';
 import ExtensionFactory from './ExtensionFactory';

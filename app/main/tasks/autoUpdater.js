@@ -5,7 +5,7 @@ import {
   updateNotAvailable,
   updateError,
   updateDownloaded
-} from '../../../shared/actions/updater';
+} from '../../shared/actions/updater';
 
 export default function autoUpdater(store) {
   console.log('Starting Auto Updater');

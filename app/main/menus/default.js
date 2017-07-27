@@ -1,5 +1,5 @@
 import { shell } from 'electron';
-import { bugs, version } from '../../../package.json';
+import { bugs, version } from '../../package.json';
 
 module.exports = [{
   label: '&File',
