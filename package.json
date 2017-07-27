@@ -150,6 +150,7 @@
     "electron-debug": "^1.1.0",
     "electron-json-storage": "^3.0.6",
     "electron-redux": "^1.2.10",
+    "electron-updater": "^2.7.2",
     "faker": "^4.1.0",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
@@ -165,6 +166,7 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "source-map-support": "^0.4.15",
     "typeface-roboto": "0.0.31"

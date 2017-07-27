@@ -13,7 +13,7 @@ import {
 } from 'electron-redux';
 
 import rootReducer from '../reducers';
-import * as electronActions from '../actions/electron';
+import * as updaterActions from '../actions/updater';
 import * as settingsActions from '../actions/settings';
 import * as itemsActions from '../actions/items';
 
@@ -73,14 +73,14 @@ const createEnhancer = (scope, middleware) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...electronActions,
+    ...updaterActions,
     ...settingsActions,
     ...itemsActions,
     ...routerActions,
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle, max-len */
-  const composeEnhancers = scope === SCOPE_RENDERER && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && !process.env.NODE_ENV
+  const composeEnhancers = scope === SCOPE_RENDERER && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && process.env.NODE_ENV === 'development'
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
       actionCreators,

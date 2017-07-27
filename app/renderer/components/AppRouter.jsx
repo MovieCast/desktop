@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ConnectedRouter as Router } from 'react-router-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import AppFrame from './AppFrame';
+import AppFrame from '../containers/AppFrame';
 import AppContent from './AppContent';
 import Catalog from './Catalog';
 
