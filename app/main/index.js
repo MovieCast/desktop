@@ -2,7 +2,7 @@ import { app, dialog } from 'electron';
 import { promisifyAll } from 'bluebird';
 import jsonStorage from 'electron-json-storage';
 
-import { configureStore, SCOPE_MAIN } from '../shared/store/configureStore';
+import StoreFactory, { SCOPE_MAIN } from '../shared/store/StoreFactory';
 import { installExtensions } from './extensions';
 import { createMainWindow } from './window';
 
@@ -11,15 +11,16 @@ const storage = promisifyAll(jsonStorage);
 global.state = {};
 
 async function start() {
-  global.state = await storage.get('state');
+  // global.state = await storage.get('state');
 
-  const store = configureStore(global.state, SCOPE_MAIN);
+  const storeFactory = new StoreFactory(SCOPE_MAIN);
+  const store = storeFactory.configureStore(global.state);
 
   // Update the global state and storage state
   store.subscribe(async () => {
     global.state = store.getState();
 
-    await storage.set('state', global.state);
+    // await storage.set('state', global.state);
   });
 
   app.on('window-all-closed', () => {

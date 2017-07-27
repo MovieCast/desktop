@@ -165,6 +165,7 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "source-map-support": "^0.4.15",
     "typeface-roboto": "0.0.31"
