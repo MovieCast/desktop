@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { getInitialStateRenderer } from 'electron-redux';
-import { createHashHistory } from 'history';
 import StoreFactory, { SCOPE_RENDERER } from '../shared/store/StoreFactory';
 
 // import { configureStore, SCOPE_RENDERER } from '../shared/store/configureStore';
