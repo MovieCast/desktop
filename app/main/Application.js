@@ -119,7 +119,7 @@ export default class Application {
     try {
       // Create a new main window instance
       this.mainWindow = await WindowFactory.createMainWindow({
-        url: `file://${path.join(__dirname, '../../renderer/app.html')}`
+        url: `file://${path.join(__dirname, '../renderer/app.html')}`
       });
 
       // Create menu stuff

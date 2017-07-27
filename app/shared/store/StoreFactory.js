@@ -22,18 +22,13 @@ export default class StoreFactory {
   static SCOPE_MAIN = 'SCOPE_MAIN';
   static SCOPE_RENDERER = 'SCOPE_RENDERER';
 
-  static createHistory() {
-    console.log('Creating new hash history instance');
-    return createHashHistory();
-  }
-
   get history() {
     if (this.scope === StoreFactory.SCOPE_MAIN) {
       return null;
     }
 
     // eslint-disable-next-line no-return-assign, no-underscore-dangle
-    return this._history ? this._history : this._history = StoreFactory.createHistory();
+    return this._history ? this._history : this._history = createHashHistory();
   }
 
   constructor(scope = StoreFactory.SCOPE_MAIN) {
@@ -72,8 +67,6 @@ export default class StoreFactory {
           forwardToRenderer
         ];
       case StoreFactory.SCOPE_RENDERER:
-        console.log('getMiddleware(): SCOPE_RENDERER');
-        console.log(this.history);
         return [
           forwardToMain,
           ...initialMiddleware,
