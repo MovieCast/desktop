@@ -11,7 +11,7 @@ const storage = promisifyAll(jsonStorage);
 global.state = {};
 
 async function start() {
-  // global.state = await storage.get('state');
+  global.state = await storage.get('state');
 
   const storeFactory = new StoreFactory(SCOPE_MAIN);
   const store = storeFactory.configureStore(global.state);
@@ -20,7 +20,7 @@ async function start() {
   store.subscribe(async () => {
     global.state = store.getState();
 
-    // await storage.set('state', global.state);
+    await storage.set('state', global.state);
   });
 
   app.on('window-all-closed', () => {
