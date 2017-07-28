@@ -1,7 +1,14 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Grid, Paper } from 'material-ui';
 
-class MoviesCatalog extends Component {
+class Catalog extends Component {
+  componentWillMount() {
+    this.props.fetchItems();
+  }
+
   render() {
     return (
       <Grid container>
@@ -11,13 +18,13 @@ class MoviesCatalog extends Component {
             align="flex-start"
             justify="flex-start"
           >
-            {[0, 1, 2].map(value =>
-              (<Grid key={value} item>
+            {_.map(this.props.items, (item =>
+              (<Grid key={item.id} item>
                 <Paper>
-                  {`Cell ${value + 1}`}
+                  <Link to={`/movie/${item.id}`}><img src={item.medium_cover_image} /></Link>
                 </Paper>
-              </Grid>),
-            )}
+              </Grid>)
+            ))}
           </Grid>
         </Grid>
       </Grid>
@@ -25,4 +32,13 @@ class MoviesCatalog extends Component {
   }
 }
 
-export default MoviesCatalog;
+Catalog.propTypes = {
+  items: PropTypes.object,
+  fetchItems: PropTypes.func.isRequired
+};
+
+Catalog.defaultProps = {
+  items: {}
+};
+
+export default Catalog;

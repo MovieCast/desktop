@@ -1,48 +1,26 @@
 // import axios from 'axios';
 import faker from 'faker'; // Remove me later ples...
+import { createAliasedAction } from 'electron-redux';
 
-export const FETCH_MOVIES = 'fetch_movies';
-export const FETCH_MOVIE = 'fetch_movie';
+import { getList, getMovie } from '../../main/api/movies';
+
+export const FETCH_MOVIES = 'FETCH_MOVIES';
+export const FETCH_MOVIE = 'FETCH_MOVIE';
 
 /* TODO: fetchMovieByPage(page) */
-export function fetchMovies() {
-  return (dispatch) => {
-    dispatch({
-      type: FETCH_MOVIES,
-      payload: {
-        data: [
-          {
-            id: 1,
-            name: faker.name.findName()
-          },
-          {
-            id: 2,
-            name: faker.name.findName()
-          },
-          {
-            id: 3,
-            name: faker.name.findName()
-          },
-          {
-            id: 4,
-            name: faker.name.findName()
-          }
-        ]
-      }
-    });
-  };
-}
 
-export function fetchMovie(id) {
-  return dispatch => {
-    dispatch({
-      type: FETCH_MOVIE,
-      payload: {
-        data: {
-          id,
-          name: faker.name.findName()
-        }
-      }
-    });
-  };
-}
+export const fetchMovies = createAliasedAction(
+  FETCH_MOVIES,
+  () => ({
+    type: FETCH_MOVIES,
+    payload: getList(),
+  })
+);
+
+export const fetchMovie = createAliasedAction(
+  FETCH_MOVIE,
+  (id) => ({
+    type: FETCH_MOVIE,
+    payload: getMovie(id),
+  })
+);

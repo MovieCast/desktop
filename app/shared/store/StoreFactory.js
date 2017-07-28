@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import promise from 'redux-promise';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
@@ -56,7 +57,8 @@ export default class StoreFactory {
 
   getMiddleware() {
     const initialMiddleware = [
-      thunk
+      thunk,
+      promise
     ];
 
     switch (this.scope) {
@@ -72,7 +74,7 @@ export default class StoreFactory {
           ...initialMiddleware,
           routerMiddleware(this.history),
           createLogger({
-            level: !process.env.NODE_ENV ? 'info' : undefined,
+            level: process.env.NODE_ENV === 'development' ? 'info' : undefined,
             collapsed: true
           })
         ];
