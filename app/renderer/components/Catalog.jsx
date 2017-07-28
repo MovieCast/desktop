@@ -21,7 +21,7 @@ class Catalog extends Component {
             {_.map(this.props.items, (item =>
               (<Grid key={item.id} item>
                 <Paper>
-                  <Link to={`/movie/${item.id}`}><img src={item.medium_cover_image} /></Link>
+                  <Link to={`/movie/${item.id}`}><img src={item.medium_cover_image} alt={item.title} /></Link>
                 </Paper>
               </Grid>)
             ))}
@@ -32,10 +32,12 @@ class Catalog extends Component {
   }
 }
 
+/* eslint-disable react/forbid-prop-types */
 Catalog.propTypes = {
   items: PropTypes.object,
   fetchItems: PropTypes.func.isRequired
 };
+/* eslint-enable react/forbid-prop-types */
 
 Catalog.defaultProps = {
   items: {}
