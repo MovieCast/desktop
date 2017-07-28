@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Snackbar } from 'material-ui';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
@@ -16,33 +16,62 @@ const styleSheet = createStyleSheet('Message', theme => ({
   }
 }));
 
-function Message(props) {
-  const { classes: {
+class Message extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      orgOpen: props.open,
+      open: props.open
+    };
+  }
+
+  // TODO: Make this a bit less messy xD
+  // for example with componentWillUpdate
+  // or componentShouldUpdate
+  componentWillReceiveProps({ open }) {
+    if (this.state.orgOpen !== open) {
+      this.setState({ orgOpen: open });
+    }
+    if (this.state.open !== open && this.state.orgOpen !== open) {
+      console.log(this.state.open !== open && this.state.orgOpen !== open);
+      this.setState({ open });
+    }
+  }
+
+  onRequestClose() {
+    this.setState({ open: false });
+  }
+
+  render() {
+    const { classes: {
     anchorTopLeft,
     anchorTopCenter,
-    anchorTopRight }, open, message, action, position, onRequestClose } = props;
+    anchorTopRight }, message, action, position, duration, onRequestClose } = this.props;
 
-  return (
-    <Snackbar
-      anchorOrigin={{
-        vertical: position.vertical,
-        horizontal: position.horizontal,
-      }}
-      classes={{
-        anchorTopLeft,
-        anchorTopCenter,
-        anchorTopRight
-      }}
-      open={open}
-      onRequestClose={onRequestClose}
-      transition={<Slide direction={position.direction} />}
-      SnackbarContentProps={{
-        'aria-describedby': 'message-id',
-      }}
-      message={<span id="message-id">{message}</span>}
-      action={action}
-    />
-  );
+    return (
+      <Snackbar
+        anchorOrigin={{
+          vertical: position.vertical,
+          horizontal: position.horizontal,
+        }}
+        classes={{
+          anchorTopLeft,
+          anchorTopCenter,
+          anchorTopRight
+        }}
+        open={this.state.open}
+        onRequestClose={onRequestClose || this.onRequestClose.bind(this)}
+        autoHideDuration={duration}
+        transition={<Slide direction={position.direction} />}
+        SnackbarContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={<span id="message-id">{message}</span>}
+        action={action}
+      />
+    );
+  }
 }
 
 /* eslint-disable react/forbid-prop-types */
@@ -51,6 +80,7 @@ Message.propTypes = {
   open: PropTypes.bool,
   message: PropTypes.string.isRequired,
   action: PropTypes.array,
+  duration: PropTypes.number,
   position: PropTypes.object,
   onRequestClose: PropTypes.func
 };
@@ -59,12 +89,13 @@ Message.propTypes = {
 Message.defaultProps = {
   open: false,
   action: [],
+  duration: null,
   position: {
     vertical: 'top',
     horizontal: 'right',
     direction: 'left'
   },
-  onRequestClose: () => {}
+  onRequestClose: undefined
 };
 
 export default withStyles(styleSheet)(Message);

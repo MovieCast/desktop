@@ -8,6 +8,7 @@ class AutoUpdater extends Component {
   }
 
   handleRequestClose() {
+    console.log('Trying to close snackbar');
     this.setState({
       open: false
     });
@@ -21,27 +22,26 @@ class AutoUpdater extends Component {
         <Message
           open={updater.checkingForUpdate}
           message="Checking for updates..."
-          onRequestClose={this.handleRequestClose.bind(this)}
+          duration={10e3}
         />
         <Message
           open={updater.updateAvailable}
           message="There's an update available"
-          onRequestClose={this.handleRequestClose.bind(this)}
+          duration={10e3}
         />
         <Message
           open={updater.updateDownloaded}
-          message="Update downloaded."
-          onRequestClose={this.handleRequestClose.bind(this)}
+          message="Update downloaded, restarting in 5 seconds"
         />
         <Message
           open={!!updater.updateError}
           message="An error occured while downloading updates"
-          onRequestClose={this.handleRequestClose.bind(this)}
+          duration={10e3}
         />
         <Message
           open={updater.updateNotAvailable}
           message="MovieCast is up-to-date"
-          onRequestClose={this.handleRequestClose.bind(this)}
+          duration={2e3}
         />
       </div>
     );
