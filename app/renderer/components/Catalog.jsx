@@ -2,32 +2,46 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Grid, Paper } from 'material-ui';
+import { AppBar, Tabs, Tab, Grid, Paper } from 'material-ui';
 
 class Catalog extends Component {
+  state = {
+    sort: 0
+  }
+
   componentWillMount() {
     this.props.fetchItems();
   }
 
+  handleChange(event, index) {
+    this.setState({ sort: index });
+  }
+
   render() {
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Grid
-            container
-            align="flex-start"
-            justify="flex-start"
-          >
-            {_.map(this.props.items, (item =>
-              (<Grid key={item.id} item>
-                <Paper>
-                  <Link to={`/movie/${item.id}`}><img src={item.medium_cover_image} alt={item.title} /></Link>
-                </Paper>
-              </Grid>)
-            ))}
-          </Grid>
+      <div>
+        <AppBar position="static">
+          <Tabs index={this.state.sort} onChange={this.handleChange.bind(this)}>
+            <Tab label="Trending" />
+            <Tab label="A-Z" />
+          </Tabs>
+        </AppBar>
+
+        <Grid
+          container
+          align="flex-start"
+          justify="space-between"
+          disableGutters
+        >
+          {_.map(this.props.items, (item =>
+          (<Grid key={item.id} item>
+            <Paper>
+              <Link to={`/movie/${item.id}`}><img src={item.medium_cover_image} alt={item.title} /></Link>
+            </Paper>
+          </Grid>)
+        ))}
         </Grid>
-      </Grid>
+      </div>
     );
   }
 }

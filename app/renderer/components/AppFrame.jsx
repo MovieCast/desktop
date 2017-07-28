@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { Link } from 'react-router-dom';
 import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
+import { Menu as MenuIcon, ArrowBack as BackIcon } from 'material-ui-icons';
 import AppDrawer from './AppDrawer';
 import AppControls from './AppControls';
 import AutoUpdater from './AutoUpdater';
@@ -48,8 +49,8 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
   button: {
     WebkitAppRegion: 'no-drag'
   },
-  appBarHome: {
-    // backgroundColor: 'transparent',
+  appBarDetails: {
+    backgroundColor: 'transparent',
     // boxShadow: 'none',
   },
   appBarShift: {
@@ -73,22 +74,37 @@ class AppFrame extends Component {
   };
 
   render() {
-    const { children, classes, updater } = this.props;
-    const appBarClassName = classNames(classes.appBar, classes.appBarHome);
+    const { children, classes, application, updater } = this.props;
+    const appBarClassName = classNames(classes.appBar, {
+      [classes.appBarDetails]: !!application.customTitle
+    });
 
     return (
       <div className={classes.appFrame}>
         <AppBar className={appBarClassName} >
           <Toolbar>
-            <IconButton
-              color="contrast"
-              onClick={this.handleDrawerToggle}
-              className={classes.button}
-            >
-              <MenuIcon />
-            </IconButton>
+            {application.customTitle ?
+              (
+                <IconButton
+                  color="contrast"
+                  component={Link}
+                  className={classes.button}
+                  to="/"
+                >
+                  <BackIcon />
+                </IconButton>
+              ) : (
+                <IconButton
+                  color="contrast"
+                  onClick={this.handleDrawerToggle}
+                  className={classes.button}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )
+            }
             <Typography className={classes.title} type="title" color="inherit" noWrap>
-              MovieCast
+              {application.customTitle ? application.customTitle : 'MovieCast'}
             </Typography>
             <div className={classes.grow} />
             <AppControls />
@@ -111,6 +127,7 @@ AppFrame.propTypes = {
   children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired,
   // settings: PropTypes.object.isRequired,
+  application: PropTypes.object.isRequired,
   updater: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */

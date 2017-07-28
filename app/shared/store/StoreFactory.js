@@ -15,6 +15,7 @@ import {
 } from 'electron-redux';
 
 import rootReducer from '../reducers';
+import * as applicationActions from '../actions/application';
 import * as updaterActions from '../actions/updater';
 import * as settingsActions from '../actions/settings';
 import * as itemsActions from '../actions/items';
@@ -79,7 +80,6 @@ export default class StoreFactory {
           })
         ];
       default:
-        console.log('Whut');
         throw Error(`UnsupportedScope: ${this.scope} is not supported!`);
     }
   }
@@ -90,6 +90,7 @@ export default class StoreFactory {
     ];
 
     const actionCreators = {
+      ...applicationActions,
       ...updaterActions,
       ...settingsActions,
       ...itemsActions,
