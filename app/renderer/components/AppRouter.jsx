@@ -6,6 +6,7 @@ import AppFrame from '../containers/AppFrame';
 import AppContent from './AppContent';
 import MoviesCatalog from '../containers/MoviesCatalog';
 import MovieDetail from '../containers/MovieDetail';
+import SettingsPage from '../containers/SettingsPage';
 
 export default function AppRouter({ history }) {
   return (
@@ -15,6 +16,8 @@ export default function AppRouter({ history }) {
           <Switch>
             <Route path="/movie/:id" component={MovieDetail} />
             <Route path="/movies" component={MoviesCatalog} />
+
+            <Route path="/settings" component={SettingsPage} />
 
             {/* TODO: Show a loader, since we actually want to load our settings at this moment */}
             <Route

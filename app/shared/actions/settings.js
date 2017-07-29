@@ -1,22 +1,16 @@
-export const GET_SETTINGS = 'get_settings';
-export const SAVE_SETTINGS = 'save_settings';
+export const CHANGE_SETTINGS = 'CHANGE_SETTINGS';
+export const RESET_SETTINGS = 'RESET_SETTINGS';
 
-const INIT_SETTINGS = {
-  api: 'scraper1.moviecast.xyz'
-};
-
-export function getSettings() {
-  // TODO: Yea uhmm, idk how to save the settings yet..
+export function changeSettings(settings) {
   return {
-    type: GET_SETTINGS,
-    payload: INIT_SETTINGS
+    type: CHANGE_SETTINGS,
+    payload: settings
   };
 }
 
-export function saveSettings(settings) {
-  // TODO: Actually save meh
+export function resetSettings(settings) {
   return {
-    type: SAVE_SETTINGS,
+    type: RESET_SETTINGS,
     payload: settings
   };
 }

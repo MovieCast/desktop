@@ -10,10 +10,12 @@ import {
 import AppRouter from './AppRouter';
 
 function App({ store, history }) {
+  console.log(store);
+
   const theme = createMuiTheme({
     // TODO: Create our own palettes, for so called themes
     palette: createPalette({
-      type: 'dark'
+      type: store.getState().settings.ui.palette === 'Dark' ? 'dark' : 'light'
     }),
 
     overrides: {

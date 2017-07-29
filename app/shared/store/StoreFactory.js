@@ -16,8 +16,8 @@ import {
 
 import rootReducer from '../reducers';
 import * as applicationActions from '../actions/application';
-import * as updaterActions from '../actions/updater';
 import * as settingsActions from '../actions/settings';
+import * as updaterActions from '../actions/updater';
 import * as itemsActions from '../actions/items';
 
 export default class StoreFactory {
@@ -91,8 +91,8 @@ export default class StoreFactory {
 
     const actionCreators = {
       ...applicationActions,
-      ...updaterActions,
       ...settingsActions,
+      ...updaterActions,
       ...itemsActions,
       ...routerActions,
     };
