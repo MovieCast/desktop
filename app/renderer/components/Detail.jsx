@@ -7,7 +7,7 @@ const styleSheet = createStyleSheet('Detail', {
     position: 'relative',
     marginTop: '-64px',
   },
-  poster: {
+  background: {
     height: '100vh',
     top: 0,
     bottom: 0,
@@ -15,7 +15,7 @@ const styleSheet = createStyleSheet('Detail', {
     left: 0,
     width: '100%',
     position: 'absolute',
-    backgroundSize: 'cover',
+    objectFit: 'cover',
     zIndex: 1
   },
   content: {
@@ -26,8 +26,19 @@ const styleSheet = createStyleSheet('Detail', {
     left: 0,
     width: '100%',
     position: 'absolute',
-    backgroundSize: 'cover',
     zIndex: 2
+  },
+  poster: {
+    position: 'absolute',
+    top: 90,
+    bottom: 50,
+    left: 110,
+    boxShadow: '0 0 10px rgba(0,0,0,0.5)', // Use theme for this!
+    borderRadius: 2,
+    objectFit: 'cover',
+    height: 'calc(100vh - 140px - 50px)',
+    width: 'auto',
+    maxHeight: '75vh'
   }
 });
 
@@ -35,28 +46,28 @@ class Detail extends Component {
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.fetchItem(id);
-    this.props.setCustomTitle(true);
-  }
 
-  componentWillReceiveProps({ item: { title } }) {
-    if (title) {
-      this.props.setCustomTitle(title);
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.setCustomTitle(false);
+    // Make the AppBar transparent and add a back button
+    this.props.configureAppBar({
+      title: this.props.item.title,
+      transparent: true,
+      shadow: false,
+      back: true
+    });
   }
 
   render() {
     const { item, classes } = this.props;
     return (
       <div className={classes.root}>
-        <img className={classes.poster} src={item.background_image} alt={item.title} />
+        <img className={classes.background} src={item.background_image} alt={item.title} />
         <div className={classes.content}>
+          <div className={classes.infoWrapper}>
+            <img className={classes.poster} src={item.medium_cover_image} alt="Poster" />
+            <div className={classes.metaContainer} />
+          </div>
           {/*
             TODO: ->
-            - Back + Title
             - Cover | Content
             - Controls container
           */}
@@ -72,7 +83,7 @@ Detail.propTypes = {
   match: PropTypes.object.isRequired,
   fetchItem: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  setCustomTitle: PropTypes.func.isRequired
+  configureAppBar: PropTypes.func.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

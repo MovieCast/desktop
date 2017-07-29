@@ -43,15 +43,19 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
     flex: '0 1 auto',
   },
   appBar: {
-    // transition: theme.transitions.create('width'),
-    WebkitAppRegion: 'drag'
+    WebkitAppRegion: 'drag',
+    // Not sure about this one, it looks a bit weird.
+    // transition: theme.transitions.create('background'),
+    transition: theme.transitions.create('box-shadow')
   },
   button: {
     WebkitAppRegion: 'no-drag'
   },
-  appBarDetails: {
+  appBarTransparent: {
     backgroundColor: 'transparent',
-    // boxShadow: 'none',
+  },
+  appBarNoShadow: {
+    boxShadow: 'none',
   },
   appBarShift: {
     width: 'calc(100% - 250px)',
@@ -74,16 +78,17 @@ class AppFrame extends Component {
   };
 
   render() {
-    const { children, classes, application, updater } = this.props;
+    const { children, classes, updater, application: { appBar } } = this.props;
     const appBarClassName = classNames(classes.appBar, {
-      [classes.appBarDetails]: !!application.customTitle
+      [classes.appBarTransparent]: appBar.transparent,
+      [classes.appBarNoShadow]: !appBar.shadow
     });
 
     return (
       <div className={classes.appFrame}>
         <AppBar className={appBarClassName} >
           <Toolbar>
-            {application.customTitle ?
+            {appBar.back ?
               (
                 <IconButton
                   color="contrast"
@@ -104,7 +109,7 @@ class AppFrame extends Component {
               )
             }
             <Typography className={classes.title} type="title" color="inherit" noWrap>
-              {application.customTitle ? application.customTitle : 'MovieCast'}
+              {appBar.title}
             </Typography>
             <div className={classes.grow} />
             <AppControls />

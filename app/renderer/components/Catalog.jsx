@@ -31,7 +31,6 @@ class Catalog extends Component {
           container
           align="flex-start"
           justify="space-between"
-          disableGutters
         >
           {_.map(this.props.items, (item =>
           (<Grid key={item.id} item>

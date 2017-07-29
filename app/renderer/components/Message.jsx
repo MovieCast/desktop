@@ -39,7 +39,9 @@ class Message extends Component {
     }
   }
 
-  onRequestClose() {
+  onRequestClose(event, reason) {
+    if (reason === 'clickaway') return;
+
     this.setState({ open: false });
   }
 

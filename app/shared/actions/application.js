@@ -1,8 +1,12 @@
-export const CUSTOM_TITLE = 'CUSTOM_TITLE';
+export const CONFIGURE_APP_BAR = 'CONFIGURE_APP_BAR';
 
-export function setCustomTitle(title) {
+// TODO: Find a way to validate the 'options' param
+export function configureAppBar(options) {
   return {
-    type: CUSTOM_TITLE,
-    payload: title
+    type: CONFIGURE_APP_BAR,
+    payload: options,
+    meta: {
+      scope: 'local'
+    }
   };
 }
