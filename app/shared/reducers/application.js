@@ -6,6 +6,7 @@ import { productName } from '../../package.json';
 const initialState = {
   appBar: {
     title: productName,
+    secondary: false,
     transparent: false,
     shadow: false,
     back: false

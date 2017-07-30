@@ -35,7 +35,7 @@ class Settings extends Component {
 
   componentWillMount() {
     this.props.configureAppBar({
-      title: 'Settings',
+      secondary: 'Settings',
       shadow: true,
       back: true
     });
