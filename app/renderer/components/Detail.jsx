@@ -49,9 +49,8 @@ class Detail extends Component {
 
     // Make the AppBar transparent and add a back button
     this.props.configureAppBar({
-      title: this.props.item.title,
+      secondary: this.props.item.title,
       transparent: true,
-      shadow: false,
       back: true
     });
   }

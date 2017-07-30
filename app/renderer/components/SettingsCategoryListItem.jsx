@@ -73,7 +73,7 @@ class SettingsCategoryListItem extends Component {
 SettingsCategoryListItem.propTypes = {
   icon: PropTypes.element,
   text: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   action: PropTypes.element,
   options: PropTypes.array,
   onClick: PropTypes.func,
@@ -84,9 +84,10 @@ SettingsCategoryListItem.propTypes = {
 SettingsCategoryListItem.defaultProps = {
   icon: null,
   action: null,
+  value: null,
   options: null,
-  onClick: false,
-  onOptionsClick: false
+  onClick: undefined,
+  onOptionsClick: undefined
 };
 
 export default SettingsCategoryListItem;

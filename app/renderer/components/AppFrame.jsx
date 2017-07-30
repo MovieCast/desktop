@@ -39,19 +39,17 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
     flex: '1 1 auto',
   },
   title: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
     marginLeft: 24,
-    // flex: '0 1 auto',
+    flex: '0 1 auto',
   },
   appBar: {
     WebkitAppRegion: 'drag',
     // Not sure about this one, it looks a bit weird.
     // transition: theme.transitions.create('background'),
     transition: theme.transitions.create('box-shadow'),
-  },
-  toolbar: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
   },
   button: {
     WebkitAppRegion: 'no-drag'
@@ -113,11 +111,11 @@ class AppFrame extends Component {
                 </IconButton>
               )
             }
-            <div className={classNames({ [classes.toolbar]: !!appBar.secondary })}>
-              <Typography className={classes.title} type="title" color="inherit" noWrap gutterBottom={!!appBar.secondary}>
+            <div className={classes.title}>
+              <Typography type="title" color="inherit" noWrap gutterBottom={!!appBar.secondary}>
                 {appBar.title}
               </Typography>
-              {appBar.secondary && <Typography className={classes.title} type="caption">{appBar.secondary}</Typography>}
+              {appBar.secondary && <Typography type="caption">{appBar.secondary}</Typography>}
             </div>
             <div className={classes.grow} />
             <AppControls />
