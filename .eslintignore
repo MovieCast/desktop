@@ -35,14 +35,8 @@ app/node_modules
 release
 app/main/main.prod.js
 app/main/main.prod.js.map
-app/bundle.js
-app/bundle.js.map
-app/style.css
-app/style.css.map
 dist
 dll
-main.js
-main.js.map
 
 .idea
 npm-debug.log.*
