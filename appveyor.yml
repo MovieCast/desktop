@@ -4,7 +4,6 @@ environment:
   GH_TOKEN:
       secure: Ga+40bO3lQTmQOxV/e8JwZyd0SukxC6SFRlDZ1B478dZ29qxXDsWzStTdDt0FXg3
   matrix:
-    - nodejs_version: 8
     - nodejs_version: 7
 
 cache:
@@ -17,7 +16,7 @@ matrix:
 
 build: off
 
-version: '{build}'
+version: '0.0.1-dev.{build}'
 
 shallow_clone: true
 
@@ -32,4 +31,20 @@ install:
 test_script:
   - node --version
   - yarn lint
-  - yarn package-publish
+
+# configuration for "master" branch
+# build and publish on github
+-
+  branches:
+    only:
+      - master
+
+  build_script:
+    - yarn package-publish
+
+# "fall back" configuration for all other branches
+# no "branches" section defined
+# only package, artifacts can still be downloaded.
+-
+  build_script:
+    - yarn package
