@@ -22,7 +22,7 @@
     "package-all": "npm run build && build -mwl",
     "package-linux": "npm run build && build --linux",
     "package-win": "npm run build && build --win --x64",
-    "package-publish": "npm run build && build --publish "
+    "package-publish": "npm run build && build --publish always"
   },
   "browserslist": "electron 1.6",
   "build": {
