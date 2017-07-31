@@ -32,4 +32,4 @@ install:
 test_script:
   - node --version
   - yarn lint
-  - yarn publish
+  - yarn package-publish
