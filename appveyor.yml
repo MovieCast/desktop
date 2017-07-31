@@ -32,19 +32,9 @@ test_script:
   - node --version
   - yarn lint
 
-# configuration for "master" branch
-# build and publish on github
--
-  branches:
-    only:
-      - master
+build_script:
+  - yarn package
 
-  build_script:
-    - yarn package-publish
-
-# "fall back" configuration for all other branches
-# no "branches" section defined
-# only package, artifacts can still be downloaded.
--
-  build_script:
-    - yarn package
+artifacts:
+  - path: release
+    name: MovieCast
