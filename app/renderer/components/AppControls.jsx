@@ -75,13 +75,13 @@ class AppControls extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <IconButton onClick={this.handleMinimize.bind(this)} className={classes.button}>
+        <IconButton onClick={this.handleMinimize.bind(this)} className={classes.button} color="contrast">
           <RemoveIcon />
         </IconButton>
-        <IconButton onClick={this.handleMaximize.bind(this)} className={classes.button}>
+        <IconButton onClick={this.handleMaximize.bind(this)} className={classes.button} color="contrast">
           {this.state.maximized ? <FullscreenExitIcon /> : <FullscreenIcon />}
         </IconButton>
-        <IconButton onClick={this.handleClose.bind(this)} className={classes.button}>
+        <IconButton onClick={this.handleClose.bind(this)} className={classes.button} color="contrast">
           <CloseIcon />
         </IconButton>
       </div>

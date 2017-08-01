@@ -1,46 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import {
-  createPalette,
-  createMuiTheme,
-  MuiThemeProvider
-} from 'material-ui/styles';
+import { MuiThemeProvider } from 'material-ui/styles';
 
 import AppRouter from './AppRouter';
+import createTheme from '../helpers/createTheme';
 
-function App({ store, history }) {
-  console.log(store);
-
-  const theme = createMuiTheme({
-    // TODO: Create our own palettes, for so called themes
-    palette: createPalette({
-      type: store.getState().settings.ui.palette === 'Dark' ? 'dark' : 'light'
-    }),
-
-    overrides: {
-      MuiToolbar: {
-        root: {
-          minHeight: 64,
-          maxHeight: 64
-        }
-      },
-    }
-  });
-
-  return (
-    <MuiThemeProvider theme={theme}>
-      <Provider store={store}>
-        <AppRouter history={history} />
-      </Provider>
-    </MuiThemeProvider>
-  );
+class App extends Component {
+  render() {
+    const { store, history, ui } = this.props;
+    return (
+      <MuiThemeProvider theme={createTheme(ui.palette)}>
+        <Provider store={store}>
+          <AppRouter history={history} />
+        </Provider>
+      </MuiThemeProvider>
+    );
+  }
 }
 
 /* eslint-disable react/forbid-prop-types */
 App.propTypes = {
   store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

@@ -3,17 +3,6 @@ import PropTypes from 'prop-types';
 import Message from './Message';
 
 class AutoUpdater extends Component {
-  state = {
-    open: true
-  }
-
-  handleRequestClose() {
-    console.log('Trying to close snackbar');
-    this.setState({
-      open: false
-    });
-  }
-
   render() {
     const { updater } = this.props;
 

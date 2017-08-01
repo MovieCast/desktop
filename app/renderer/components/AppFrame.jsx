@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
-import { Link } from 'react-router-dom';
 import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -60,6 +59,9 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
   appBarNoShadow: {
     boxShadow: 'none',
   },
+  appBarTitleSecondary: {
+    color: 'rgba(255, 255, 255, 0.7)'
+  },
   appBarShift: {
     width: 'calc(100% - 250px)',
   }
@@ -76,8 +78,14 @@ class AppFrame extends Component {
     this.setState({ drawerOpen: false });
   };
 
-  handleDrawerToggle = () => {
-    this.setState({ drawerOpen: !this.state.drawerOpen });
+  // TODO: Dont use goBack, since it breaks on refresh
+  handleBackAndDrawerButton = () => {
+    const { application: { appBar }, history } = this.props;
+    if (appBar.back) {
+      history.goBack();
+    } else {
+      this.setState({ drawerOpen: !this.state.drawerOpen });
+    }
   };
 
   render() {
@@ -91,31 +99,22 @@ class AppFrame extends Component {
       <div className={classes.appFrame}>
         <AppBar className={appBarClassName} >
           <Toolbar>
-            {appBar.back ?
-              (
-                <IconButton
-                  color="contrast"
-                  component={Link}
-                  className={classes.button}
-                  to="/"
-                >
-                  <BackIcon />
-                </IconButton>
-              ) : (
-                <IconButton
-                  color="contrast"
-                  onClick={this.handleDrawerToggle}
-                  className={classes.button}
-                >
-                  <MenuIcon />
-                </IconButton>
-              )
-            }
+            {/* Preparation for Icon to Icon transition */}
+            <IconButton
+              color="contrast"
+              onClick={this.handleBackAndDrawerButton}
+              className={classes.button}
+            >
+              {appBar.back ? <BackIcon /> : <MenuIcon />}
+            </IconButton>
             <div className={classes.title}>
               <Typography type="title" color="inherit" noWrap gutterBottom={!!appBar.secondary}>
                 {appBar.title}
               </Typography>
-              {appBar.secondary && <Typography type="caption">{appBar.secondary}</Typography>}
+              {appBar.secondary &&
+              <Typography type="caption" color="secondary" className={classes.appBarTitleSecondary}>
+                {appBar.secondary}
+              </Typography>}
             </div>
             <div className={classes.grow} />
             <AppControls />
@@ -139,7 +138,8 @@ AppFrame.propTypes = {
   classes: PropTypes.object.isRequired,
   // settings: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
-  updater: PropTypes.object.isRequired
+  updater: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
