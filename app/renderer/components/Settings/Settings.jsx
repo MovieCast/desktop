@@ -21,7 +21,7 @@ const styleSheet = createStyleSheet('Settings', theme => ({
   root: {
     width: '100%',
     // maxWidth: 360,
-    //background: theme.palette.background.paper,
+    // background: theme.palette.background.paper,
   },
 }));
 
@@ -75,7 +75,7 @@ class Settings extends Component {
             icon={<LanguageIcon />}
             text="Default Language"
             value={settings.ui.language}
-            options={['English', 'Dutch', 'Arabic for saif']}
+            options={['English', 'Dutch']}
             onOptionsClick={(event, index, value) => changeSettings({ ui: { language: value } })}
           />
           <SettingsCategoryListItem

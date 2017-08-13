@@ -12,17 +12,8 @@ import styles from './Catalog.css';
 // const MOVIE_POSTER_HEIGHT = '';
 // const MOVIE_POSTER_WIDTH = '';
 
-const styleSheet = createStyleSheet(theme => ({
-  root: theme.mixins.gutters({
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    background: theme.palette.background.paper,
-  }),
+const styleSheet = createStyleSheet({
   gridList: {
-    // width: 500,
-    // height: 450,
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
   },
@@ -31,7 +22,7 @@ const styleSheet = createStyleSheet(theme => ({
       'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
       'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
   },
-}));
+});
 
 class Catalog extends Component {
   state = {
@@ -109,14 +100,16 @@ class Catalog extends Component {
         </AppBar>
         <div className={styles.scroll}>
           {/* <div className={classes.root}> */}
-          <GridList
+          {/* <GridList
             cellHeight="auto"
             spacing={17}
             cols={this.state.cols}
             className={classes.gridList}
-          >
+          > */}
+          <Grid container align="center" justify="space-around" className={classes.gridList}>
             {_.map(items, (item =>
-                (<GridListTile key={item.id} component={Link} to={`/movie/${item.id}`}>
+              (<Grid key={item.id} item>
+                <GridListTile component={Link} to={`/movie/${item.id}`}>
                   <img src={item.medium_cover_image} alt={item.title} />
                   <GridListTileBar
                     title={item.title}
@@ -126,9 +119,10 @@ class Catalog extends Component {
                       </span>
                     }
                   />
-                </GridListTile>)
-              ))}
-          </GridList>
+                </GridListTile>
+              </Grid>)
+            ))}
+          </Grid>
           {/* </div> */}
         </div>
 
