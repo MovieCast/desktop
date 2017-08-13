@@ -21,10 +21,13 @@ export default function catalog(state = initialState, action) {
     case FETCH_MOVIES:
       return {
         ...state,
-        page: action.payload.config.params.page.page,
+        page: action.payload.config.params.page,
         genre: action.payload.config.params.genre,
         sort: action.payload.config.params.sort_by,
-        items: _.mapKeys(action.payload.data.data.movies, 'id')
+        items: {
+          ...state.items,
+          ..._.mapKeys(action.payload.data.data.movies, 'id')
+        }
       };
     default:
       return state;

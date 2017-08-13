@@ -3,16 +3,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
-import { AppBar, Tabs, Tab, Grid, Paper } from 'material-ui';
-import { GridList, GridListTile, GridListTileBar } from 'material-ui/GridList';
+import { AppBar, Tabs, Tab, Grid, CircularProgress, Paper, Button } from 'material-ui';
+import { GridListTile, GridListTileBar } from 'material-ui/GridList';
 
 // styles
 import styles from './Catalog.css';
 
-// const MOVIE_POSTER_HEIGHT = '';
-// const MOVIE_POSTER_WIDTH = '';
-
-const styleSheet = createStyleSheet({
+const styleSheet = createStyleSheet(theme => ({
   gridList: {
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
@@ -22,7 +19,13 @@ const styleSheet = createStyleSheet({
       'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
       'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
   },
-});
+  more: {
+    background: theme.palette.background.paper,
+    width: 230,
+    height: 345,
+    display: 'flex'
+  }
+}));
 
 class Catalog extends Component {
   state = {
@@ -33,33 +36,22 @@ class Catalog extends Component {
     const { catalog: { page, genre, sort } } = this.props;
 
     this.props.fetchItems({
-      page,
+      page: 1,
       genre,
       sort
     });
-
-    // Pls let redux take care of this later on...
-    window.addEventListener('resize', this.handleResize);
-
-    this.handleResize();
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+  loadMore = () => {
+    const { catalog: { page, genre, sort } } = this.props;
 
-    // this.handleResize.cancel();
+    this.props.fetchItems({
+      page: page + 1
+    });
   }
 
-  handleResize = () => {
-    // Let's calculate how many items can fit on one row.
-    // One movie item has a width of 250px; so if we
-    // devide the innerWidth with 250px we can calculate
-    // how many items can fit in such space
-    const newCols = Math.round(window.innerWidth / 250);
-
-    if (newCols !== this.state.cols) {
-      this.setState({ cols: newCols });
-    }
+  loadDetail(event, item) {
+    this.props.history.push(`/movie/${item.id}`);
   }
 
   handleChange(event, index) {
@@ -79,6 +71,7 @@ class Catalog extends Component {
     }
 
     this.props.fetchItems({
+      page: 1,
       sort
     });
 
@@ -99,14 +92,7 @@ class Catalog extends Component {
           </Tabs>
         </AppBar>
         <div className={styles.scroll}>
-          {/* <div className={classes.root}> */}
-          {/* <GridList
-            cellHeight="auto"
-            spacing={17}
-            cols={this.state.cols}
-            className={classes.gridList}
-          > */}
-          <Grid container align="center" justify="space-around" className={classes.gridList}>
+          <Grid container align="flex-start" justify="space-around" className={classes.gridList}>
             {_.map(items, (item =>
               (<Grid key={item.id} item>
                 <GridListTile component={Link} to={`/movie/${item.id}`}>
@@ -122,24 +108,12 @@ class Catalog extends Component {
                 </GridListTile>
               </Grid>)
             ))}
-          </Grid>
-          {/* </div> */}
-        </div>
-
-        <div className={styles.scroll}>
-          <Grid container align="flex-start" justify="space-between" style={{ padding: `${20}px` }}>
-
-            {_.map(items, (item =>
-              (<Grid key={item.id} item>
-                <Paper>
-                  <Link to={`/movie/${item.id}`}><img src={item.medium_cover_image} alt={item.title} /></Link>
-                </Paper>
-              </Grid>)
-            ))}
-
+            <Grid container align="center" justify="center" direction="column" className={classes.more}>
+              <CircularProgress className={classes.progress} size={50} />
+              <Button onClick={this.loadMore}>Load More</Button>
+            </Grid>
           </Grid>
         </div>
-
       </div>
     );
   }
