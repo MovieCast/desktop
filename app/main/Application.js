@@ -24,6 +24,7 @@ export default class Application {
    * @param {Error} err - The error instance
    */
   static onError(err) {
+    console.log(err);
     dialog.showErrorBox('An error occured', `Please report the following error:\n${err.stack || err.message || err}`);
   }
 

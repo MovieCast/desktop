@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ConnectedRouter as Router } from 'react-router-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import AppFrame from '../containers/AppFrame';
+import AppFrame from '../../containers/AppFrame';
 import AppContent from './AppContent';
-import MoviesCatalog from '../containers/MoviesCatalog';
-import MovieDetail from '../containers/MovieDetail';
-import SettingsPage from '../containers/SettingsPage';
+import MoviesCatalog from '../../containers/MoviesCatalog';
+import MovieDetail from '../../containers/MovieDetail';
+import SettingsPage from '../../containers/SettingsPage';
 
 export default function AppRouter({ history }) {
   return (

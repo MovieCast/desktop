@@ -6,9 +6,9 @@ export const FETCH_MOVIE = 'FETCH_MOVIE';
 
 export const fetchMovies = createAliasedAction(
   FETCH_MOVIES,
-  () => ({
+  ({ page, genre, sort }) => ({
     type: FETCH_MOVIES,
-    payload: getList(),
+    payload: getList(page, genre, sort),
   })
 );
 

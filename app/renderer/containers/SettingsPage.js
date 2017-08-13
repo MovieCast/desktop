@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Settings from '../components/Settings';
+import Settings from '../components/Settings/Settings';
 import { configureAppBar } from '../../shared/actions/application';
 import { changeSettings, resetSettings } from '../../shared/actions/settings';
 

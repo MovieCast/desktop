@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import { Menu as MenuIcon, ArrowBack as BackIcon } from 'material-ui-icons';
 import AppDrawer from './AppDrawer';
 import AppControls from './AppControls';
-import AutoUpdater from './AutoUpdater';
+import AutoUpdater from '../AutoUpdater/AutoUpdater';
 
 const styleSheet = createStyleSheet('AppFrame', theme => ({
   '@global': {

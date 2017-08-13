@@ -18,7 +18,7 @@ import rootReducer from '../reducers';
 import * as applicationActions from '../actions/application';
 import * as settingsActions from '../actions/settings';
 import * as updaterActions from '../actions/updater';
-import * as itemsActions from '../actions/items';
+import * as catalogActions from '../actions/catalog';
 
 export default class StoreFactory {
   static SCOPE_MAIN = 'SCOPE_MAIN';
@@ -93,7 +93,7 @@ export default class StoreFactory {
       ...applicationActions,
       ...settingsActions,
       ...updaterActions,
-      ...itemsActions,
+      ...catalogActions,
       ...routerActions,
     };
 

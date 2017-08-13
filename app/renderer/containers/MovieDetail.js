@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Detail from '../components/Detail';
-import { fetchMovie } from '../../shared/actions/items';
+import Detail from '../components/Detail/Detail';
+import { fetchMovie } from '../../shared/actions/catalog';
 import { configureAppBar } from '../../shared/actions/application';
 
-function mapStateToProps({ movies }, ownProps) {
-  return { item: movies[ownProps.match.params.id] };
+function mapStateToProps({ catalog }, ownProps) {
+  return { item: catalog.items[ownProps.match.params.id] };
 }
 
 export default withRouter(connect(mapStateToProps, {

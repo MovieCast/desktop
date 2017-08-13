@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { MuiThemeProvider } from 'material-ui/styles';
 
 import AppRouter from './AppRouter';
-import createTheme from '../helpers/createTheme';
+import createTheme from '../../helpers/createTheme';
 
 class App extends Component {
   render() {

@@ -1,13 +1,22 @@
 import axios from 'axios';
 
-const URL_ROOT = 'https://yts.ag/api/v2';
+const api = axios.create({
+  baseURL: 'https://yts.ag/api/v2'
+});
 
-export function getList() {
-  const request = axios.get(`${URL_ROOT}/list_movies.json`);
+export function getList(page = 1, genre = 'all', sort = 'year') {
+  const request = api.get('/list_movies.json', {
+    params: {
+      page,
+      genre,
+      sort_by: sort
+    }
+  });
+  console.log(request);
   return request;
 }
 
 export function getMovie(id) {
-  const request = axios.get(`${URL_ROOT}/movie_details.json?movie_id=${id}`);
+  const request = api.get(`/movie_details.json?movie_id=${id}`);
   return request;
 }
