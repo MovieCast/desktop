@@ -15,9 +15,17 @@ const styleSheet = createStyleSheet('Message', theme => ({
   anchorTopRight: {
     top: (theme.spacing.unit * 3) + 64
   },
-  close: {
+  icon: {
     width: theme.spacing.unit * 4,
     height: theme.spacing.unit * 4,
+  },
+  iconContainer: {
+    display: 'inline-flex',
+    verticalAlign: 'middle',
+    alignItems: 'center'
+  },
+  iconText: {
+    marginLeft: 15
   }
 }));
 
@@ -52,10 +60,28 @@ class Message extends Component {
 
   render() {
     const { classes: {
-    anchorTopLeft,
-    anchorTopCenter,
-    anchorTopRight,
-    close }, message, action, position, duration, onRequestClose } = this.props;
+      anchorTopLeft,
+      anchorTopCenter,
+      anchorTopRight
+    }, classes, message, icon, actions, position, duration, onRequestClose } = this.props;
+
+    const messageContainer = (
+      <span id="message-id" className={classes.iconContainer}>
+        {icon && React.cloneElement(icon, { className: classes.icon })}
+        <span className={classes.iconText}>{message}</span>
+      </span>
+    );
+
+    const actionContainer = [].concat(actions, [
+      <IconButton
+        key="close"
+        color="inherit"
+        className={classes.icon}
+        onClick={this.handleRequestClose}
+      >
+        <CloseIcon />
+      </IconButton>
+    ]);
 
     return (
       <Snackbar
@@ -75,19 +101,8 @@ class Message extends Component {
         SnackbarContentProps={{
           'aria-describedby': 'message-id',
         }}
-        message={<span id="message-id">{message}</span>}
-        action={[
-          <IconButton
-            key="close"
-            aria-label="Close"
-            color="inherit"
-            className={close}
-            onClick={this.handleRequestClose}
-          >
-            <CloseIcon />
-          </IconButton>,
-          action
-        ]}
+        message={messageContainer}
+        action={actionContainer}
       />
     );
   }
@@ -98,7 +113,8 @@ Message.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool,
   message: PropTypes.string.isRequired,
-  action: PropTypes.array,
+  icon: PropTypes.node.isRequired, // Fix that later...
+  actions: PropTypes.array,
   duration: PropTypes.number,
   position: PropTypes.object,
   onRequestClose: PropTypes.func
@@ -107,7 +123,7 @@ Message.propTypes = {
 
 Message.defaultProps = {
   open: false,
-  action: [],
+  actions: [],
   duration: null,
   position: {
     vertical: 'top',

@@ -1,6 +1,7 @@
 import {
   CHECKING_FOR_UPDATE,
   UPDATE_AVAILABLE,
+  UPDATE_DOWNLOADING,
   UPDATE_DOWNLOADED,
   UPDATE_ERROR,
   UPDATE_NOT_AVAILABLE,
@@ -9,6 +10,7 @@ import {
 const initialState = {
   checkingForUpdate: false,
   updateAvailable: false,
+  updateDownloading: 0,
   updateDownloaded: false,
   updateError: false,
   updateNotAvailable: false,
@@ -29,6 +31,14 @@ export default function updater(state = initialState, action) {
         ...state,
         ...initialState,
         updateAvailable: true
+      };
+    }
+
+    case UPDATE_DOWNLOADING: {
+      return {
+        ...state,
+        ...initialState,
+        updateDownloading: action.payload
       };
     }
 

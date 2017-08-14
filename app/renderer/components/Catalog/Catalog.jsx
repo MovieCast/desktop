@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
-import { AppBar, Tabs, Tab, Grid, CircularProgress, Paper, Button } from 'material-ui';
+import { AppBar, Tabs, Tab, Grid, CircularProgress, Button } from 'material-ui';
 import { GridListTile, GridListTileBar } from 'material-ui/GridList';
 
 // styles
@@ -33,7 +33,7 @@ class Catalog extends Component {
   }
 
   componentWillMount() {
-    const { catalog: { page, genre, sort } } = this.props;
+    const { catalog: { genre, sort } } = this.props;
 
     this.props.fetchItems({
       page: 1,
@@ -43,7 +43,7 @@ class Catalog extends Component {
   }
 
   loadMore = () => {
-    const { catalog: { page, genre, sort } } = this.props;
+    const { catalog: { page } } = this.props;
 
     this.props.fetchItems({
       page: page + 1
@@ -123,7 +123,8 @@ class Catalog extends Component {
 Catalog.propTypes = {
   catalog: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  fetchItems: PropTypes.func.isRequired
+  fetchItems: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

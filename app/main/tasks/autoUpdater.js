@@ -2,6 +2,7 @@ import { autoUpdater as updater } from 'electron-updater';
 import {
   checkingForUpdate,
   updateAvailable,
+  updateDownloading,
   updateNotAvailable,
   updateError,
   updateDownloaded
@@ -29,7 +30,8 @@ export default function autoUpdater(store) {
     logMessage = `${logMessage} - Downloaded ${progressObj.percent}%`;
     logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
     console.log(logMessage);
-    // TODO: Create an action creator for this.
+
+    store.dispatch(updateDownloading(progressObj.percent));
   });
   updater.on('update-downloaded', (info) => {
     store.dispatch(updateDownloaded());
