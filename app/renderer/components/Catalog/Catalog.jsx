@@ -83,7 +83,6 @@ class Catalog extends Component {
 
     return (
       <div>
-
         <AppBar position="static">
           <Tabs index={this.state.sort} onChange={this.handleChange.bind(this)}>
             <Tab label="Year" />

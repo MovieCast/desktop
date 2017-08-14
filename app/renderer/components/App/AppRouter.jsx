@@ -8,6 +8,7 @@ import AppContent from './AppContent';
 import MoviesCatalog from '../../containers/MoviesCatalog';
 import MovieDetail from '../../containers/MovieDetail';
 import SettingsPage from '../../containers/SettingsPage';
+import Player from '../../containers/Player';
 
 export default function AppRouter({ history }) {
   return (
@@ -19,6 +20,7 @@ export default function AppRouter({ history }) {
               <Route path="/movie/:id" component={MovieDetail} />
               <Route path="/movies" component={MoviesCatalog} />
               <Route path="/settings" component={SettingsPage} />
+              <Route path="/player" component={Player} />
 
               <Route
                 path="/"

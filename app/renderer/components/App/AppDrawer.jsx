@@ -12,7 +12,8 @@ import {
 import {
   Movie as MovieIcon,
   Tv as ShowIcon,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  OndemandVideo as VideoIcon
 } from 'material-ui-icons';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
@@ -67,6 +68,15 @@ function AppDrawer(props) {
             to="/settings"
             text="Settings"
             icon={<SettingsIcon />}
+            onClick={props.onRequestClose}
+          />
+
+          <Divider />
+
+          <AppDrawerNavItem
+            to="/player"
+            text="(DEMO) Player"
+            icon={<VideoIcon />}
             onClick={props.onRequestClose}
           />
         </List>
