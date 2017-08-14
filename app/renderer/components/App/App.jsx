@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { MuiThemeProvider } from 'material-ui/styles';
-
 import AppRouter from './AppRouter';
-import createTheme from '../../helpers/createTheme';
 
 class App extends Component {
   render() {
-    const { history, ui } = this.props;
+    const { store, history } = this.props;
     return (
-      <MuiThemeProvider theme={createTheme(ui.palette)}>
+      <Provider store={store}>
         <AppRouter history={history} />
-      </MuiThemeProvider>
+      </Provider>
     );
   }
 }
 
 /* eslint-disable react/forbid-prop-types */
 App.propTypes = {
-  history: PropTypes.object.isRequired,
-  ui: PropTypes.object.isRequired
+  store: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

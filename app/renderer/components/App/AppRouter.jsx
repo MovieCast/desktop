@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ConnectedRouter as Router } from 'react-router-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import AppUI from '../../containers/AppUI';
 import AppFrame from '../../containers/AppFrame';
 import AppContent from './AppContent';
 import MoviesCatalog from '../../containers/MoviesCatalog';
@@ -11,24 +12,24 @@ import SettingsPage from '../../containers/SettingsPage';
 export default function AppRouter({ history }) {
   return (
     <Router history={history}>
-      <AppFrame>
-        <AppContent>
-          <Switch>
-            <Route path="/movie/:id" component={MovieDetail} />
-            <Route path="/movies" component={MoviesCatalog} />
+      <AppUI>
+        <AppFrame>
+          <AppContent>
+            <Switch>
+              <Route path="/movie/:id" component={MovieDetail} />
+              <Route path="/movies" component={MoviesCatalog} />
+              <Route path="/settings" component={SettingsPage} />
 
-            <Route path="/settings" component={SettingsPage} />
-
-            {/* TODO: Show a loader, since we actually want to load our settings at this moment */}
-            <Route
-              path="/"
-              render={() => (
-                <Redirect to="movies" />
+              <Route
+                path="/"
+                render={() => (
+                  <Redirect to="movies" />
               )}
-            />
-          </Switch>
-        </AppContent>
-      </AppFrame>
+              />
+            </Switch>
+          </AppContent>
+        </AppFrame>
+      </AppUI>
     </Router>
   );
 }
