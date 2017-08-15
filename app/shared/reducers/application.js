@@ -9,6 +9,7 @@ const initialState = {
     secondary: false,
     transparent: false,
     shadow: false,
+    hidden: false,
     back: false
   }
 };
@@ -19,7 +20,8 @@ export default function application(state = initialState, action) {
       return {
         ...state,
         appBar: {
-          ...initialState.appBar,
+          // ...initialState.appBar,
+          ...state.appBar,
           ...action.payload
         }
       };

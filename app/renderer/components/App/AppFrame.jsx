@@ -48,19 +48,23 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
     WebkitAppRegion: 'drag',
     // Not sure about this one, it looks a bit weird.
     // transition: theme.transitions.create('background'),
-    transition: theme.transitions.create('box-shadow'),
+    transition: theme.transitions.create(['box-shadow', 'opacity']),
   },
   button: {
     WebkitAppRegion: 'no-drag'
   },
   appBarTransparent: {
-    backgroundColor: 'transparent',
+    // backgroundColor: 'transparent',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)' // Not completely transparent!
   },
   appBarNoShadow: {
     boxShadow: 'none',
   },
   appBarTitleSecondary: {
     color: 'rgba(255, 255, 255, 0.7)'
+  },
+  appBarHidden: {
+    opacity: 0
   },
   appBarShift: {
     width: 'calc(100% - 250px)',
@@ -92,7 +96,8 @@ class AppFrame extends Component {
     const { children, classes, updater, application: { appBar } } = this.props;
     const appBarClassName = classNames(classes.appBar, {
       [classes.appBarTransparent]: appBar.transparent,
-      [classes.appBarNoShadow]: !appBar.shadow
+      [classes.appBarNoShadow]: !appBar.shadow,
+      [classes.appBarHidden]: appBar.hidden
     });
 
     return (

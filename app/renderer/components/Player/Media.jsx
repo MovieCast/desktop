@@ -8,14 +8,15 @@ const styleSheet = createStyleSheet('Media', {
     position: 'absolute',
     top: 0,
     width: '100%',
-    height: '100vh'
+    height: '100vh',
+    background: '#000'
   }
 });
 
 class Media extends Component {
   state = {
     isPaused: false,
-    src: 'http://archive.org/download/CartoonClassics/Krazy_Kat_-_Keeping_Up_With_Krazy.mp4'
+    src: 'http://vjs.zencdn.net/v/oceans.mp4'
   }
 
   componentDidMount() {

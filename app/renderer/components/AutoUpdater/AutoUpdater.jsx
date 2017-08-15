@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgress, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from 'material-ui';
 import {
-  NewReleases as NewReleasesIcon,
+  Refresh as RefreshIcon,
   SentimentVeryDissatisfied as ErrorIcon,
   SentimentVerySatisfied as SuccessIcon
 } from 'material-ui-icons';
@@ -41,7 +41,7 @@ class AutoUpdater extends Component {
         />
         <Message
           open={updater.updateDownloaded}
-          icon={<NewReleasesIcon />}
+          icon={<RefreshIcon />}
           message="Update downloaded, restarting in 5 seconds"
         />
         <Message

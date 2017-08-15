@@ -12,7 +12,6 @@ export function getList(page = 1, genre = 'all', sort = 'year') {
       sort_by: sort
     }
   });
-  console.log(request);
   return request;
 }
 
