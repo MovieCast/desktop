@@ -5,6 +5,7 @@ import { createStyleSheet, withStyles } from 'material-ui/styles';
 import { Toolbar, IconButton } from 'material-ui';
 import {
   PlayArrow as PlayIcon,
+  Pause as PauseIcon,
   VolumeUp as VolumeUpIcon,
   Subtitles as SubtitlesIcon,
   Fullscreen as FullscreenIcon,
@@ -30,7 +31,14 @@ const styleSheet = createStyleSheet('ControlBar', theme => ({
 class ControlBar extends Component {
 
   render() {
-    const { classes, hidden } = this.props;
+    const {
+      classes,
+      hidden,
+      playing,
+      fullscreen,
+      onTogglePlay,
+      onToggleFullscreen
+    } = this.props;
 
     const controlBarClassName = classNames(classes.root, {
       [classes.hidden]: hidden
@@ -41,8 +49,8 @@ class ControlBar extends Component {
         className={controlBarClassName}
       >
         <Toolbar>
-          <IconButton color="contrast">
-            <PlayIcon />
+          <IconButton color="contrast" onClick={onTogglePlay}>
+            {playing ? <PauseIcon /> : <PlayIcon />}
           </IconButton>
           <div className={classes.grow} />
           <IconButton color="contrast">
@@ -51,8 +59,8 @@ class ControlBar extends Component {
           <IconButton color="contrast">
             <SubtitlesIcon />
           </IconButton>
-          <IconButton color="contrast">
-            <FullscreenIcon />
+          <IconButton color="contrast" onClick={onToggleFullscreen}>
+            {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
           </IconButton>
         </Toolbar>
       </div>
@@ -62,8 +70,20 @@ class ControlBar extends Component {
 
 /* eslint-disable react/forbid-prop-types */
 ControlBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  playing: PropTypes.bool.isRequired,
+  hidden: PropTypes.bool,
+  fullscreen: PropTypes.bool,
+  onTogglePlay: PropTypes.func,
+  onToggleFullscreen: PropTypes.func
 };
 /* eslint-enable react/forbid-prop-types */
+
+ControlBar.defaultProps = {
+  hidden: false,
+  fullscreen: false,
+  onTogglePlay: () => {},
+  onToggleFullscreen: () => {}
+};
 
 export default withStyles(styleSheet)(ControlBar);

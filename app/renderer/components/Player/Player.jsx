@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
+import { remote } from 'electron';
 import VideoSurface from './Media';
 import ControlBar from './ControlBar';
 
@@ -20,8 +22,9 @@ const styleSheet = createStyleSheet('Player', {
 class Player extends Component {
 
   state = {
+    showUi: true,
     playing: true,
-    showUi: true
+    fullscreen: false
   }
 
   componentWillMount() {
@@ -44,6 +47,37 @@ class Player extends Component {
         hidden: nextState.showUi, // hoverzzzz
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.hoverTimeout && clearTimeout(this.hoverTimeout);
+
+    // Well there is no other place in the application to exit fullscreen so lets force it here
+    if (this.state.fullscreen) {
+      this.toggleFullscreen();
+    }
+  }
+
+  handleEnded = () => {
+    this.setState({
+      playing: false
+    });
+  }
+
+  handleTogglePlay = () => {
+    this.setState({
+      playing: !this.state.playing
+    });
+  }
+
+  toggleFullscreen = () => {
+    const window = remote.getCurrentWindow();
+    const fullscreen = !window.isFullScreen();
+    this.setState({
+      fullscreen
+    });
+
+    window.setFullScreen(fullscreen);
   }
 
   handleHover = debounce(() => {
@@ -70,8 +104,17 @@ class Player extends Component {
         className={playerClassName}
         onMouseMove={this.handleHover}
       >
-        <VideoSurface />
-        <ControlBar hidden={!this.state.showUi} />
+        <VideoSurface
+          playing={this.state.playing}
+          onEnded={this.handleEnded}
+        />
+        <ControlBar
+          hidden={!this.state.showUi}
+          playing={this.state.playing}
+          fullscreen={this.state.fullscreen}
+          onTogglePlay={this.handleTogglePlay}
+          onToggleFullscreen={this.toggleFullscreen}
+        />
       </div>
     );
   }

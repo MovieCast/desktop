@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable react/forbid-prop-types, jsx-a11y/media-has-caption */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
@@ -29,6 +29,22 @@ class Media extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { playing, volume } = this.props;
+
+    if (!playing && nextProps.playing) {
+      this.play();
+    } else if (playing && !nextProps.playing) {
+      this.pause();
+    } else if (volume !== nextProps.volume) {
+      this.setVolume(nextProps.volume);
+    }
+  }
+
+  componentWillUnmount() {
+    this.stop();
+  }
+
   onCanPlay = (e) => {
     const player = e.target;
     if (player.webkitVideoDecodedByteCount === 0) {
@@ -41,27 +57,91 @@ class Media extends Component {
     }
   }
 
+  play() {
+    this.player.play();
+  }
+
+  pause() {
+    this.player.pause();
+  }
+
+  stop() {
+    this.player.removeAttribute('src');
+  }
+
+  setVolume(volume) {
+    this.player.volume = volume;
+  }
+
+  ref = player => {
+    this.player = player;
+  }
+
   render() {
+    const {
+      onDoubleClick,
+      onLoadedMetadata,
+      onReady,
+      onPlay,
+      onPause,
+      onEnded,
+      onStalled,
+      onError,
+      onTimeUpdate,
+      onProgress
+    } = this.props;
+
     return (
       <video
+        ref={this.ref}
         className={this.props.classes.root}
         src={this.state.src}
-        // onDoubleClick={this.props.onDoubleClick}
-        // onLoadedMetadata={this.props.onLoadedMetadata}
-        // onEnded={this.props.onEnded}
-        // onStalled={this.props.onStalled}
-        // onError={this.props.onEnded}
-        // onTimeUpdate={this.props.onTimeUpdate}
-        // onEncrypted={this.props.onEncrypted}
-        onCanPlay={this.onCanPlay}
-        ref={(p) => this.player = p}
+        onDoubleClick={onDoubleClick}
+        onLoadedMetadata={onLoadedMetadata}
+        onCanPlay={onReady}
+        onPlay={onPlay}
+        onPause={onPause}
+        onEnded={onEnded}
+        onStalled={onStalled}
+        onError={onError}
+        onTimeUpdate={onTimeUpdate}
+        onProgress={onProgress}
       />
     );
   }
 }
 
 Media.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  playing: PropTypes.bool,
+  volume: PropTypes.number,
+  // tracks: PropTypes.array,
+  onDoubleClick: PropTypes.func,
+  onLoadedMetadata: PropTypes.func,
+  onReady: PropTypes.func,
+  onPlay: PropTypes.func,
+  onPause: PropTypes.func,
+  onEnded: PropTypes.func,
+  onStalled: PropTypes.func,
+  onError: PropTypes.func,
+  onTimeUpdate: PropTypes.func,
+  onProgress: PropTypes.func
+};
+
+Media.defaultProps = {
+  playing: false,
+  volume: 0.8,
+  // tracks: [],
+  onDoubleClick: () => {},
+  onLoadedMetadata: () => {},
+  onReady: () => {},
+  onPlay: () => {},
+  onPause: () => {},
+  onEnded: () => {},
+  onStalled: () => {},
+  onError: () => {},
+  onTimeUpdate: () => {},
+  onProgress: () => {}
 };
 
 export default withStyles(styleSheet)(Media);

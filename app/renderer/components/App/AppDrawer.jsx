@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   List,
+  ListSubheader,
   Toolbar,
   Drawer,
   Divider,
@@ -73,12 +74,14 @@ function AppDrawer(props) {
 
           <Divider />
 
-          <AppDrawerNavItem
-            to="/player"
-            text="(DEMO) Player"
-            icon={<VideoIcon />}
-            onClick={props.onRequestClose}
-          />
+          <List subheader={<ListSubheader>Demos</ListSubheader>}>
+            <AppDrawerNavItem
+              to="/player"
+              text="Player"
+              icon={<VideoIcon />}
+              onClick={props.onRequestClose}
+            />
+          </List>
         </List>
       </div>
     </Drawer>
