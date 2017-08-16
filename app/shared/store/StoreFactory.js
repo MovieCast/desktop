@@ -19,6 +19,7 @@ import * as applicationActions from '../actions/application';
 import * as settingsActions from '../actions/settings';
 import * as updaterActions from '../actions/updater';
 import * as catalogActions from '../actions/catalog';
+import * as playerActions from '../actions/player';
 
 export default class StoreFactory {
   static SCOPE_MAIN = 'SCOPE_MAIN';
@@ -94,6 +95,7 @@ export default class StoreFactory {
       ...settingsActions,
       ...updaterActions,
       ...catalogActions,
+      ...playerActions,
       ...routerActions,
     };
 

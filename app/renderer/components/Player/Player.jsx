@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
-import { remote } from 'electron';
 import VideoSurface from './Media';
 import ControlBar from './ControlBar';
 
@@ -21,18 +20,12 @@ const styleSheet = createStyleSheet('Player', {
 
 class Player extends Component {
 
-  state = {
-    showUi: true,
-    playing: true,
-    fullscreen: false
-  }
-
   componentWillMount() {
     // Make the AppBar transparent and add a back button
     this.props.configureAppBar({
       secondary: 'Playing: No Title',
       transparent: true,
-      hidden: !this.state.showUi, // hoverzzzz
+      hidden: !this.props.player.showUi,
       back: true
     });
   }
@@ -41,10 +34,10 @@ class Player extends Component {
     this.handleHover();
   }
 
-  componentDidUpdate(nextProps, nextState) {
-    if (nextState.showUi !== this.state.showUi) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.player.showUi !== this.props.player.showUi) {
       this.props.configureAppBar({
-        hidden: nextState.showUi, // hoverzzzz
+        hidden: !nextProps.player.showUi,
       });
     }
   }
@@ -53,65 +46,74 @@ class Player extends Component {
     this.hoverTimeout && clearTimeout(this.hoverTimeout);
 
     // Well there is no other place in the application to exit fullscreen so lets force it here
-    if (this.state.fullscreen) {
+    if (this.props.player.fullscreen) {
       this.toggleFullscreen();
     }
   }
 
-  handleEnded = () => {
-    this.setState({
-      playing: false
-    });
+  handleReady = () => {
+    this.props.updateDuration(this.player.getDuration());
   }
 
+  handleEnded = () => {
+    this.props.togglePlay(false);
+  }
+
+  handleTimeUpdate = () => {
+    this.props.updateCurrentTime(this.player.getCurrentTime());
+  };
+
   handleTogglePlay = () => {
-    this.setState({
-      playing: !this.state.playing
-    });
+    this.props.togglePlay();
   }
 
   toggleFullscreen = () => {
-    const window = remote.getCurrentWindow();
-    const fullscreen = !window.isFullScreen();
-    this.setState({
-      fullscreen
-    });
-
-    window.setFullScreen(fullscreen);
+    this.props.toggleFullscreen();
   }
 
   handleHover = debounce(() => {
     this.hoverTimeout && clearTimeout(this.hoverTimeout);
 
-    this.setState({ showUi: true });
+    this.props.toggleUi(true);
     this.hoverTimeout = setTimeout(() => {
-      this.setState({
-        showUi: false
-      });
+      this.props.toggleUi(false);
     }, 5000);
   }, 400, {
     leading: true,
     trailing: false
   })
 
+  ref = player => {
+    this.player = player;
+  }
+
   render() {
-    const { classes } = this.props;
+    const { classes, player } = this.props;
     const playerClassName = classNames(classes.root, {
-      [classes.hideCursor]: !this.state.showUi
+      [classes.hideCursor]: !player.showUi
     });
+
     return (
       <div
         className={playerClassName}
         onMouseMove={this.handleHover}
       >
         <VideoSurface
-          playing={this.state.playing}
+          player={player}
           onEnded={this.handleEnded}
+          onLoadedMetadata={(event, data) => { console.log(event, data); }}
+          onReady={this.handleReady}
+          onTimeUpdate={this.handleTimeUpdate}
+          // {...props}
+          // ref={this.ref}
+          onRef={this.ref}
         />
         <ControlBar
-          hidden={!this.state.showUi}
-          playing={this.state.playing}
-          fullscreen={this.state.fullscreen}
+          player={player}
+          // hidden={!this.state.showUi}
+          // playing={this.state.playing}
+          // duration={this.state.duration}
+          // fullscreen={this.state.fullscreen}
           onTogglePlay={this.handleTogglePlay}
           onToggleFullscreen={this.toggleFullscreen}
         />
@@ -123,7 +125,20 @@ class Player extends Component {
 /* eslint-disable react/forbid-prop-types */
 Player.propTypes = {
   classes: PropTypes.object.isRequired,
-  configureAppBar: PropTypes.func.isRequired
+  configureAppBar: PropTypes.func.isRequired,
+  // Player state
+  player: PropTypes.object.isRequired,
+  // Player actions
+  togglePlay: PropTypes.func.isRequired,
+  // setUrl: PropTypes.func.isRequired,
+  // updateVolume: PropTypes.func.isRequired,
+  // updatePlaybackRate: PropTypes.func.isRequired,
+  updateDuration: PropTypes.func.isRequired,
+  updateCurrentTime: PropTypes.func.isRequired,
+  // updateTracks: PropTypes.func.isRequired,
+  toggleFullscreen: PropTypes.func.isRequired,
+  toggleUi: PropTypes.func.isRequired
+
 };
 /* eslint-enable react/forbid-prop-types */
 

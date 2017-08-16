@@ -8655,6 +8655,10 @@ yauzl@2.4.1:
   dependencies:
     fd-slicer "~1.0.1"
 
+zero-fill@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/zero-fill/-/zero-fill-2.2.3.tgz#a3def06ba5e39ae644850bb4ca2ad4112b4855e9"
+
 zip-stream@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/zip-stream/-/zip-stream-1.2.0.tgz#a8bc45f4c1b49699c6b90198baacaacdbcd4ba04"

@@ -169,7 +169,8 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
     "source-map-support": "^0.4.15",
-    "typeface-roboto": "0.0.31"
+    "typeface-roboto": "0.0.31",
+    "zero-fill": "^2.2.3"
   },
   "devEngines": {
     "node": ">=7.x",

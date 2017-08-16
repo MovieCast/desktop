@@ -14,47 +14,37 @@ const styleSheet = createStyleSheet('Media', {
 });
 
 class Media extends Component {
-  state = {
-    isPaused: false,
-    src: 'http://vjs.zencdn.net/v/oceans.mp4'
-  }
 
   componentDidMount() {
+    const { player } = this.props;
+
     if (this.player !== null) {
-      if (this.state.isPaused && !this.player.paused) {
+      if (!player.playing && !this.player.paused) {
         this.player.pause();
-      } else if (!this.state.isPaused && this.player.paused) {
+      } else if (player.playing && this.player.paused) {
         this.player.play();
       }
     }
+    this.props.onRef(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { playing, volume } = this.props;
+    const { player } = this.props;
 
-    if (!playing && nextProps.playing) {
+    if (!player.playing && nextProps.player.playing) {
       this.play();
-    } else if (playing && !nextProps.playing) {
+      console.log('PLAY!');
+    } else if (player.playing && !nextProps.player.playing) {
       this.pause();
-    } else if (volume !== nextProps.volume) {
-      this.setVolume(nextProps.volume);
+      console.log('PAUSE!');
+    } else if (player.volume !== nextProps.player.volume) {
+      this.setVolume(nextProps.player.volume);
     }
   }
 
   componentWillUnmount() {
     this.stop();
-  }
-
-  onCanPlay = (e) => {
-    const player = e.target;
-    if (player.webkitVideoDecodedByteCount === 0) {
-      console.log('Video codec unsupported');
-    } else if (player.webkitAudioDecodedByteCount === 0) {
-      console.log('Audio codec unsupported');
-    } else {
-      console.log('We can play boiz');
-      player.play();
-    }
+    this.props.onRef(undefined);
   }
 
   play() {
@@ -73,12 +63,22 @@ class Media extends Component {
     this.player.volume = volume;
   }
 
+  getDuration() {
+    return this.player.duration;
+  }
+
+  getCurrentTime() {
+    return this.player.currentTime;
+  }
+
   ref = player => {
     this.player = player;
   }
 
   render() {
     const {
+      classes,
+      player,
       onDoubleClick,
       onLoadedMetadata,
       onReady,
@@ -94,8 +94,8 @@ class Media extends Component {
     return (
       <video
         ref={this.ref}
-        className={this.props.classes.root}
-        src={this.state.src}
+        className={classes.root}
+        src={player.src}
         onDoubleClick={onDoubleClick}
         onLoadedMetadata={onLoadedMetadata}
         onCanPlay={onReady}
@@ -113,9 +113,8 @@ class Media extends Component {
 
 Media.propTypes = {
   classes: PropTypes.object.isRequired,
-  playing: PropTypes.bool,
-  volume: PropTypes.number,
-  // tracks: PropTypes.array,
+  player: PropTypes.object.isRequired,
+  onRef: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onLoadedMetadata: PropTypes.func,
   onReady: PropTypes.func,
@@ -129,9 +128,7 @@ Media.propTypes = {
 };
 
 Media.defaultProps = {
-  playing: false,
-  volume: 0.8,
-  // tracks: [],
+  onRef: () => {},
   onDoubleClick: () => {},
   onLoadedMetadata: () => {},
   onReady: () => {},

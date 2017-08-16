@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
-import { Toolbar, IconButton } from 'material-ui';
+import { Toolbar, IconButton, Typography } from 'material-ui';
 import {
   PlayArrow as PlayIcon,
   Pause as PauseIcon,
@@ -11,6 +11,7 @@ import {
   Fullscreen as FullscreenIcon,
   FullscreenExit as FullscreenExitIcon,
 } from 'material-ui-icons';
+import formatTime from '../../helpers/formatTime';
 
 const styleSheet = createStyleSheet('ControlBar', theme => ({
   root: {
@@ -33,15 +34,13 @@ class ControlBar extends Component {
   render() {
     const {
       classes,
-      hidden,
-      playing,
-      fullscreen,
+      player,
       onTogglePlay,
       onToggleFullscreen
     } = this.props;
 
     const controlBarClassName = classNames(classes.root, {
-      [classes.hidden]: hidden
+      [classes.hidden]: !player.showUi
     });
 
     return (
@@ -50,8 +49,17 @@ class ControlBar extends Component {
       >
         <Toolbar>
           <IconButton color="contrast" onClick={onTogglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
+            {player.playing ? <PauseIcon /> : <PlayIcon />}
           </IconButton>
+          <Typography>
+            {formatTime(player.currentTime)}
+          </Typography>
+          <Typography>
+            &nbsp;/&nbsp;
+          </Typography>
+          <Typography color="secondary">
+            {formatTime(player.duration)}
+          </Typography>
           <div className={classes.grow} />
           <IconButton color="contrast">
             <VolumeUpIcon />
@@ -60,7 +68,7 @@ class ControlBar extends Component {
             <SubtitlesIcon />
           </IconButton>
           <IconButton color="contrast" onClick={onToggleFullscreen}>
-            {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+            {player.fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
           </IconButton>
         </Toolbar>
       </div>
@@ -71,9 +79,7 @@ class ControlBar extends Component {
 /* eslint-disable react/forbid-prop-types */
 ControlBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  playing: PropTypes.bool.isRequired,
-  hidden: PropTypes.bool,
-  fullscreen: PropTypes.bool,
+  player: PropTypes.object.isRequired,
   onTogglePlay: PropTypes.func,
   onToggleFullscreen: PropTypes.func
 };
