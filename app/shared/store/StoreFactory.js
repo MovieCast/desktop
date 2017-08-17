@@ -20,6 +20,7 @@ import * as settingsActions from '../actions/settings';
 import * as updaterActions from '../actions/updater';
 import * as catalogActions from '../actions/catalog';
 import * as playerActions from '../actions/player';
+import * as torrentActions from '../actions/torrent';
 
 export default class StoreFactory {
   static SCOPE_MAIN = 'SCOPE_MAIN';
@@ -96,6 +97,7 @@ export default class StoreFactory {
       ...updaterActions,
       ...catalogActions,
       ...playerActions,
+      ...torrentActions,
       ...routerActions,
     };
 

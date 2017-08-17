@@ -1,10 +1,14 @@
+/* eslint-disable no-param-reassign, no-plusplus */
 import crypto from 'crypto';
 import WebTorrent from 'webtorrent';
 import zeroFill from 'zero-fill';
 import pkg from '../package.json';
 import {
-  torrentEngineWarning,
-  torrentEngineError,
+  torrentWarning,
+  torrentError,
+  torrentInfoHash,
+  torrentMetaData,
+  torrentDone
 } from '../shared/actions/torrent';
 
 /**
@@ -39,12 +43,12 @@ class TorrentEngine {
    * For example:
    *   '-MC0000-'...
    */
-  static VERSION_PREFIX = `-MC-${TorrentEngine.VERSION_STR}-`;
+  static VERSION_PREFIX = `-MC${TorrentEngine.VERSION_STR}-`;
 
   /**
    * Generate an ephemeral peer ID each time.
    */
-  static PEER_ID = Buffer.from(TorrentEngine.VERSION_PREFIX + crypto.randomBytes(9).toString('base64'));
+  static PEER_ID = Buffer.from(TorrentEngine.VERSION_PREFIX + crypto.randomBytes(9).toString('base64'))
 
   constructor(store) {
     // The Redux store
@@ -68,18 +72,20 @@ class TorrentEngine {
   connectClientEventsToStore() {
     const { dispatch } = this.store;
 
-    this.client.on('warning', err => dispatch(torrentEngineWarning(err)));
+    this.client.on('warning', err => dispatch(torrentWarning(err)));
 
-    this.client.on('error', err => dispatch(torrentEngineError(err)));
+    this.client.on('error', err => dispatch(torrentError(err)));
   }
 
-  startTorrenting(torrentID, path, fileModtimes, selections) {
+  startTorrenting(torrentKey, torrentID, path, fileModtimes, selections) {
     console.log(`[TorrentEngine]: Starting torrent ${torrentID}`);
 
     const torrent = this.client.add(torrentID, {
-      path,
+      // path,
       fileModtimes
     });
+
+    torrent.key = torrentKey;
 
     this.addTorrentEvents(torrent);
 
@@ -96,26 +102,37 @@ class TorrentEngine {
 
   addTorrentEvents(torrent) {
     const { dispatch } = this.store;
-    torrent.on('warning', err => dispatch(torrentEngineWarning(err)));
-    torrent.on('error', err => dispatch(torrentEngineError(err)));
+    torrent.on('warning', err => dispatch(torrentWarning(err)));
+    torrent.on('error', err => dispatch(torrentError(err)));
+    torrent.on('infoHash', onInfoHash);
+    torrent.on('metadata', onMetadata);
+    torrent.on('ready', onReady);
+    torrent.on('done', onDone);
 
-    // TODO: Make the events below actually do something usefull
-    torrent.on('infoHash', () => {
-      console.log(`[TorrentEngine]: onInfoHash: ${torrent.infoHash}`);
-    });
+    function onInfoHash() {
+      console.log(`[TorrentEngine]: Torrent#${torrent.key}: received infohash: ${torrent.infoHash}`);
+      dispatch(torrentInfoHash(torrent.key, torrent.infoHash));
+    }
 
-    torrent.on('metadata', () => {
-      console.log('[TorrentEngine]: onMetadata');
-    });
+    function onMetadata() {
+      console.log(`[TorrentEngine]: Torrent#${torrent.key}: received metadata`);
+      const info = getTorrentInfo(torrent);
+      dispatch(torrentMetaData(torrent.key, info));
+    }
 
-    torrent.on('ready', () => {
-      console.log('[TorrentEngine]: Torrent is ready');
-    });
+    function onReady() {
+      console.log(`[TorrentEngine]: Torrent#${torrent.key}: ready`);
+      // const info = getTorrentInfo(torrent);
+      // dispatch(torrentReady(torrent.key, info));
+    }
 
-    torrent.on('done', () => {
-      console.log('[TorrentEngine]: Torrent is done');
-    });
+    function onDone() {
+      console.log(`[TorrentEngine]: Torrent#${torrent.key}: done`);
+      const info = getTorrentInfo(torrent);
+      dispatch(torrentDone(torrent.key, info));
+    }
   }
+
 
   selectFiles(torrentID, selections) {
     const torrent = this.client.get(torrentID);
@@ -157,6 +174,26 @@ but the torrent contains ${torrent.files.length} files
       }
     }
   }
+}
+
+function getTorrentInfo(torrent) {
+  return {
+    infoHash: torrent.infoHash,
+    magnetURI: torrent.magnetURI,
+    name: torrent.name,
+    path: torrent.path,
+    files: torrent.files.map(getTorrentFileInfo),
+    bytesReceived: torrent.received
+  };
+}
+
+// Produces a JSON saveable summary of a file in a torrent
+function getTorrentFileInfo(file) {
+  return {
+    name: file.name,
+    length: file.length,
+    path: file.path
+  };
 }
 
 export default TorrentEngine;

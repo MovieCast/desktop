@@ -5,6 +5,7 @@ import settings from './settings';
 import updater from './updater';
 import catalog from './catalog';
 import player from './player';
+import torrent from './torrent';
 
 const rootReducer = combineReducers({
   application,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   updater,
   catalog,
   player,
+  torrent,
   router,
 });
 

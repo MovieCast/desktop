@@ -4,19 +4,24 @@ import TorrentEngine from './TorrentEngine';
 
 Application.bootstrap().then(app => {
   console.log('MovieCast is starting...');
-
+  console.log('Starting tasks...');
   const taskManager = new TaskManager(app.getStore());
-  // taskManager.startTasks();
+  taskManager.init();
 
-  // TorrentEngine tests
-  console.log('Going to run some tests with our TorrentEngine');
+  // The Torrent Engine
+  console.log();
+  console.log('--------------------------------------------');
+  console.log('MovieCast TorrentEngine Info');
+  console.log('--------------------------------------------');
   console.log(`TorrentEngine.VERION: ${TorrentEngine.VERSION}`);
   console.log(`TorrentEngine.VERION_STR: ${TorrentEngine.VERSION_STR}`);
   console.log(`TorrentEngine.VERION_PREFIX: ${TorrentEngine.VERSION_PREFIX}`);
   console.log(`TorrentEngine.PEER_ID: ${TorrentEngine.PEER_ID}`);
-  console.log('----------------------');
-  const torrentEngine = new TorrentEngine(app.getStore());
-  torrentEngine.startTorrenting('magnet:?xt=urn:btih:6A02592D2BBC069628CD5ED8A54F88EE06AC0BA5&dn=CosmosLaundromatFirstCycle&tr=http%3a%2f%2fbt1.archive.org%3a6969%2fannounce&tr=http%3a%2f%2fbt2.archive.org%3a6969%2fannounce&tr=wss%3a%2f%2ftracker.btorrent.xyz&tr=wss%3a%2f%2ftracker.openwebtorrent.com&tr=wss%3a%2f%2ftracker.webtorrent.io&ws=http%3a%2f%2fia601508.us.archive.org%2f14%2fitems%2f&ws=http%3a%2f%2fia801508.us.archive.org%2f14%2fitems%2f&ws=https%3a%2f%2farchive.org%2fdownload%2f');
+  console.log('--------------------------------------------');
+  global.torrentEngine = new TorrentEngine(app.getStore());
 
   return 0;
 }).catch(Application.onError);
+
+
+process.on('uncaughtException', Application.onError);
