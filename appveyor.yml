@@ -40,5 +40,5 @@ artifacts:
     name: 'MovieCast Portable {version}'
     type: Zip
   - path: release\MovieCast Setup 0.0.1-alpha.1.exe
-    nams: 'MovieCast Setup {version}'
+    name: 'MovieCast Setup {version}'
     type: File
