@@ -60,7 +60,7 @@ export function updateTracks(tracks) {
 }
 
 export function toggleFullscreen() {
-  console.warn('toggleFullscreen: to be moved to application reducer!');
+  console.warn('Deprecation warning: toggleFullscreen should be part of the application reducer! Be sure to start using the application action creator instead, because this action creator will be removed in an upcoming major release.');
 
   const window = remote.getCurrentWindow();
   const negativeFS = !window.isFullScreen();
@@ -74,7 +74,7 @@ export function toggleFullscreen() {
 }
 
 export function toggleUi(force) {
-  console.warn('toggleUi: to be moved to application reducer!');
+  console.warn('Deprecation warning: toggleUi should be part of the application reducer! Be sure to start using the application action creator instead, because this action creator will be removed in an upcoming major release.');
   return {
     type: TOGGLE_UI,
     payload: force

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
-import { Toolbar, IconButton, Typography } from 'material-ui';
+import { Toolbar, IconButton, Typography, LinearProgress } from 'material-ui';
 import {
   PlayArrow as PlayIcon,
   Pause as PauseIcon,
@@ -20,8 +20,15 @@ const styleSheet = createStyleSheet('ControlBar', theme => ({
     width: '100%',
     background: 'rgba(0, 0, 0, 0.2)',
     transition: theme.transitions.create('opacity'), // TODO: Increase the transition duration a bit
+    zIndex: 2
   },
-  grow: {
+  time: {
+    display: 'flex',
+    paddingRight: 12,
+    paddingTop: 2
+  },
+  progress: {
+    margin: '0 10px',
     flex: '1 1 auto',
   },
   hidden: {
@@ -30,6 +37,11 @@ const styleSheet = createStyleSheet('ControlBar', theme => ({
 }));
 
 class ControlBar extends Component {
+
+  getFractionPlayed() {
+    const { player } = this.props;
+    return player.currentTime / player.duration;
+  }
 
   render() {
     const {
@@ -51,16 +63,25 @@ class ControlBar extends Component {
           <IconButton color="contrast" onClick={onTogglePlay}>
             {player.playing ? <PauseIcon /> : <PlayIcon />}
           </IconButton>
-          <Typography>
-            {formatTime(player.currentTime)}
-          </Typography>
-          <Typography>
-            &nbsp;/&nbsp;
-          </Typography>
-          <Typography color="secondary">
-            {formatTime(player.duration)}
-          </Typography>
-          <div className={classes.grow} />
+
+          <div className={classes.time}>
+            <Typography>
+              {formatTime(player.currentTime)}
+            </Typography>
+            <Typography>
+              &nbsp;/&nbsp;
+            </Typography>
+            <Typography color="secondary">
+              {formatTime(player.duration)}
+            </Typography>
+          </div>
+
+          <LinearProgress
+            className={classes.progress}
+            mode="determinate"
+            value={this.getFractionPlayed() * 100}
+          />
+
           <IconButton color="contrast">
             <VolumeUpIcon />
           </IconButton>

@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
-import VideoSurface from './Media';
+import Engine from './Engine';
+import Overlay from './Overlay';
 import ControlBar from './ControlBar';
 
 const styleSheet = createStyleSheet('Player', {
@@ -32,6 +33,8 @@ class Player extends Component {
 
   componentDidMount() {
     this.handleHover();
+    // Let's auto start :D
+    this.props.togglePlay(true);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -98,25 +101,25 @@ class Player extends Component {
         className={playerClassName}
         onMouseMove={this.handleHover}
       >
-        <VideoSurface
+        <Engine
           player={player}
+          onRef={this.ref}
           onEnded={this.handleEnded}
           onLoadedMetadata={(event, data) => { console.log(event, data); }}
           onReady={this.handleReady}
           onTimeUpdate={this.handleTimeUpdate}
-          // {...props}
-          // ref={this.ref}
-          onRef={this.ref}
-        />
-        <ControlBar
-          player={player}
-          // hidden={!this.state.showUi}
-          // playing={this.state.playing}
-          // duration={this.state.duration}
-          // fullscreen={this.state.fullscreen}
-          onTogglePlay={this.handleTogglePlay}
-          onToggleFullscreen={this.toggleFullscreen}
-        />
+        >
+          <Overlay
+            player={player}
+            onClick={this.handleTogglePlay}
+          />
+          <ControlBar
+            player={player}
+            onTogglePlay={this.handleTogglePlay}
+            onToggleFullscreen={this.toggleFullscreen}
+          />
+        </Engine>
+
       </div>
     );
   }

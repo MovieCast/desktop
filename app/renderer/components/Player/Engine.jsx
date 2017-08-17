@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet('Media', {
+const styleSheet = createStyleSheet('Engine', {
   root: {
     position: 'absolute',
     top: 0,
@@ -13,7 +13,7 @@ const styleSheet = createStyleSheet('Media', {
   }
 });
 
-class Media extends Component {
+class Engine extends Component {
 
   componentDidMount() {
     const { player } = this.props;
@@ -79,6 +79,8 @@ class Media extends Component {
     const {
       classes,
       player,
+      children,
+      onClick,
       onDoubleClick,
       onLoadedMetadata,
       onReady,
@@ -92,29 +94,34 @@ class Media extends Component {
     } = this.props;
 
     return (
-      <video
-        ref={this.ref}
-        className={classes.root}
-        src={player.src}
-        onDoubleClick={onDoubleClick}
-        onLoadedMetadata={onLoadedMetadata}
-        onCanPlay={onReady}
-        onPlay={onPlay}
-        onPause={onPause}
-        onEnded={onEnded}
-        onStalled={onStalled}
-        onError={onError}
-        onTimeUpdate={onTimeUpdate}
-        onProgress={onProgress}
-      />
+      <div>
+        <video
+          ref={this.ref}
+          className={classes.root}
+          src={player.src}
+          onClick={onClick}
+          onDoubleClick={onDoubleClick}
+          onLoadedMetadata={onLoadedMetadata}
+          onCanPlay={onReady}
+          onPlay={onPlay}
+          onPause={onPause}
+          onEnded={onEnded}
+          onStalled={onStalled}
+          onError={onError}
+          onTimeUpdate={onTimeUpdate}
+          onProgress={onProgress}
+        />
+        {children}
+      </div>
     );
   }
 }
 
-Media.propTypes = {
+Engine.propTypes = {
   classes: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
   onRef: PropTypes.func,
+  onClick: PropTypes.func,
   onDoubleClick: PropTypes.func,
   onLoadedMetadata: PropTypes.func,
   onReady: PropTypes.func,
@@ -127,8 +134,9 @@ Media.propTypes = {
   onProgress: PropTypes.func
 };
 
-Media.defaultProps = {
+Engine.defaultProps = {
   onRef: () => {},
+  onClick: () => {},
   onDoubleClick: () => {},
   onLoadedMetadata: () => {},
   onReady: () => {},
@@ -141,4 +149,4 @@ Media.defaultProps = {
   onProgress: () => {}
 };
 
-export default withStyles(styleSheet)(Media);
+export default withStyles(styleSheet)(Engine);
