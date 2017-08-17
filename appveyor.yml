@@ -36,5 +36,9 @@ build_script:
   - yarn package
 
 artifacts:
-  - path: release
-    name: MovieCast
+  - path: release\win32-unpacked
+    name: 'MovieCast Portable {version}'
+    type: Zip
+  - path: release\MovieCast Setup 0.0.1-alpha.1.exe
+    name: 'MovieCast Setup {version}'
+    type: File

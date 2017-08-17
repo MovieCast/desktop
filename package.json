@@ -146,6 +146,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "bluebird": "^3.5.0",
+    "crypto": "^1.0.1",
     "electron-debug": "^1.1.0",
     "electron-json-storage": "^3.0.6",
     "electron-redux": "^1.2.10",
@@ -170,6 +171,7 @@
     "redux-thunk": "^2.2.0",
     "source-map-support": "^0.4.15",
     "typeface-roboto": "0.0.31",
+    "webtorrent": "^0.98.19",
     "zero-fill": "^2.2.3"
   },
   "devEngines": {
