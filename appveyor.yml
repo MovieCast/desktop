@@ -36,5 +36,6 @@ build_script:
   - yarn package
 
 artifacts:
-  - path: release
-    name: MovieCast
+  - path: release\win-unpacked
+    name: moviecast-portable
+  - path: release\*.exe
