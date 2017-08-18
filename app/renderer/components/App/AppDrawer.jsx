@@ -20,7 +20,7 @@ import {
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import AppDrawerNavItem from './AppDrawerNavItem';
 
-const styleSheet = createStyleSheet('AppDrawer', theme => ({
+const styleSheet = theme => ({
   paper: {
     width: 250,
     backgroundColor: theme.palette.background.paper,
@@ -30,7 +30,7 @@ const styleSheet = createStyleSheet('AppDrawer', theme => ({
     alignItems: 'flex-start',
     justifyContent: 'center',
   }
-}));
+});
 
 function AppDrawer(props) {
   const classes = props.classes;

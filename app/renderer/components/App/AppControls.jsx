@@ -11,14 +11,14 @@ import {
   Close as CloseIcon
 } from 'material-ui-icons';
 
-const styleSheet = createStyleSheet('AppControls', {
+const styleSheet = {
   root: {
     display: 'flex'
   },
   button: {
     WebkitAppRegion: 'no-drag'
   }
-});
+};
 
 class AppControls extends Component {
   constructor(props) {

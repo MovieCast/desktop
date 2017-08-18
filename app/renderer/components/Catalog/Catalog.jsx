@@ -9,7 +9,7 @@ import { GridListTile, GridListTileBar } from 'material-ui/GridList';
 // styles
 import styles from './Catalog.css';
 
-const styleSheet = createStyleSheet(theme => ({
+const styleSheet = theme => ({
   gridList: {
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
@@ -25,7 +25,7 @@ const styleSheet = createStyleSheet(theme => ({
     height: 345,
     display: 'flex'
   }
-}));
+});
 
 class Catalog extends Component {
   state = {
@@ -84,7 +84,7 @@ class Catalog extends Component {
     return (
       <div>
         <AppBar position="static">
-          <Tabs index={this.state.sort} onChange={this.handleChange.bind(this)}>
+          <Tabs value={this.state.sort} onChange={this.handleChange.bind(this)}>
             <Tab label="Year" />
             <Tab label="Trending" />
             <Tab label="A-Z" />

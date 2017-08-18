@@ -17,13 +17,13 @@ import {
 import SettingsCategoryList from './SettingsCategoryList';
 import SettingsCategoryListItem from './SettingsCategoryListItem';
 
-const styleSheet = createStyleSheet('Settings', theme => ({
+const styleSheet = theme => ({
   root: {
     width: '100%',
     // maxWidth: 360,
     // background: theme.palette.background.paper,
   },
-}));
+});
 
 class Settings extends Component {
   state = {

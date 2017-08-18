@@ -8,7 +8,7 @@ import Engine from './Engine';
 import Overlay from './Overlay';
 import ControlBar from './ControlBar';
 
-const styleSheet = createStyleSheet('Player', {
+const styleSheet = {
   root: {
     position: 'relative',
     marginTop: '-64px',
@@ -17,7 +17,7 @@ const styleSheet = createStyleSheet('Player', {
   hideCursor: {
     cursor: 'none'
   }
-});
+};
 
 class Player extends Component {
 

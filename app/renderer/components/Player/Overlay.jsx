@@ -7,7 +7,7 @@ import {
   PlayArrow as PlayIcon
 } from 'material-ui-icons';
 
-const styleSheet = createStyleSheet('Overlay', theme => ({
+const styleSheet = theme => ({
   root: {
     position: 'absolute',
     top: 0,
@@ -37,7 +37,7 @@ const styleSheet = createStyleSheet('Overlay', theme => ({
   hidden: {
     opacity: 0
   }
-}));
+});
 
 class Overlay extends Component {
 

@@ -11,7 +11,7 @@ import AppDrawer from './AppDrawer';
 import AppControls from './AppControls';
 import AutoUpdater from '../AutoUpdater/AutoUpdater';
 
-const styleSheet = createStyleSheet('AppFrame', theme => ({
+const styleSheet = theme => ({
   '@global': {
     html: {
       boxSizing: 'border-box',
@@ -69,7 +69,7 @@ const styleSheet = createStyleSheet('AppFrame', theme => ({
   appBarShift: {
     width: 'calc(100% - 250px)',
   }
-}));
+});
 
 class AppFrame extends Component {
   constructor(props) {

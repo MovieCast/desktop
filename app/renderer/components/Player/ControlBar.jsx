@@ -13,7 +13,7 @@ import {
 } from 'material-ui-icons';
 import formatTime from '../../helpers/formatTime';
 
-const styleSheet = createStyleSheet('ControlBar', theme => ({
+const styleSheet = theme => ({
   root: {
     position: 'absolute',
     bottom: 0,
@@ -34,7 +34,7 @@ const styleSheet = createStyleSheet('ControlBar', theme => ({
   hidden: {
     opacity: 0
   }
-}));
+});
 
 class ControlBar extends Component {
 

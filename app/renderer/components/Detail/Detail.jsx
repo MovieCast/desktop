@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet('Detail', {
+const styleSheet = {
   root: {
     position: 'relative',
     marginTop: '-64px',
@@ -40,7 +40,7 @@ const styleSheet = createStyleSheet('Detail', {
     width: 'auto',
     maxHeight: '75vh'
   }
-});
+};
 
 class Detail extends Component {
   componentWillMount() {

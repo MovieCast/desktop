@@ -5,7 +5,7 @@ import { createStyleSheet, withStyles } from 'material-ui/styles';
 import Slide from 'material-ui/transitions/Slide';
 import CloseIcon from 'material-ui-icons/Close';
 
-const styleSheet = createStyleSheet('Message', theme => ({
+const styleSheet = theme => ({
   anchorTopLeft: {
     top: (theme.spacing.unit * 3) + 64
   },
@@ -27,7 +27,7 @@ const styleSheet = createStyleSheet('Message', theme => ({
   iconText: {
     marginLeft: 15
   }
-}));
+});
 
 class Message extends Component {
   constructor(props) {

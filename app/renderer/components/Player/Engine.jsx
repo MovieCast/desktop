@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet('Engine', {
+const styleSheet = {
   root: {
     position: 'absolute',
     top: 0,
@@ -11,7 +11,7 @@ const styleSheet = createStyleSheet('Engine', {
     height: '100vh',
     background: '#000'
   }
-});
+};
 
 class Engine extends Component {
 
