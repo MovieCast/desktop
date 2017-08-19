@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { createStyleSheet, withStyles } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import { AppBar, Tabs, Tab, Grid, CircularProgress, Button } from 'material-ui';
 import { GridListTile, GridListTileBar } from 'material-ui/GridList';

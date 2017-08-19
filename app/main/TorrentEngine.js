@@ -1,15 +1,26 @@
 /* eslint-disable no-param-reassign, no-plusplus */
 import crypto from 'crypto';
+import deepEqual from 'deep-equal';
+import { announceList } from 'create-torrent';
 import WebTorrent from 'webtorrent';
 import zeroFill from 'zero-fill';
+import networkAddress from 'network-address';
 import pkg from '../package.json';
 import {
   torrentWarning,
   torrentError,
   torrentInfoHash,
   torrentMetaData,
-  torrentDone
+  torrentProgress,
+  torrentDone,
+  streamServerStarted
 } from '../shared/actions/torrent';
+
+// Force use of webtorrent trackers on all torrents
+global.WEBTORRENT_ANNOUNCE = announceList
+  .map((arr) => arr[0])
+  .filter((url) => url.indexOf('wss://') === 0 || url.indexOf('ws://') === 0);
+
 
 /**
  * Manager for WebTorrent
@@ -64,6 +75,8 @@ class TorrentEngine {
 
     // Connect the store with the client
     this.connectClientEventsToStore();
+
+    // setInterval(this.updateTorrentProgress.bind(this), 1000);
   }
 
   /**
@@ -81,7 +94,7 @@ class TorrentEngine {
     console.log(`[TorrentEngine]: Starting torrent ${torrentID}`);
 
     const torrent = this.client.add(torrentID, {
-      // path,
+      path,
       fileModtimes
     });
 
@@ -94,10 +107,11 @@ class TorrentEngine {
   }
 
   stopTorrenting(torrentID) {
-    console.log(`[TorrentEngine]: Stoping torrent ${torrentID}`);
+    console.log(`[TorrentEngine]: Stopping torrent ${torrentID}`);
 
     const torrent = this.client.get(torrentID);
     if (torrent) torrent.destroy();
+    clearInterval(torrent.progressInterval);
   }
 
   addTorrentEvents(torrent) {
@@ -109,19 +123,26 @@ class TorrentEngine {
     torrent.on('ready', onReady);
     torrent.on('done', onDone);
 
+    // Update torrent progress every 1000 ms
+    // TODO: Only update when progress state changed
+    torrent.progressInterval = setInterval(onProgress, 1000);
+
     function onInfoHash() {
       console.log(`[TorrentEngine]: Torrent#${torrent.key}: received infohash: ${torrent.infoHash}`);
       dispatch(torrentInfoHash(torrent.key, torrent.infoHash));
+      onProgress();
     }
 
     function onMetadata() {
       console.log(`[TorrentEngine]: Torrent#${torrent.key}: received metadata`);
       const info = getTorrentInfo(torrent);
       dispatch(torrentMetaData(torrent.key, info));
+      onProgress();
     }
 
     function onReady() {
       console.log(`[TorrentEngine]: Torrent#${torrent.key}: ready`);
+      onProgress();
       // const info = getTorrentInfo(torrent);
       // dispatch(torrentReady(torrent.key, info));
     }
@@ -130,9 +151,136 @@ class TorrentEngine {
       console.log(`[TorrentEngine]: Torrent#${torrent.key}: done`);
       const info = getTorrentInfo(torrent);
       dispatch(torrentDone(torrent.key, info));
+      onProgress();
+      clearInterval(torrent.progressInterval);
+    }
+
+    function onProgress() {
+      const fileProg = torrent.files && torrent.files.map((file) => {
+        const numPieces = file._endPiece - file._startPiece + 1;
+        let numPiecesPresent = 0;
+        for (let piece = file._startPiece; piece <= file._endPiece; piece++) {
+          if (torrent.bitfield.get(piece)) numPiecesPresent++;
+        }
+        return {
+          startPiece: file._startPiece,
+          endPiece: file._endPiece,
+          numPieces,
+          numPiecesPresent
+        };
+      });
+      const info = {
+        ready: torrent.ready,
+        progress: torrent.progress,
+        downloaded: torrent.downloaded,
+        downloadSpeed: torrent.downloadSpeed,
+        uploadSpeed: torrent.uploadSpeed,
+        numPeers: torrent.numPeers,
+        length: torrent.length,
+        // bitfield: torrent.bitfield,
+        files: fileProg
+      };
+      dispatch(torrentProgress(torrent.key, info));
     }
   }
 
+  /**
+   * @todo
+   * dispatch(torrentProgress())
+   * dispatch(globalProgress())
+   */
+  updateTorrentProgress() {
+    const progress = this.getTorrentProgress();
+    // TODO: diff torrent-by-torrent, not once for the whole update
+    if (this.prevProgress && deepEqual(progress, this.prevProgress, { strict: true })) {
+      return; /* don't send heavy object if it hasn't changed */
+    }
+    console.log('[TorrentEngine]: Updating torrent progress', progress);
+    // ipc.send('wt-progress', progress);
+    this.prevProgress = progress;
+  }
+
+  getTorrentProgress() {
+  // First, track overall progress
+    const progress = this.client.progress;
+    const hasActiveTorrents = this.client.torrents.some((torrent) => torrent.progress !== 1);
+
+  // Track progress for every file in each torrent
+  // TODO: ideally this would be tracked by WebTorrent, which could do it
+  // more efficiently than looping over torrent.bitfield
+    const torrentProg = this.client.torrents.map((torrent) => {
+      const fileProg = torrent.files && torrent.files.map((file) => {
+        const numPieces = file._endPiece - file._startPiece + 1;
+        let numPiecesPresent = 0;
+        for (let piece = file._startPiece; piece <= file._endPiece; piece++) {
+          if (torrent.bitfield.get(piece)) numPiecesPresent++;
+        }
+        return {
+          startPiece: file._startPiece,
+          endPiece: file._endPiece,
+          numPieces,
+          numPiecesPresent
+        };
+      });
+      return {
+        torrentKey: torrent.key,
+        ready: torrent.ready,
+        progress: torrent.progress,
+        downloaded: torrent.downloaded,
+        downloadSpeed: torrent.downloadSpeed,
+        uploadSpeed: torrent.uploadSpeed,
+        numPeers: torrent.numPeers,
+        length: torrent.length,
+        bitfield: torrent.bitfield,
+        files: fileProg
+      };
+    });
+
+    return {
+      torrents: torrentProg,
+      progress,
+      hasActiveTorrents
+    };
+  }
+
+  startStreamServer(torrentID) {
+    const { dispatch } = this.store;
+
+    console.log(`[TorrentEngine]: Stream Server: starting for torrent ${torrentID}`);
+    const torrent = this.client.get(torrentID);
+
+    const onReady = () => {
+      if (this.server) return;
+
+      this.server = torrent.createServer();
+      this.server.listen(0, () => {
+        const { port } = this.server.address();
+
+        dispatch(streamServerStarted({
+          torrentKey: torrent.key,
+          location: {
+            local: `http://localhost:${port}`,
+            network: `http://${networkAddress()}:${port}` // Useful for chromecast support
+          }
+        }));
+
+        console.log(`[TorrentEngine]: Stream Server: running at http://localhost:${port}`);
+      });
+    };
+
+    // Wait for the torrent to be ready
+    if (torrent.ready) onReady();
+    else torrent.on('ready', () => onReady());
+  }
+
+  stopStreamServer() {
+    if (!this.server) return;
+
+    console.log('[TorrentEngine]: Stopping stream server.');
+
+    this.server.destroy();
+    this.server = null;
+  }
 
   selectFiles(torrentID, selections) {
     const torrent = this.client.get(torrentID);

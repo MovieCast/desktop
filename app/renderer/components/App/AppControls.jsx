@@ -3,7 +3,7 @@ import { remote } from 'electron';
 import PropTypes from 'prop-types';
 
 import { IconButton } from 'material-ui';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import {
   Remove as RemoveIcon,
   Fullscreen as FullscreenIcon,

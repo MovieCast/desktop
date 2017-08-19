@@ -17,7 +17,7 @@ import {
   OndemandVideo as VideoIcon
 } from 'material-ui-icons';
 
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import AppDrawerNavItem from './AppDrawerNavItem';
 
 const styleSheet = theme => ({

@@ -1,7 +1,7 @@
 /* eslint-disable react/forbid-prop-types, jsx-a11y/media-has-caption */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { createStyleSheet, withStyles } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 const styleSheet = {
   root: {

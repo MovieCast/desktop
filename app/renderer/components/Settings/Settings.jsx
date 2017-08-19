@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import Switch from 'material-ui/Switch';
 import Divider from 'material-ui/Divider';
 
@@ -17,13 +17,11 @@ import {
 import SettingsCategoryList from './SettingsCategoryList';
 import SettingsCategoryListItem from './SettingsCategoryListItem';
 
-const styleSheet = theme => ({
+const styleSheet = {
   root: {
-    width: '100%',
-    // maxWidth: 360,
-    // background: theme.palette.background.paper,
+    width: '100%'
   },
-});
+};
 
 class Settings extends Component {
   state = {

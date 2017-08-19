@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import { Menu as MenuIcon, ArrowBack as BackIcon } from 'material-ui-icons';
+import {
+  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button
+} from 'material-ui';
+import { Menu as MenuIcon, ArrowBack as BackIcon, FileDownload as DownloadIcon } from 'material-ui-icons';
 import AppDrawer from './AppDrawer';
 import AppControls from './AppControls';
 import AutoUpdater from '../AutoUpdater/AutoUpdater';
+
+import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
 
 const styleSheet = theme => ({
   '@global': {
@@ -75,11 +80,18 @@ class AppFrame extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { drawerOpen: false };
+    this.state = {
+      drawerOpen: false,
+      torrentEngineInfo: false
+    };
   }
 
   handleDrawerClose = () => {
     this.setState({ drawerOpen: false });
+  };
+
+  handleTorrentEngineInfo = () => {
+    this.setState({ torrentEngineInfo: true });
   };
 
   // TODO: Dont use goBack, since it breaks on refresh
@@ -93,7 +105,7 @@ class AppFrame extends Component {
   };
 
   render() {
-    const { children, classes, updater, application: { appBar } } = this.props;
+    const { children, classes, updater, application: { appBar }, torrent } = this.props;
     const appBarClassName = classNames(classes.appBar, {
       [classes.appBarTransparent]: appBar.transparent,
       [classes.appBarNoShadow]: !appBar.shadow,
@@ -122,6 +134,14 @@ class AppFrame extends Component {
               </Typography>}
             </div>
             <div className={classes.grow} />
+            <IconButton
+              color="contrast"
+              onClick={this.handleTorrentEngineInfo}
+              title="TorrentEngine Info"
+              className={classes.button}
+            >
+              <DownloadIcon />
+            </IconButton>
             <AppControls />
           </Toolbar>
         </AppBar>
@@ -132,6 +152,11 @@ class AppFrame extends Component {
         />
         <AutoUpdater updater={updater} />
         {children}
+
+        <TorrentEngineDialog
+          open={this.state.torrentEngineInfo}
+          onRequestClose={() => this.setState({ torrentEngineInfo: false })}
+        />
       </div>
     );
   }
@@ -143,6 +168,7 @@ AppFrame.propTypes = {
   classes: PropTypes.object.isRequired,
   // settings: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
+  torrent: PropTypes.object.isRequired,
   updater: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
