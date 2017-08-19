@@ -24,7 +24,7 @@ class Player extends Component {
   componentWillMount() {
     // Make the AppBar transparent and add a back button
     this.props.configureAppBar({
-      secondary: 'Playing: No Title',
+      secondary: `Playing: ${this.props.player.title}`,
       transparent: true,
       hidden: !this.props.player.showUi,
       back: true
@@ -41,6 +41,13 @@ class Player extends Component {
     if (nextProps.player.showUi !== this.props.player.showUi) {
       this.props.configureAppBar({
         hidden: !nextProps.player.showUi,
+      });
+    }
+
+    // TODO: Handle this directly in the application reducer
+    if (nextProps.player.title !== this.props.player.title) {
+      this.props.configureAppBar({
+        secondary: `Playing: ${this.props.player.title}`,
       });
     }
   }

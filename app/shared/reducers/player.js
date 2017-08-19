@@ -1,6 +1,7 @@
 import {
   TOGGLE_PLAY,
   SET_URL,
+  SET_TITLE,
   UPDATE_VOLUME,
   UPDATE_PLAYBACK_RATE,
   UPDATE_DURATION,
@@ -13,6 +14,7 @@ import {
 const initialState = {
   playing: false,
   src: 'http://vjs.zencdn.net/v/oceans.mp4',
+  title: 'No Title',
   volume: 0.8,
   playbackRate: 1,
   duration: 0,
@@ -36,6 +38,11 @@ export default function player(state = initialState, action) {
       return {
         ...state,
         src: action.payload
+      };
+    case SET_TITLE:
+      return {
+        ...state,
+        title: action.payload
       };
     case UPDATE_VOLUME:
       return {

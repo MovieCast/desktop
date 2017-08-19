@@ -2,6 +2,7 @@ import { remote } from 'electron';
 
 export const TOGGLE_PLAY = 'TOGGLE_PLAY';
 export const SET_URL = 'SET_URL';
+export const SET_TITLE = 'SET_TITLE';
 export const UPDATE_VOLUME = 'CHANGE_VOLUME';
 export const UPDATE_PLAYBACK_RATE = 'CHANGE_PLAYBACK_RATE';
 export const UPDATE_DURATION = 'UPDATE_DURATION';
@@ -9,6 +10,15 @@ export const UPDATE_CURRENT_TIME = 'UPDATE_CURRENT_TIME';
 export const UPDATE_TRACKS = 'UPDATE_TRACKS';
 export const TOGGLE_FULLSCREEN = 'TOGGLE_FULLSCREEN';
 export const TOGGLE_UI = 'TOGGLE_UI';
+
+// export function setupPlayer(title) {
+//   return (dispatch, getState) => {
+//     const { torrent } = getState();
+
+//     dispatch(setTitle(title));
+//     dispatch(setUrl(torrent.))
+//   };
+// }
 
 export function togglePlay(force) {
   return {
@@ -21,6 +31,13 @@ export function setUrl(url) {
   return {
     type: SET_URL,
     payload: url
+  };
+}
+
+export function setTitle(title) {
+  return {
+    type: SET_TITLE,
+    payload: title
   };
 }
 

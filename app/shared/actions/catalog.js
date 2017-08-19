@@ -19,14 +19,16 @@ export const FETCH_MOVIE = 'FETCH_MOVIE';
  */
 export function playItem(itemId, torrentIndex) {
   return (dispatch, getState) => {
-    const { catelog, torrent } = getState();
-    const item = catelog.items[itemId];
+    const { catalog, torrent } = getState();
+    const item = catalog.items[itemId];
     const torrentItem = item.torrents[torrentIndex];
     // Save snapshot of the key because addTorrent will change nextKey
     const torrentKey = torrent.nextKey;
 
+    const magnetURI = `magnet:?xt=urn:btih:${torrentItem.hash}&dn=${encodeURI(item.title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
+
     // Start torrent and stream http server for it
-    dispatch(addTorrent(torrentItem.magnetURI));
+    dispatch(addTorrent(magnetURI));
     dispatch(startStreamServer(torrentKey));
 
     // Setup the player with the correct title and src
@@ -37,6 +39,8 @@ export function playItem(itemId, torrentIndex) {
     dispatch(push('/player'));
   };
 }
+
+// export function stopItem()
 
 export const fetchMovies = createAliasedAction(
   FETCH_MOVIES,
