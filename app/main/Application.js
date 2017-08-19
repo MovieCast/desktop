@@ -56,7 +56,7 @@ export default class Application {
 
       await this.configureStore();
 
-      app.on('ready', this.onReady.bind(this));
+      app.once('ready', this.onReady.bind(this));
 
       app.on('activate', () => {
         if (this.mainWindow === null) {

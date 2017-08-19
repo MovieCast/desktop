@@ -27,6 +27,11 @@ global.WEBTORRENT_ANNOUNCE = announceList
  *
  * A lot of the code here is inspired
  * by WebTorrent Desktop
+ *
+ * @todo
+ * The torrent engine causes the UI to lagg
+ * In order to fix this the torrent engine should
+ * move to it's own window
  */
 class TorrentEngine {
 
@@ -103,7 +108,7 @@ class TorrentEngine {
     this.addTorrentEvents(torrent);
 
     // If we only select certain files don't download the others
-    torrent.on('ready', () => this.selectFiles(torrent, selections));
+    torrent.once('ready', () => this.selectFiles(torrent, selections));
   }
 
   stopTorrenting(torrentID) {
@@ -118,10 +123,10 @@ class TorrentEngine {
     const { dispatch } = this.store;
     torrent.on('warning', err => dispatch(torrentWarning(err)));
     torrent.on('error', err => dispatch(torrentError(err)));
-    torrent.on('infoHash', onInfoHash);
-    torrent.on('metadata', onMetadata);
-    torrent.on('ready', onReady);
-    torrent.on('done', onDone);
+    torrent.once('infoHash', onInfoHash);
+    torrent.once('metadata', onMetadata);
+    torrent.once('ready', onReady);
+    torrent.once('done', onDone);
 
     // Update torrent progress every 1000 ms
     // TODO: Only update when progress state changed
@@ -270,7 +275,7 @@ class TorrentEngine {
 
     // Wait for the torrent to be ready
     if (torrent.ready) onReady();
-    else torrent.on('ready', () => onReady());
+    else torrent.once('ready', () => onReady());
   }
 
   stopStreamServer() {

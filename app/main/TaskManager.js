@@ -7,7 +7,7 @@ export default class Tasks {
   }
 
   init() {
-    app.on('ready', this.startTasks);
+    app.once('ready', this.startTasks);
   }
 
   startTasks = () => {
