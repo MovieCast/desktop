@@ -118,9 +118,13 @@ export default class Application {
    */
   async createMainWindow() {
     try {
+      const url = process.NODE_ENV === 'production' ?
+        `file://${path.join(__dirname, '../renderer/app.html')}` :
+        'http://localhost:1212/dist/app.html';
+
       // Create a new main window instance
       this.mainWindow = await WindowFactory.createMainWindow({
-        url: `file://${path.join(__dirname, '../renderer/app.html')}`
+        url
       });
 
       // Create menu stuff

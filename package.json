@@ -16,7 +16,7 @@
     "prestart": "npm run build",
     "dev": "cross-env START_HOT=1 npm run start-renderer-dev",
     "start": "cross-env NODE_ENV=production electron ./app/",
-    "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r babel-register ./app/main/index",
+    "start-main-dev": "cross-env HOT=1 DEBUG=* NODE_ENV=development electron -r babel-register ./src/main/index",
     "start-renderer-dev": "cross-env NODE_ENV=development node --trace-warnings -r babel-register ./node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.config.renderer.dev.js",
     "package": "npm run build && build --publish never",
     "package-all": "npm run build && build -mwl",
@@ -29,11 +29,8 @@
     "productName": "MovieCast",
     "appId": "xyz.moviecast.MovieCast",
     "files": [
-      "renderer/dist/",
+      "dist/",
       "node_modules/",
-      "renderer/app.html",
-      "main/main.prod.js",
-      "main/main.prod.js.map",
       "package.json"
     ],
     "dmg": {
@@ -62,9 +59,11 @@
       ]
     },
     "directories": {
+      "app": "src",
       "buildResources": "resources",
       "output": "release"
-    }
+    },
+    "asar": false
   },
   "repository": {
     "type": "git",
@@ -82,6 +81,7 @@
   "keywords": [],
   "homepage": "https://github.com/moviecast/moviecast-desktop#readme",
   "devDependencies": {
+    "add-asset-html-webpack-plugin": "^2.1.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.0",
@@ -121,7 +121,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "fbjs-scripts": "^0.8.0",
     "file-loader": "^0.11.1",
-    "html-webpack-plugin": "^2.29.0",
+    "html-webpack-plugin": "^2.30.1",
     "identity-obj-proxy": "^3.0.0",
     "jsdom": "^11.0.0",
     "minimist": "^1.2.0",

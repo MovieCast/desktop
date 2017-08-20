@@ -8,6 +8,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import merge from 'webpack-merge';
 import BabiliPlugin from 'babili-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
 export default merge.smart(baseConfig, {
@@ -15,10 +16,10 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-renderer',
 
-  entry: './app/renderer/index',
+  entry: './src/renderer/index',
 
   output: {
-    path: path.join(__dirname, 'app/renderer/dist'),
+    path: path.join(__dirname, 'src', 'dist', 'renderer'),
     publicPath: '../dist/',
     filename: 'renderer.prod.js'
   },
@@ -156,6 +157,12 @@ export default merge.smart(baseConfig, {
     new BabiliPlugin(),
 
     new ExtractTextPlugin('style.css'),
+
+    new HtmlWebpackPlugin({
+      template: 'src/renderer/app.html',
+      filename: 'app.html',
+      inject: 'body'
+    }),
 
     new BundleAnalyzerPlugin({
       analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',

@@ -3,7 +3,7 @@
   "productName": "MovieCast",
   "version": "0.0.1-alpha.1",
   "description": "Watch movies like never before.",
-  "main": "./main/main.prod.js",
+  "main": "./dist/main/main.prod.js",
   "author": {
     "name": "Dizzy",
     "email": "itsdizzy40@gmail.com",

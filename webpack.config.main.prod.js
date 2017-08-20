@@ -2,6 +2,7 @@
  * Webpack config for production electron main process
  */
 
+import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 import BabiliPlugin from 'babili-webpack-plugin';
@@ -13,12 +14,12 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-main',
 
-  entry: './app/main/index',
+  entry: './src/main/index',
 
   // 'main.js' in root
   output: {
-    path: __dirname,
-    filename: './app/main/main.prod.js'
+    path: path.join(__dirname, 'src', 'dist', 'main'),
+    filename: 'main.prod.js'
   },
 
   plugins: [

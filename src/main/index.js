@@ -23,5 +23,8 @@ Application.bootstrap().then(app => {
   return 0;
 }).catch(Application.onError);
 
+function testSomeFunction() {
+  console.log('ekekekeke');
+}
 
 process.on('uncaughtException', Application.onError);

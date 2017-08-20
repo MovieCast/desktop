@@ -13,7 +13,7 @@ const dist = path.resolve(process.cwd(), 'dll');
 export default merge.smart(baseConfig, {
   context: process.cwd(),
 
-  devtool: 'eval',
+  devtool: 'source-map',
 
   target: 'electron-renderer',
 

@@ -14,6 +14,8 @@ import chalk from 'chalk';
 import merge from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import AddAssetHtmlPlugin from 'add-asset-html-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
 const port = process.env.PORT || 1212;
@@ -40,7 +42,7 @@ export default merge.smart(baseConfig, {
     'react-hot-loader/patch',
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
-    path.join(__dirname, 'app/renderer/index.js'),
+    path.join(__dirname, 'src/renderer/index.js'),
   ],
 
   output: {
@@ -234,6 +236,14 @@ export default merge.smart(baseConfig, {
     new ExtractTextPlugin({
       filename: '[name].css'
     }),
+
+    new HtmlWebpackPlugin({
+      template: 'src/renderer/app.html',
+      filename: 'app.html',
+      inject: 'body'
+    }),
+
+    new AddAssetHtmlPlugin({ filepath: require.resolve('./dll/renderer.dev.dll.js') })
   ],
 
   node: {
