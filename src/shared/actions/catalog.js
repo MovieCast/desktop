@@ -2,7 +2,7 @@ import { createAliasedAction } from 'electron-redux';
 import { push } from 'react-router-redux';
 import { getList, getMovie } from '../../main/api/movies';
 import { addTorrent, startStreamServer } from './torrent';
-import { setupPlayer } from './player';
+// import { setupPlayer } from './player';
 
 export const FETCH_MOVIES = 'FETCH_MOVIES';
 export const FETCH_MOVIE = 'FETCH_MOVIE';

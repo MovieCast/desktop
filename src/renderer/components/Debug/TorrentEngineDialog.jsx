@@ -1,3 +1,4 @@
+/* eslint-disable */
 import _ from 'lodash';
 import prettierBytes from 'prettier-bytes';
 import React, { Component } from 'react';
@@ -11,10 +12,7 @@ import {
   List,
   ListSubheader,
   ListItem,
-  ListItemAvatar,
-  Avatar,
   ListItemText,
-  ListItemSecondaryAction,
   LinearProgress
 } from 'material-ui';
 
@@ -70,10 +68,6 @@ export class TorrentEngineDialog extends Component {
         </List>
       </ListItem>
     );
-  }
-
-  renderTorrentItemDetail() {
-
   }
 
   render() {

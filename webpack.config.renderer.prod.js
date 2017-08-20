@@ -20,7 +20,7 @@ export default merge.smart(baseConfig, {
 
   output: {
     path: path.join(__dirname, 'src', 'dist', 'renderer'),
-    publicPath: '../dist/',
+    publicPath: './',
     filename: 'renderer.prod.js'
   },
 
@@ -154,7 +154,10 @@ export default merge.smart(baseConfig, {
     /**
      * Babli is an ES6+ aware minifier based on the Babel toolchain (beta)
      */
-    new BabiliPlugin(),
+    new BabiliPlugin({
+      // @TODO: Waiting on https://github.com/MovieCast/moviecast-desktop/issues/8
+      // deadcode: true
+    }),
 
     new ExtractTextPlugin('style.css'),
 

@@ -275,7 +275,7 @@ export default merge.smart(baseConfig, {
       if (process.env.START_HOT) {
         spawn(
           'npm',
-          ['run', 'start-main-dev'],
+          ['run', 'dev:main'],
           { shell: true, env: process.env, stdio: 'inherit' }
         )
         .on('close', code => process.exit(code))

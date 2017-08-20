@@ -1,6 +1,5 @@
-/* eslint-disable no-param-reassign, no-plusplus */
+/* eslint-disable no-param-reassign, no-plusplus, no-underscore-dangle */
 import crypto from 'crypto';
-import deepEqual from 'deep-equal';
 import { announceList } from 'create-torrent';
 import WebTorrent from 'webtorrent';
 import zeroFill from 'zero-fill';
@@ -162,7 +161,7 @@ class TorrentEngine {
 
     function onProgress() {
       const fileProg = torrent.files && torrent.files.map((file) => {
-        const numPieces = file._endPiece - file._startPiece + 1;
+        const numPieces = (file._endPiece - file._startPiece) + 1;
         let numPiecesPresent = 0;
         for (let piece = file._startPiece; piece <= file._endPiece; piece++) {
           if (torrent.bitfield.get(piece)) numPiecesPresent++;
@@ -187,65 +186,6 @@ class TorrentEngine {
       };
       dispatch(torrentProgress(torrent.key, info));
     }
-  }
-
-  /**
-   * @todo
-   * dispatch(torrentProgress())
-   * dispatch(globalProgress())
-   */
-  updateTorrentProgress() {
-    const progress = this.getTorrentProgress();
-    // TODO: diff torrent-by-torrent, not once for the whole update
-    if (this.prevProgress && deepEqual(progress, this.prevProgress, { strict: true })) {
-      return; /* don't send heavy object if it hasn't changed */
-    }
-    console.log('[TorrentEngine]: Updating torrent progress', progress);
-    // ipc.send('wt-progress', progress);
-    this.prevProgress = progress;
-  }
-
-  getTorrentProgress() {
-  // First, track overall progress
-    const progress = this.client.progress;
-    const hasActiveTorrents = this.client.torrents.some((torrent) => torrent.progress !== 1);
-
-  // Track progress for every file in each torrent
-  // TODO: ideally this would be tracked by WebTorrent, which could do it
-  // more efficiently than looping over torrent.bitfield
-    const torrentProg = this.client.torrents.map((torrent) => {
-      const fileProg = torrent.files && torrent.files.map((file) => {
-        const numPieces = file._endPiece - file._startPiece + 1;
-        let numPiecesPresent = 0;
-        for (let piece = file._startPiece; piece <= file._endPiece; piece++) {
-          if (torrent.bitfield.get(piece)) numPiecesPresent++;
-        }
-        return {
-          startPiece: file._startPiece,
-          endPiece: file._endPiece,
-          numPieces,
-          numPiecesPresent
-        };
-      });
-      return {
-        torrentKey: torrent.key,
-        ready: torrent.ready,
-        progress: torrent.progress,
-        downloaded: torrent.downloaded,
-        downloadSpeed: torrent.downloadSpeed,
-        uploadSpeed: torrent.uploadSpeed,
-        numPeers: torrent.numPeers,
-        length: torrent.length,
-        bitfield: torrent.bitfield,
-        files: fileProg
-      };
-    });
-
-    return {
-      torrents: torrentProg,
-      progress,
-      hasActiveTorrents
-    };
   }
 
   startStreamServer(torrentID) {

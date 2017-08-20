@@ -118,7 +118,7 @@ export default class Application {
    */
   async createMainWindow() {
     try {
-      const url = process.NODE_ENV === 'production' ?
+      const url = process.env.NODE_ENV === 'production' ?
         `file://${path.join(__dirname, '../renderer/app.html')}` :
         'http://localhost:1212/dist/app.html';
 
