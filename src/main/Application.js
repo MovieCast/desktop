@@ -9,6 +9,9 @@ import WindowFactory from './WindowFactory';
 import MenuFactory from './MenuFactory';
 import ExtensionFactory from './ExtensionFactory';
 
+// Patches
+import * as ipc from './ipc';
+
 export default class Application {
   /**
    * Bootstrap application, will return the Application instance
@@ -85,6 +88,7 @@ export default class Application {
 
       await this.createMainWindow();
       await this.createTorrentEngineWindow();
+      this.applyPatches();
     } catch (err) {
       Application.onError(err);
     }
@@ -152,6 +156,9 @@ export default class Application {
         'http://localhost:1212/dist/torrentEngine.html';
 
       this.torrentWindow = await WindowFactory.createWindow({
+        options: {
+          title: 'moviecast-torrent-engine'
+        },
         url
       });
 
@@ -167,6 +174,10 @@ export default class Application {
     } catch (err) {
       Application.onError(err);
     }
+  }
+
+  applyPatches() {
+    ipc.patch(this.mainWindow, this.torrentWindow);
   }
 
   getStore() {

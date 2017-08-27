@@ -1,13 +1,8 @@
 
 import { ipcRenderer as ipc } from 'electron';
-import { getInitialStateRenderer } from 'electron-redux';
-import StoreFactory, { SCOPE_RENDERER } from '../shared/store/StoreFactory';
 import TorrentEngine from '../main/TorrentEngine';
 
 console.time('init');
-
-const storeFactory = new StoreFactory(SCOPE_RENDERER);
-const store = storeFactory.configureStore(getInitialStateRenderer());
 
 console.log('--------------------------------------------');
 console.log('MovieCast TorrentEngine Info');
@@ -17,27 +12,29 @@ console.log(`TorrentEngine.VERION_STR: ${TorrentEngine.VERSION_STR}`);
 console.log(`TorrentEngine.VERION_PREFIX: ${TorrentEngine.VERSION_PREFIX}`);
 console.log(`TorrentEngine.PEER_ID: ${TorrentEngine.PEER_ID}`);
 console.log('--------------------------------------------');
-const torrentEngine = new TorrentEngine(store);
+const torrentEngine = new TorrentEngine();
 
 init();
 
 function init() {
-  ipc.on('addTorrent', (event, torrentKey, torrentID, path, fileModtimes, selections) => {
+  ipc.on('te-addTorrent', (event, torrentKey, torrentID, path, fileModtimes, selections) => {
     console.log('addTorrent');
     torrentEngine.addTorrent(torrentKey, torrentID, path, fileModtimes, selections);
   });
 
-  ipc.on('removeTorrent', (event, torrentID) => {
+  ipc.on('te-removeTorrent', (event, torrentID) => {
     torrentEngine.removeTorrent(torrentID);
   });
 
-  ipc.on('startStreamServer', (event, torrentID) => {
+  ipc.on('te-startStreamServer', (event, torrentID) => {
     torrentEngine.startStreamServer(torrentID);
   });
 
-  ipc.on('stopStreamServer', () => {
+  ipc.on('te-stopStreamServer', () => {
     torrentEngine.stopStreamServer();
   });
+
+  // torrentEngine.on('torrent-progress')
 
   console.timeEnd('init');
 }

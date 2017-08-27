@@ -108,7 +108,7 @@ export function startStreamServer(torrentKey) {
     const torrentSummary = getTorrentSummary(getState(), torrentKey);
     // global.torrentEngine.startStreamServer(torrentSummary.infoHash);
 
-    ipc.send('startStreamServer', torrentSummary.infoHash);
+    ipc.send('te-startStreamServer', torrentSummary.infoHash);
 
     return {
       type: STREAM_SERVER_START,
@@ -120,7 +120,7 @@ export function startStreamServer(torrentKey) {
 export function stopStreamServer() {
     // global.torrentEngine.stopStreamServer();
 
-  ipc.send('stopStreamServer');
+  ipc.send('te-stopStreamServer');
 
   return {
     type: STREAM_SERVER_STOP,
@@ -136,7 +136,7 @@ export function addTorrent(torrentID) {
 
     // TODO: TorrentEngine.onMetadata -> process selections.
     // global.torrentEngine.startTorrenting(torrentKey, torrentID, path);
-    ipc.send('addTorrent', torrentKey, torrentID, path);
+    ipc.send('te-addTorrent', torrentKey, torrentID, path);
 
     dispatch({
       type: TORRENT_ADD
@@ -149,7 +149,7 @@ export function removeTorrent(torrentKey) {
     const torrentSummary = getTorrentSummary(getState(), torrentKey);
     // global.torrentEngine.stopTorrenting(torrentSummary.infoHash);
 
-    ipc.send('removeTorrent', torrentSummary.infoHash);
+    ipc.send('te-removeTorrent', torrentSummary.infoHash);
 
     dispatch({
       type: TORRENT_REMOVE,
