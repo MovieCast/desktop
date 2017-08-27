@@ -16,17 +16,20 @@ export function patch(mainWindow, torrentWindow) {
    * We actually just extend the default ipc.emit function
    */
   const defaultEmit = ipc.emit;
-  ipc.emit = function (name, event, ...args) {
+  ipc.emit = function (name, e, ...args) {
     if (name.startsWith('te-')) {
-      console.log(`Patching ipc event ${name}...`);
-      if (event.sender.browserWindowOptions.title === 'moviecast-torrent-engine') {
+      if (e.sender.browserWindowOptions.title === 'moviecast-torrent-engine') {
+        // Send message to main window
         mainWindow.send(name, ...args);
+        console.log(`ipcBridge: torrentWindow -> mainWindow: ${name}`);
       } else {
+        // Send message to webtorrent window
         torrentWindow.send(name, ...args);
+        console.log(`ipcBridge: mainWindow -> torrentWindow: ${name}`);
       }
     }
 
-    // Other events don't have to be bridged
-    defaultEmit.call(ipc, name, event, ...args);
+    // Emit all other events normally
+    defaultEmit.call(ipc, name, e, ...args);
   };
 }

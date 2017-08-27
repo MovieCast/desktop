@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign, no-plusplus, no-underscore-dangle */
 import crypto from 'crypto';
-import { EventEmitter } from 'events';
 import { announceList } from 'create-torrent';
 import WebTorrent from 'webtorrent';
 import zeroFill from 'zero-fill';
@@ -33,7 +32,7 @@ global.WEBTORRENT_ANNOUNCE = announceList
  * In order to fix this the torrent engine should
  * move to it's own window
  */
-class TorrentEngine extends EventEmitter {
+class TorrentEngine {
 
   /**
    * MovieCast Version
@@ -67,7 +66,6 @@ class TorrentEngine extends EventEmitter {
   static PEER_ID = Buffer.from(TorrentEngine.VERSION_PREFIX + crypto.randomBytes(9).toString('base64'))
 
   constructor(store) {
-    super();
     // The Redux store
     this.store = store;
 
@@ -91,9 +89,9 @@ class TorrentEngine extends EventEmitter {
   connectClientEventsToStore() {
     const { dispatch } = this.store;
 
-    this.client.on('warning', err => this.emit('warning', err));
+    this.client.on('warning', err => dispatch(torrentWarning(err)));
 
-    this.client.on('error', err => this.emit('error', err));
+    this.client.on('error', err => dispatch(torrentError(err)));
   }
 
   addTorrent(torrentKey, torrentID, path, fileModtimes, selections) {
@@ -122,8 +120,8 @@ class TorrentEngine extends EventEmitter {
 
   addTorrentEvents(torrent) {
     const { dispatch } = this.store;
-    torrent.on('warning', err => this.emit('warning', err));
-    torrent.on('error', err => this.emit('error', err));
+    torrent.on('warning', err => dispatch(torrentWarning(err)));
+    torrent.on('error', err => dispatch(torrentError(err)));
     torrent.once('infoHash', onInfoHash);
     torrent.once('metadata', onMetadata);
     torrent.once('ready', onReady);
@@ -135,16 +133,14 @@ class TorrentEngine extends EventEmitter {
 
     function onInfoHash() {
       console.log(`[TorrentEngine]: Torrent#${torrent.key}: received infohash: ${torrent.infoHash}`);
-      // dispatch(torrentInfoHash(torrent.key, torrent.infoHash));
-      this.emit('torrent-infoHash', torrent.key, torrent.infoHash);
+      dispatch(torrentInfoHash(torrent.key, torrent.infoHash));
       onProgress();
     }
 
     function onMetadata() {
       console.log(`[TorrentEngine]: Torrent#${torrent.key}: received metadata`);
       const info = getTorrentInfo(torrent);
-      // dispatch(torrentMetaData(torrent.key, info));
-      this.emit('torrent-metaData', torrent.key, info);
+      dispatch(torrentMetaData(torrent.key, info));
       onProgress();
     }
 
@@ -158,8 +154,7 @@ class TorrentEngine extends EventEmitter {
     function onDone() {
       console.log(`[TorrentEngine]: Torrent#${torrent.key}: done`);
       const info = getTorrentInfo(torrent);
-      // dispatch(torrentDone(torrent.key, info));
-      this.emit('torrent-done', torrent.key, info);
+      dispatch(torrentDone(torrent.key, info));
       onProgress();
     }
 
@@ -188,8 +183,7 @@ class TorrentEngine extends EventEmitter {
         // bitfield: torrent.bitfield,
         files: fileProg
       };
-      // dispatch(torrentProgress(torrent.key, info));
-      this.emit('torrent-progress', torrent.key, info);
+      dispatch(torrentProgress(torrent.key, info));
     }
   }
 

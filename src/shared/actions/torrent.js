@@ -66,6 +66,8 @@ export function torrentProgress(torrentKey, torrentInfo) {
   return (dispatch, getState) => {
     const torrentSummary = getTorrentSummary(getState(), torrentKey);
 
+    // console.log(torrentInfo);
+
     if (torrentSummary.progress !== torrentInfo.progress) {
       dispatch({
         type: TORRENT_UPDATE,

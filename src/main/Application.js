@@ -164,7 +164,7 @@ export default class Application {
 
       // Remove me later!
       this.torrentWindow.webContents.on('did-finish-load', () => {
-        this.torrentWindow.show();
+        // this.torrentWindow.show();
         this.torrentWindow.openDevTools();
       });
 
