@@ -94,7 +94,7 @@ class TorrentEngine {
     this.client.on('error', err => dispatch(torrentError(err)));
   }
 
-  startTorrenting(torrentKey, torrentID, path, fileModtimes, selections) {
+  addTorrent(torrentKey, torrentID, path, fileModtimes, selections) {
     console.log(`[TorrentEngine]: Starting torrent ${torrentID}`);
 
     const torrent = this.client.add(torrentID, {
@@ -110,7 +110,7 @@ class TorrentEngine {
     torrent.once('ready', () => this.selectFiles(torrent, selections));
   }
 
-  stopTorrenting(torrentID) {
+  removeTorrent(torrentID) {
     console.log(`[TorrentEngine]: Stopping torrent ${torrentID}`);
 
     const torrent = this.client.get(torrentID);
@@ -156,7 +156,6 @@ class TorrentEngine {
       const info = getTorrentInfo(torrent);
       dispatch(torrentDone(torrent.key, info));
       onProgress();
-      clearInterval(torrent.progressInterval);
     }
 
     function onProgress() {

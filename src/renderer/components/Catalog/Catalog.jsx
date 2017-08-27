@@ -5,6 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import { AppBar, Tabs, Tab, Grid, CircularProgress, Button } from 'material-ui';
 import { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import DynamicImg from '../Util/DynamicImg';
 
 // styles
 import styles from './Catalog.css';
@@ -95,7 +96,7 @@ class Catalog extends Component {
             {_.map(items, (item =>
               (<Grid key={item.id} item>
                 <GridListTile component={Link} to={`/movie/${item.id}`}>
-                  <img src={item.medium_cover_image} alt={item.title} />
+                  <DynamicImg src={item.medium_cover_image} alt={item.title} />
                   <GridListTileBar
                     title={item.title}
                     subtitle={

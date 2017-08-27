@@ -42,6 +42,19 @@ class Engine extends Component {
     }
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   if (nextProps.player.src !== this.props.player.src) {
+  //     // return true;
+  //   }
+  //   if (nextProps.player.playing !== this.props.player.playing) {
+  //     // return true;
+  //   }
+  //   if (nextProps.player.volume !== this.props.player.volume) {
+  //     // return true;
+  //   }
+  //   return true;
+  // }
+
   componentWillUnmount() {
     this.stop();
     this.props.onRef(undefined);
@@ -119,6 +132,7 @@ class Engine extends Component {
 
 Engine.propTypes = {
   classes: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
   player: PropTypes.object.isRequired,
   onRef: PropTypes.func,
   onClick: PropTypes.func,

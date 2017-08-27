@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
-import { CircularProgress } from 'material-ui';
+import { CircularProgress, LinearProgress } from 'material-ui';
 import {
   PlayArrow as PlayIcon
 } from 'material-ui-icons';
@@ -19,7 +19,8 @@ const styleSheet = theme => ({
     display: 'flex',
     height: '100vh',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: 50
   },
   middleControl: {
     position: 'relative',
@@ -65,6 +66,14 @@ class Overlay extends Component {
         onDoubleClick={onDoubleClick}
       >
         <div className={classes.middleWrapper}>
+          {/* <div style={{ width: '100%' }}>
+            <LinearProgress style={{ width: '100%' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: 5 }}>
+              <span>Download Speed: 0kbps</span>
+              <span>Upload Speed: 0kbps</span>
+              <span>Peers: 0</span>
+            </div>
+          </div> */}
           <div className={classes.middleControl}>
             {!player.playing && <PlayIcon className={iconClassName} />}
             {player.buffering && <CircularProgress className={classes.middleControlIcon} size={60} />}

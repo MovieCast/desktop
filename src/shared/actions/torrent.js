@@ -1,3 +1,4 @@
+import { ipcRenderer as ipc } from 'electron';
 import { createAliasedAction } from 'electron-redux';
 import {
   getTorrentSummary
@@ -102,56 +103,60 @@ export function streamServerStarted(info) {
   };
 }
 
-export const startStreamServer = createAliasedAction(
-  STREAM_SERVER_START,
-  (torrentKey) => (dispatch, getState) => {
+export function startStreamServer(torrentKey) {
+  return (dispatch, getState) => {
     const torrentSummary = getTorrentSummary(getState(), torrentKey);
-    global.torrentEngine.startStreamServer(torrentSummary.infoHash);
+    // global.torrentEngine.startStreamServer(torrentSummary.infoHash);
+
+    ipc.send('startStreamServer', torrentSummary.infoHash);
+
     return {
       type: STREAM_SERVER_START,
       payload: ServerStatus.STARTING
     };
-  }
-);
+  };
+}
 
-export const stopStreamServer = createAliasedAction(
-  STREAM_SERVER_STOP,
-  () => {
-    global.torrentEngine.stopStreamServer();
-    return {
-      type: STREAM_SERVER_STOP,
-      payload: ServerStatus.STOPPED
-    };
-  }
-);
+export function stopStreamServer() {
+    // global.torrentEngine.stopStreamServer();
 
-export const addTorrent = createAliasedAction(
-  TORRENT_ADD,
-  (torrentID) => (dispatch, getState) => {
+  ipc.send('stopStreamServer');
+
+  return {
+    type: STREAM_SERVER_STOP,
+    payload: ServerStatus.STOPPED
+  };
+}
+
+export function addTorrent(torrentID) {
+  return (dispatch, getState) => {
     const { torrent } = getState();
     const torrentKey = torrent.nextKey;
     const path = null; // TODO: Make a helper to calculate the path
 
     // TODO: TorrentEngine.onMetadata -> process selections.
-    global.torrentEngine.startTorrenting(torrentKey, torrentID, path);
+    // global.torrentEngine.startTorrenting(torrentKey, torrentID, path);
+    ipc.send('addTorrent', torrentKey, torrentID, path);
 
     dispatch({
       type: TORRENT_ADD
     });
-  }
-);
+  };
+}
 
-export const removeTorrent = createAliasedAction(
-  TORRENT_REMOVE,
-  (torrentKey) => (dispatch, getState) => {
+export function removeTorrent(torrentKey) {
+  return (dispatch, getState) => {
     const torrentSummary = getTorrentSummary(getState(), torrentKey);
-    global.torrentEngine.stopTorrenting(torrentSummary.infoHash);
+    // global.torrentEngine.stopTorrenting(torrentSummary.infoHash);
+
+    ipc.send('removeTorrent', torrentSummary.infoHash);
+
     dispatch({
       type: TORRENT_REMOVE,
       payload: torrentKey
     });
-  }
-);
+  };
+}
 
 export function torrentWarning(err) {
   return {

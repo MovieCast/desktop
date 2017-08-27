@@ -84,6 +84,7 @@ export default class Application {
       }
 
       await this.createMainWindow();
+      await this.createTorrentEngineWindow();
     } catch (err) {
       Application.onError(err);
     }
@@ -123,7 +124,7 @@ export default class Application {
         'http://localhost:1212/dist/app.html';
 
       // Create a new main window instance
-      this.mainWindow = await WindowFactory.createMainWindow({
+      this.mainWindow = await WindowFactory.createWindow({
         url
       });
 
@@ -138,6 +139,30 @@ export default class Application {
 
       this.mainWindow.on('closed', () => {
         this.mainWindow = null;
+      });
+    } catch (err) {
+      Application.onError(err);
+    }
+  }
+
+  async createTorrentEngineWindow() {
+    try {
+      const url = process.env.NODE_ENV === 'production' ?
+        `file://${path.join(__dirname, '../renderer/torrentEngine.html')}` :
+        'http://localhost:1212/dist/torrentEngine.html';
+
+      this.torrentWindow = await WindowFactory.createWindow({
+        url
+      });
+
+      // Remove me later!
+      this.torrentWindow.webContents.on('did-finish-load', () => {
+        this.torrentWindow.show();
+        this.torrentWindow.openDevTools();
+      });
+
+      this.torrentWindow.on('closed', () => {
+        this.torrentWindow = null;
       });
     } catch (err) {
       Application.onError(err);

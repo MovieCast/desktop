@@ -2,9 +2,9 @@ import { BrowserWindow } from 'electron';
 
 export default class WindowFactory {
   /**
-   * Creates a main window instance
+   * Creates a new window instance
    */
-  static async createMainWindow({ options = {}, url = '/' }) {
+  static async createWindow({ options = {}, url = '/' }) {
     const initialOptions = {
       show: false,
       width: 1024,
@@ -14,11 +14,11 @@ export default class WindowFactory {
       frame: false
     };
 
-    const mainWindow = new BrowserWindow(
+    const window = new BrowserWindow(
       Object.assign(initialOptions, options));
 
-    mainWindow.loadURL(url);
+    window.loadURL(url);
 
-    return mainWindow;
+    return window;
   }
 }

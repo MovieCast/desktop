@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import DynamicImg from '../Util/DynamicImg';
 
 const styleSheet = {
   root: {
@@ -59,10 +60,10 @@ class Detail extends Component {
     const { item, classes } = this.props;
     return (
       <div className={classes.root}>
-        <img className={classes.background} src={item.background_image} alt={item.title} />
+        <DynamicImg className={classes.background} src={item.background_image} alt={item.title} />
         <div className={classes.content}>
           <div className={classes.infoWrapper}>
-            <img className={classes.poster} src={item.medium_cover_image} alt="Poster" />
+            <DynamicImg className={classes.poster} src={item.medium_cover_image} alt="Poster" />
             <div className={classes.metaContainer} />
           </div>
           {/*

@@ -34,7 +34,7 @@ class Player extends Component {
   componentDidMount() {
     this.handleHover();
     // Let's auto start :D
-    this.props.togglePlay(true);
+    // this.props.togglePlay(true);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,6 +50,13 @@ class Player extends Component {
         secondary: `Playing: ${this.props.player.title}`,
       });
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.player === this.props.player) {
+      return false;
+    }
+    return true;
   }
 
   componentWillUnmount() {

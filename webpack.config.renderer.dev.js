@@ -38,15 +38,23 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-renderer',
 
-  entry: [
-    'react-hot-loader/patch',
-    `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
-    path.join(__dirname, 'src/renderer/index.js'),
-  ],
+  entry: {
+    renderer: [
+      'react-hot-loader/patch',
+      `webpack-dev-server/client?http://localhost:${port}/`,
+      'webpack/hot/only-dev-server',
+      path.join(__dirname, 'src/renderer/index.js'),
+    ],
+    torrentEngine: [
+      `webpack-dev-server/client?http://localhost:${port}/`,
+      'webpack/hot/only-dev-server',
+      path.join(__dirname, 'src/renderer/torrentEngine.js'),
+    ]
+  },
 
   output: {
-    publicPath: `http://localhost:${port}/dist/`
+    publicPath: `http://localhost:${port}/dist/`,
+    filename: '[name].dev.js'
   },
 
   module: {
@@ -239,7 +247,15 @@ export default merge.smart(baseConfig, {
 
     new HtmlWebpackPlugin({
       template: 'src/renderer/app.html',
+      chunks: ['renderer'],
       filename: 'app.html',
+      inject: 'body'
+    }),
+
+    new HtmlWebpackPlugin({
+      template: 'src/renderer/torrentEngine.html',
+      chunks: ['torrentEngine'],
+      filename: 'torrentEngine.html',
       inject: 'body'
     }),
 

@@ -6,9 +6,6 @@ import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import {
-  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button
-} from 'material-ui';
 import { Menu as MenuIcon, ArrowBack as BackIcon, FileDownload as DownloadIcon } from 'material-ui-icons';
 import AppDrawer from './AppDrawer';
 import AppControls from './AppControls';
@@ -105,7 +102,7 @@ class AppFrame extends Component {
   };
 
   render() {
-    const { children, classes, updater, application: { appBar }, torrent } = this.props;
+    const { children, classes, updater, application: { appBar } } = this.props;
     const appBarClassName = classNames(classes.appBar, {
       [classes.appBarTransparent]: appBar.transparent,
       [classes.appBarNoShadow]: !appBar.shadow,
@@ -168,7 +165,6 @@ AppFrame.propTypes = {
   classes: PropTypes.object.isRequired,
   // settings: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
-  torrent: PropTypes.object.isRequired,
   updater: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };

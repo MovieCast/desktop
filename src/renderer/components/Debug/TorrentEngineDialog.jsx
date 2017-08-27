@@ -17,6 +17,14 @@ import {
 } from 'material-ui';
 
 export class TorrentEngineDialog extends Component {
+
+  shouldComponentUpdate(nextProps) {
+    if(!nextProps.open && !this.props.open) {
+      return false;
+    }
+    return true;
+  }
+
   renderTorrentList(torrents) {
     return _.map(torrents, this.renderTorrentItem);
   }
