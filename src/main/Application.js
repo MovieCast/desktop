@@ -141,6 +141,12 @@ export default class Application {
         this.mainWindow.focus();
       });
 
+      this.mainWindow.on('close', () => {
+        if (process.platform !== 'darwin') {
+          app.quit();
+        }
+      });
+
       this.mainWindow.on('closed', () => {
         this.mainWindow = null;
       });
