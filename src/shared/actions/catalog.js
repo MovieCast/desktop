@@ -1,11 +1,13 @@
 import { createAliasedAction } from 'electron-redux';
 import { push } from 'react-router-redux';
-import { getList, getMovie } from '../../main/api/movies';
+import { getMovies, getMovie } from '../../main/api/movies';
 import { addTorrent, startStreamServer } from './torrent';
+import movieNormalizer from '../normalizers/movie';
 // import { setupPlayer } from './player';
 
 export const FETCH_MOVIES = 'FETCH_MOVIES';
 export const FETCH_MOVIE = 'FETCH_MOVIE';
+export const SET_FILTER = 'SET_FILTER';
 
 /**
  * @todo
@@ -42,13 +44,49 @@ export function playItem(itemId, torrentIndex) {
 
 // export function stopItem()
 
+// Temp fix
+export const resetResult = () => ({
+  type: 'RESET_RESULT'
+});
+
+export const setFilter = (payload) => (dispatch) => {
+  // Temp fixxzzz
+  if (payload.page === 1) {
+    dispatch(resetResult());
+  }
+
+  dispatch({
+    type: SET_FILTER,
+    payload
+  });
+  dispatch(fetchMovies());
+};
+
 export const fetchMovies = createAliasedAction(
   FETCH_MOVIES,
-  ({ page, genre, sort }) => ({
-    type: FETCH_MOVIES,
-    payload: getList(page, genre, sort),
-  })
+  () => (dispatch, getState) => {
+    const { catalog } = getState();
+    console.log(catalog);
+    getMovies(catalog.filter).then(({ data }) => dispatch({
+      type: FETCH_MOVIES,
+      payload: movieNormalizer(data),
+    })).catch(err => {
+      console.log(err);
+    });
+  }
 );
+
+// export function fetchMovies({ page, genre, sort }) {
+//   return (dispatch, getState) => {
+//     const { catalog } = getState();
+//     getMovies(catalog.filter).then(({ data }) => dispatch({
+//       type: FETCH_MOVIES,
+//       payload: movieNormalizer(data),
+//     })).catch(err => {
+//       console.log(err);
+//     });
+//   };
+// }
 
 export const fetchMovie = createAliasedAction(
   FETCH_MOVIE,

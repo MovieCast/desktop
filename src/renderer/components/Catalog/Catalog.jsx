@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -25,6 +26,10 @@ const styleSheet = theme => ({
     width: 230,
     height: 345,
     display: 'flex'
+  },
+  poster: {
+    width: 230,
+    height: 345
   }
 });
 
@@ -34,7 +39,7 @@ class Catalog extends Component {
   }
 
   componentWillMount() {
-    const { catalog: { genre, sort } } = this.props;
+    const { filter: { genre, sort } } = this.props;
 
     this.props.fetchItems({
       page: 1,
@@ -44,9 +49,9 @@ class Catalog extends Component {
   }
 
   loadMore = () => {
-    const { catalog: { page } } = this.props;
+    const { filter: { page } } = this.props;
 
-    this.props.fetchItems({
+    this.props.setFilter({
       page: page + 1
     });
   }
@@ -59,10 +64,10 @@ class Catalog extends Component {
     let sort;
     switch (index) {
       case 0: // Year
-        sort = 'year';
+        sort = 'trending';
         break;
       case 1: // Trending
-        sort = 'download_count';
+        sort = 'year';
         break;
       case 2: // Title
         sort = 'title';
@@ -71,7 +76,7 @@ class Catalog extends Component {
         sort = 'year';
     }
 
-    this.props.fetchItems({
+    this.props.setFilter({
       page: 1,
       sort
     });
@@ -80,28 +85,32 @@ class Catalog extends Component {
   }
 
   render() {
-    const { classes, catalog: { items } } = this.props;
+    const { classes, result } = this.props;
 
     return (
       <div>
         <AppBar position="static">
           <Tabs value={this.state.sort} onChange={this.handleChange.bind(this)}>
-            <Tab label="Year" />
             <Tab label="Trending" />
+            <Tab label="Year" />
             <Tab label="A-Z" />
           </Tabs>
         </AppBar>
         <div className={styles.scroll}>
           <Grid container align="flex-start" justify="space-around" className={classes.gridList}>
-            {_.map(items, (item =>
-              (<Grid key={item.id} item>
-                <GridListTile component={Link} to={`/movie/${item.id}`}>
-                  <DynamicImg src={item.medium_cover_image} alt={item.title} />
+            {_.map(result, (item =>
+              (<Grid key={item._id} item>
+                <GridListTile component={Link} to={`/movie/${item._id}`}>
+                  <DynamicImg
+                    src={item.images.poster}
+                    alt={item.title}
+                    className={classes.poster}
+                  />
                   <GridListTileBar
                     title={item.title}
                     subtitle={
                       <span>
-                        {item.year} - {item.rating}
+                        {item.year} - {item.rating.percentage}
                       </span>
                     }
                   />
@@ -121,9 +130,12 @@ class Catalog extends Component {
 
 /* eslint-disable react/forbid-prop-types */
 Catalog.propTypes = {
-  catalog: PropTypes.object.isRequired,
+  // catalog: PropTypes.object.isRequired,
+  result: PropTypes.object.isRequired,
+  filter: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   fetchItems: PropTypes.func.isRequired,
+  setFilter: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */

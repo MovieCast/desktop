@@ -101,16 +101,16 @@ export default class Application {
    */
   async configureStore() {
     try {
-      global.state = await this.storage.get('state');
+      // global.state = await this.storage.get('state');
 
       const storeFactory = new StoreFactory(SCOPE_MAIN);
-      this.store = storeFactory.configureStore(global.state);
+      this.store = storeFactory.configureStore();
 
-      this.store.subscribe(async () => {
-        global.state = this.store.getState();
+      // this.store.subscribe(async () => {
+      //   global.state = this.store.getState();
 
-        await this.storage.set('state', global.state);
-      });
+      //   await this.storage.set('state', global.state);
+      // });
     } catch (err) {
       Application.onError(err);
     }

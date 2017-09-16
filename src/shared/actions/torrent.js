@@ -1,5 +1,4 @@
 import { ipcRenderer as ipc } from 'electron';
-import { createAliasedAction } from 'electron-redux';
 import {
   getTorrentSummary
 } from '../helpers/torrent';

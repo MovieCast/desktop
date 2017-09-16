@@ -1,6 +1,5 @@
 import Application from './Application';
 import TaskManager from './TaskManager';
-import TorrentEngine from './TorrentEngine';
 
 Application.bootstrap().then(app => {
   console.log('MovieCast is starting...');

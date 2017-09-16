@@ -10,8 +10,6 @@ import App from './components/App/App';
 
 // Action Creators
 import {
-  torrentWarning,
-  torrentError,
   torrentInfoHash,
   torrentMetaData,
   torrentProgress,

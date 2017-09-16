@@ -98,16 +98,16 @@ class Detail extends Component {
     const { item, classes } = this.props;
     return (
       <div className={classes.wrapper}>
-        <DynamicImg className={classes.background} src={item.background_image} alt={item.title} />
+        <DynamicImg className={classes.background} src={item.images.banner} alt={item.title} />
         <div className={classes.content}>
           <div className={classes.middle}>
-            <DynamicImg className={classes.poster} src={item.medium_cover_image} alt="Poster" />
+            <DynamicImg className={classes.poster} src={item.images.poster} alt="Poster" />
             <div className={classes.meta}>
               <div className={classes.metaHeader}>
                 <Rating
                   className={classes.metaHeaderText}
-                  rating={item.rating}
-                  title={item.rating}
+                  rating={item.rating.percentage / 10}
+                  title={item.rating.percentage}
                 />
                 <span className={classes.metaHeaderDot} />
                 <Typography className={classes.metaHeaderText}>{item.genres.join(', ')}</Typography>

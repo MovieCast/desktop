@@ -1,21 +1,21 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://yts.ag/api/v2'
+  // Using popcorn-api for now, until we finished our own scraper
+  baseURL: 'http://tv-v2.api-fetch.website'
 });
 
-export function getList(page = 1, genre = 'all', sort = 'year') {
-  const request = api.get('/list_movies.json', {
+export function getMovies({ page = 1, genre = 'all', sort = 'year' } = {}) {
+  console.log(page);
+  const request = api.get(`/movies/${page}`, {
     params: {
-      page,
       genre,
-      sort_by: sort
+      sort
     }
   });
   return request;
 }
 
 export function getMovie(id) {
-  const request = api.get(`/movie_details.json?movie_id=${id}`);
-  return request;
+  return api.get(`/movie/${id}`);
 }
