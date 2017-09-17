@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import merge from 'deepmerge';
+import { createReducer } from '../util';
 // import { fromJS } from 'immutable';
-import { FETCH_MOVIE, FETCH_MOVIES, SET_FILTER } from '../actions/catalog';
+import { FETCH_MOVIE, FETCH_MOVIES_SUCCESS, SET_FILTER } from '../actions/catalog';
 
 
 const initialState = {
@@ -16,41 +17,33 @@ const initialState = {
   result: []
 };
 
-export default function catalog(state = initialState, action) {
-  switch (action.type) {
-    // handle fetch movies action
-    case FETCH_MOVIES:
-      console.log(action.payload);
-      return {
-        ...state,
-        entities: merge(state.entities, action.payload.entities),
+export default createReducer(initialState, {
+  [FETCH_MOVIES_SUCCESS]: (state, action) => ({
+    ...state,
+    entities: merge(state.entities, action.payload.entities),
 
-        // de-dupe existing result, this does sometimes happen...
-        result: _.union(state.result, action.payload.result)
-      };
-    case FETCH_MOVIE:
-      console.warn('FETCH_MOVIE: This action is not working yet');
-      return state;
+    // de-dupe existing result, this does sometimes happen...
+    result: _.union(state.result, action.payload.result)
+  }),
 
-    // Temp fix
-    case 'RESET_RESULT':
-      return {
-        ...state,
-        result: []
-      };
 
-    // handle set filter action
-    case SET_FILTER:
-      return {
-        ...state,
-        filter: {
-          ...state.filter,
-          ...action.payload
-        }
-      };
+  [FETCH_MOVIE]: (state) => {
+    console.warn('FETCH_MOVIE: This action is not working yet');
+    return state;
+  },
 
-    // default return existing state
-    default:
-      return state;
-  }
-}
+  // Temp fix
+  RESET_RESULT: (state) => ({
+    ...state,
+    result: []
+  }),
+
+  // handle set filter action
+  [SET_FILTER]: (state, action) => ({
+    ...state,
+    filter: {
+      ...state.filter,
+      ...action.payload
+    }
+  })
+});

@@ -1,3 +1,4 @@
+import { createReducer } from '../util';
 import {
   TOGGLE_PLAY,
   SET_URL,
@@ -27,59 +28,47 @@ const initialState = {
   showUi: true
 };
 
-export default function player(state = initialState, action) {
-  switch (action.type) {
-    case TOGGLE_PLAY:
-      return {
-        ...state,
-        playing: action.payload ? action.payload : !state.playing
-      };
-    case SET_URL:
-      return {
-        ...state,
-        src: action.payload
-      };
-    case SET_TITLE:
-      return {
-        ...state,
-        title: action.payload
-      };
-    case UPDATE_VOLUME:
-      return {
-        ...state,
-        volume: action.payload
-      };
-    case UPDATE_PLAYBACK_RATE:
-      return {
-        ...state,
-        playbackRate: action.payload
-      };
-    case UPDATE_DURATION:
-      return {
-        ...state,
-        duration: action.payload
-      };
-    case UPDATE_CURRENT_TIME:
-      return {
-        ...state,
-        currentTime: action.payload
-      };
-    case UPDATE_TRACKS:
-      return {
-        ...state,
-        tracks: action.payload
-      };
-    case TOGGLE_FULLSCREEN:
-      return {
-        ...state,
-        fullscreen: !state.fullscreen
-      };
-    case TOGGLE_UI:
-      return {
-        ...state,
-        showUi: action.payload ? action.payload : !state.showUi
-      };
-    default:
-      return state;
-  }
-}
+export default createReducer(initialState, {
+  [SET_URL]: (state, action) => ({
+    ...state,
+    src: action.payload
+  }),
+  [SET_TITLE]: (state, action) => ({
+    ...state,
+    title: action.payload
+  }),
+
+  [UPDATE_VOLUME]: (state, action) => ({
+    ...state,
+    volume: action.payload
+  }),
+  [UPDATE_PLAYBACK_RATE]: (state, action) => ({
+    ...state,
+    playbackRate: action.payload
+  }),
+  [UPDATE_DURATION]: (state, action) => ({
+    ...state,
+    duration: action.payload
+  }),
+  [UPDATE_CURRENT_TIME]: (state, action) => ({
+    ...state,
+    currentTime: action.payload
+  }),
+  [UPDATE_TRACKS]: (state, action) => ({
+    ...state,
+    tracks: action.payload
+  }),
+
+  [TOGGLE_PLAY]: (state, action) => ({
+    ...state,
+    playing: action.payload ? action.payload : !state.playing
+  }),
+  [TOGGLE_FULLSCREEN]: (state) => ({
+    ...state,
+    fullscreen: !state.fullscreen
+  }),
+  [TOGGLE_UI]: (state, action) => ({
+    ...state,
+    showUi: action.payload ? action.payload : !state.showUi
+  })
+});

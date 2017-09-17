@@ -54,6 +54,7 @@ class DynamicImg extends Component {
         alt={alt}
         onLoad={this.handleLoad}
         onError={console.log}
+        draggable={false}
       />
     );
   }

@@ -14,6 +14,8 @@ import {
   replayActionRenderer,
 } from 'electron-redux';
 
+import api from '../middleware/api';
+
 import rootReducer from '../reducers';
 import * as applicationActions from '../actions/application';
 import * as settingsActions from '../actions/settings';
@@ -61,7 +63,8 @@ export default class StoreFactory {
   getMiddleware() {
     const initialMiddleware = [
       thunk,
-      promise
+      promise,
+      api
     ];
 
     switch (this.scope) {

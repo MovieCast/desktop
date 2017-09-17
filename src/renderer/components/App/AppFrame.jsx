@@ -17,6 +17,7 @@ const styleSheet = theme => ({
   '@global': {
     html: {
       boxSizing: 'border-box',
+      userSelect: 'none'
     },
     '*, *:before, *:after': {
       boxSizing: 'inherit',

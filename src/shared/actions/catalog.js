@@ -5,7 +5,9 @@ import { addTorrent, startStreamServer } from './torrent';
 import movieNormalizer from '../normalizers/movie';
 // import { setupPlayer } from './player';
 
-export const FETCH_MOVIES = 'FETCH_MOVIES';
+export const FETCH_MOVIES_REQUEST = 'FETCH_MOVIES_REQUEST';
+export const FETCH_MOVIES_SUCCESS = 'FETCH_MOVIES_SUCCESS';
+export const FETCH_MOVIES_FAILURE = 'FETCH_MOVIES_FAILURE';
 export const FETCH_MOVIE = 'FETCH_MOVIE';
 export const SET_FILTER = 'SET_FILTER';
 
@@ -61,32 +63,15 @@ export const setFilter = (payload) => (dispatch) => {
   });
   dispatch(fetchMovies());
 };
-
 export const fetchMovies = createAliasedAction(
-  FETCH_MOVIES,
-  () => (dispatch, getState) => {
-    const { catalog } = getState();
-    console.log(catalog);
-    getMovies(catalog.filter).then(({ data }) => dispatch({
-      type: FETCH_MOVIES,
-      payload: movieNormalizer(data),
-    })).catch(err => {
-      console.log(err);
-    });
-  }
+  FETCH_MOVIES_REQUEST,
+  () => ({
+    types: [FETCH_MOVIES_REQUEST, FETCH_MOVIES_SUCCESS, FETCH_MOVIES_FAILURE],
+    // shouldRequest: state => !state.catalog.entities,
+    request: ({ catalog }) => getMovies(catalog.filter),
+    parser: ({ data }) => movieNormalizer(data)
+  })
 );
-
-// export function fetchMovies({ page, genre, sort }) {
-//   return (dispatch, getState) => {
-//     const { catalog } = getState();
-//     getMovies(catalog.filter).then(({ data }) => dispatch({
-//       type: FETCH_MOVIES,
-//       payload: movieNormalizer(data),
-//     })).catch(err => {
-//       console.log(err);
-//     });
-//   };
-// }
 
 export const fetchMovie = createAliasedAction(
   FETCH_MOVIE,

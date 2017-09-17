@@ -2,6 +2,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { CONFIGURE_APP_BAR } from '../actions/application';
 
 import { productName } from '../../package.json';
+import { createReducer } from '../util';
 
 const initialState = {
   appBar: {
@@ -14,26 +15,16 @@ const initialState = {
   }
 };
 
-export default function application(state = initialState, action) {
-  switch (action.type) {
-    case CONFIGURE_APP_BAR:
-      return {
-        ...state,
-        appBar: {
-          // ...initialState.appBar,
-          ...state.appBar,
-          ...action.payload
-        }
-      };
-
-    // Little trick to reset appbar on route changes
-    case LOCATION_CHANGE:
-      return {
-        ...state,
-        appBar: initialState.appBar
-      };
-
-    default:
-      return state;
-  }
-}
+export default createReducer(initialState, {
+  [CONFIGURE_APP_BAR]: (state, action) => ({
+    ...state,
+    appBar: {
+      ...state.appBar,
+      ...action.payload
+    }
+  }),
+  [LOCATION_CHANGE]: (state) => ({
+    ...state,
+    appBar: initialState.appBar
+  })
+});

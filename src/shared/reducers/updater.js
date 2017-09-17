@@ -1,3 +1,4 @@
+import { createReducer } from '../util';
 import {
   CHECKING_FOR_UPDATE,
   UPDATE_AVAILABLE,
@@ -16,57 +17,40 @@ const initialState = {
   updateNotAvailable: false,
 };
 
-export default function updater(state = initialState, action) {
-  switch (action.type) {
-    case CHECKING_FOR_UPDATE: {
-      return {
-        ...state,
-        ...initialState,
-        checkingForUpdate: true
-      };
-    }
+export default createReducer(initialState, {
+  [CHECKING_FOR_UPDATE]: (state) => ({
+    ...state,
+    ...initialState,
+    checkingForUpdate: true
+  }),
 
-    case UPDATE_AVAILABLE: {
-      return {
-        ...state,
-        ...initialState,
-        updateAvailable: true
-      };
-    }
+  [UPDATE_AVAILABLE]: (state) => ({
+    ...state,
+    ...initialState,
+    updateAvailable: true
+  }),
 
-    case UPDATE_DOWNLOADING: {
-      return {
-        ...state,
-        ...initialState,
-        updateDownloading: action.payload
-      };
-    }
+  [UPDATE_DOWNLOADING]: (state, action) => ({
+    ...state,
+    ...initialState,
+    updateDownloading: action.payload
+  }),
 
-    case UPDATE_DOWNLOADED: {
-      return {
-        ...state,
-        ...initialState,
-        updateDownloaded: true
-      };
-    }
+  [UPDATE_DOWNLOADED]: (state) => ({
+    ...state,
+    ...initialState,
+    updateDownloaded: true
+  }),
 
-    case UPDATE_ERROR: {
-      return {
-        ...state,
-        ...initialState,
-        updateError: action.payload
-      };
-    }
+  [UPDATE_ERROR]: (state, action) => ({
+    ...state,
+    ...initialState,
+    updateError: action.payload
+  }),
 
-    case UPDATE_NOT_AVAILABLE: {
-      return {
-        ...state,
-        ...initialState,
-        updateNotAvailable: true
-      };
-    }
-
-    default:
-      return state;
-  }
-}
+  [UPDATE_NOT_AVAILABLE]: (state) => ({
+    ...state,
+    ...initialState,
+    updateNotAvailable: true
+  })
+});
