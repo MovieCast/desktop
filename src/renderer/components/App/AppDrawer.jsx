@@ -42,7 +42,7 @@ function AppDrawer(props) {
       }}
       open={props.open}
       onRequestClose={props.onRequestClose}
-      keepMounted
+      keepMounted={false}
     >
       <div className={classes.nav}>
         <Toolbar className={classes.toolbar}>

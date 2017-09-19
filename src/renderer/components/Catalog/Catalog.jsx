@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { AppBar, Tabs, Tab, Grid, CircularProgress, Button } from 'material-ui';
 import { GridListTile, GridListTileBar } from 'material-ui/GridList';
 import DynamicImg from '../Util/DynamicImg';
+import Rating from '../Util/Rating';
 
 // styles
 import styles from './Catalog.css';
@@ -109,8 +110,8 @@ class Catalog extends Component {
                   <GridListTileBar
                     title={item.title}
                     subtitle={
-                      <span>
-                        {item.year} - {item.rating.percentage}
+                      <span style={{ display: 'flex' }}>
+                        {item.year} - <Rating rating={item.rating.percentage / 10} size={12} />
                       </span>
                     }
                   />

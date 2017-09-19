@@ -14,11 +14,11 @@ function Rating(props) {
       {[1, 2, 3, 4, 5].map(i => {
         if (i > rating) {
           if (rating % 1 > 0 && Math.ceil(rating) === i) {
-            return (<StarHalf key={i} />);
+            return (<StarHalf style={{ height: props.size, width: props.size }} key={i} />);
           }
-          return (<StarBorder key={i} />);
+          return (<StarBorder style={{ height: props.size, width: props.size }} key={i} />);
         }
-        return (<Star key={i} />);
+        return (<Star style={{ height: props.size, width: props.size }} key={i} />);
       })}
     </div>
   );
