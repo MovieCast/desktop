@@ -77,12 +77,9 @@ const styleSheet = theme => {
     },
     wrapper: {
       position: 'relative',
-      top: 29
+      top: 29,
+      width: '100%'
     },
-    appBarWrapper: {
-      position: 'absolute',
-      top: 0
-    }
   };
 };
 
