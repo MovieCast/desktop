@@ -156,7 +156,7 @@
     "history": "^4.6.3",
     "immutable": "^3.8.1",
     "material-ui": "v1.0.0-beta.11",
-    "material-ui-icons": "v1.0.0-beta.11",
+    "material-ui-icons": "v1.0.0-beta.10",
     "network-address": "^1.1.2",
     "normalizr": "^3.2.3",
     "prettier-bytes": "^1.0.4",

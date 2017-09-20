@@ -1,4 +1,4 @@
-import { createMuiTheme, createPalette } from 'material-ui/styles';
+import { createMuiTheme } from 'material-ui/styles';
 
 export default function createTheme(palette) {
   const initialTheme = {
@@ -39,14 +39,4 @@ export default function createTheme(palette) {
   console.log(test);
 
   return createMuiTheme(test);
-}
-
-// Preparation for our own palettes
-function getMuiPalette(type) {
-  // Well we dont have palettes yet...sowuhmm eh
-  const palette = createPalette({
-    type
-  });
-
-  return palette;
 }
