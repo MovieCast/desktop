@@ -78,7 +78,8 @@ const styleSheet = theme => {
     wrapper: {
       position: 'relative',
       top: 29,
-      width: '100%'
+      width: '100%',
+      height: 'calc(100vh - 29px)' // This no wurks!
     },
   };
 };

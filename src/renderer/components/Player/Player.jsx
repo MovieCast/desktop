@@ -12,7 +12,7 @@ const styleSheet = {
   root: {
     position: 'relative',
     marginTop: '-64px',
-    height: '100vh'
+    height: '100%'
   },
   hideCursor: {
     cursor: 'none'

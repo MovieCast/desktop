@@ -6,7 +6,7 @@ export default class WindowFactory {
    */
   static async createWindow({ options = {}, url = '/' }) {
     const initialOptions = {
-      show: false,
+      show: false, // TODO: Control this state in redux
       width: 1024,
       height: 728,
       minWidth: 350,

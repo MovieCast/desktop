@@ -6,7 +6,8 @@ const styleSheet = {
   content: {
     paddingTop: 64,
     flex: '1 1 100%',
-    maxWidth: '100%'
+    maxWidth: '100%',
+    height: 'calc(100vh - 29px)'
   }
 };
 

@@ -86,7 +86,7 @@ export class TorrentEngineDialog extends Component {
         onRequestClose={onRequestClose}
       >
         <DialogTitle>
-          Torrent Engine Info (causes lagg)
+          Torrent Engine Info
         </DialogTitle>
         <DialogContent>
           <DialogContentText>

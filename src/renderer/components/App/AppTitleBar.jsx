@@ -1,11 +1,13 @@
+import { remote } from 'electron';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
-import Minimize from '../Icon/Minimize';
-import Maximize from '../Icon/Maximize';
-import Close from '../Icon/Close';
+import Minimize from './Icons/Minimize';
+import Maximize from './Icons/Maximize';
+import Close from './Icons/Close';
 
 const styles = theme => ({
   root: {
@@ -29,17 +31,72 @@ const styles = theme => ({
     alignItems: 'center',
     height: '100%',
     paddingLeft: 10,
-    paddingRight: 10
   },
   title: {
     flexGrow: 1
   },
   controls: {
-
+    height: '100%',
+    display: 'flex'
+  },
+  controlButton: {
+    WebkitAppRegion: 'no-drag',
+    height: '100%',
+    width: 45,
+    '&.svg': {
+      display: 'block'
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.primary[500]
+    }
   }
 });
 
 class AppTitleBar extends Component {
+  state = {
+    isMaximized: false
+  }
+
+  componentWillMount() {
+    this.updateState();
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateState);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateState);
+  }
+
+  updateState = () => {
+    this.setState({
+      isMaximized: remote.getCurrentWindow().isMaximized()
+    });
+  }
+
+  handleMaximize = () => {
+    const window = remote.getCurrentWindow();
+
+    if (this.state.isMaximized) {
+      window.unmaximize();
+    } else {
+      window.maximize();
+    }
+
+    this.setState({
+      isMaximized: window.isMaximized()
+    });
+  }
+
+  handleMinimize = () => {
+    remote.getCurrentWindow().minimize();
+  }
+
+  handleClose = () => {
+    remote.getCurrentWindow().close();
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -50,9 +107,15 @@ class AppTitleBar extends Component {
             <Typography>MovieCast</Typography>
           </div>
           <div className={classes.controls}>
-            <Minimize />
-            <Maximize />
-            <Close />
+            <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
+              <Minimize />
+            </div>
+            <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
+              <Maximize isMaximized={this.state.isMaximized} />
+            </div>
+            <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
+              <Close />
+            </div>
           </div>
         </div>
       </div>

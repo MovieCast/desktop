@@ -1,7 +1,7 @@
 .scroll {
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100vh - 112px);
+  height: calc(100vh - 112px - 29px);
 }
 
 .scroll::-webkit-scrollbar {
