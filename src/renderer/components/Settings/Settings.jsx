@@ -19,7 +19,9 @@ import SettingsCategoryListItem from './SettingsCategoryListItem';
 
 const styleSheet = {
   root: {
-    width: '100%'
+    width: '100%',
+    height: 'calc(100% - 64px - 29px)',
+    marginTop: 'calc(64px + 29px)'
   },
 };
 
@@ -33,7 +35,7 @@ class Settings extends Component {
 
   componentWillMount() {
     this.props.configureAppBar({
-      secondary: 'Settings',
+      title: 'Settings',
       shadow: true,
       back: true
     });

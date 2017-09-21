@@ -26,12 +26,13 @@ function Rating(props) {
 
 Rating.propTypes = {
   rating: PropTypes.number.isRequired,
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   size: PropTypes.number
 };
 
 Rating.defaultProps = {
-  size: 24
+  size: 24,
+  className: ''
 };
 
 export default Rating;

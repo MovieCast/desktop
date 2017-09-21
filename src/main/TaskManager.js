@@ -7,11 +7,12 @@ export default class Tasks {
   }
 
   init() {
-    app.once('ready', this.startTasks);
+    if (app.isReady) this.startTasks();
+    else { app.once('ready', this.startTasks); }
   }
 
   startTasks = () => {
-    if (process.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       autoUpdater(this.store);
     }
   }

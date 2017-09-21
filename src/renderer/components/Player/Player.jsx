@@ -11,7 +11,6 @@ import ControlBar from './ControlBar';
 const styleSheet = {
   root: {
     position: 'relative',
-    marginTop: '-64px',
     height: '100%'
   },
   hideCursor: {

@@ -13,6 +13,10 @@ import Rating from '../Util/Rating';
 import styles from './Catalog.css';
 
 const styleSheet = theme => ({
+  root: {
+    height: 'calc(100% - 64px - 29px)',
+    marginTop: 'calc(64px + 29px)'
+  },
   gridList: {
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
@@ -41,6 +45,10 @@ class Catalog extends Component {
 
   componentWillMount() {
     const { filter: { genre, sort } } = this.props;
+
+    this.props.configureAppBar({
+      title: 'Movies' // TODO: This should be able to switch between shows and movies
+    });
 
     this.props.fetchItems({
       page: 1,
@@ -89,7 +97,7 @@ class Catalog extends Component {
     const { classes, result } = this.props;
 
     return (
-      <div>
+      <div className={classes.root}>
         <AppBar position="static">
           <Tabs value={this.state.sort} onChange={this.handleChange.bind(this)}>
             <Tab label="Trending" />
@@ -132,11 +140,12 @@ class Catalog extends Component {
 /* eslint-disable react/forbid-prop-types */
 Catalog.propTypes = {
   // catalog: PropTypes.object.isRequired,
-  result: PropTypes.object.isRequired,
+  result: PropTypes.array.isRequired,
   filter: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   fetchItems: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
+  configureAppBar: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */

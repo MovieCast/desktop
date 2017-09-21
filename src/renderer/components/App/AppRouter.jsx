@@ -17,7 +17,7 @@ export default function AppRouter({ history }) {
         <AppFrame>
           <AppContent>
             <Switch>
-              <Route path="/movie/:id" component={MovieDetail} />
+              <Route path="/movie/:id" component={MovieDetail} state={{ title: 'Test' }} />
               <Route path="/movies" component={MoviesCatalog} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/player" component={Player} />

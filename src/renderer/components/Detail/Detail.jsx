@@ -11,7 +11,6 @@ import Rating from '../Util/Rating';
 
 const styleSheet = theme => ({
   wrapper: {
-    marginTop: '-64px',
     position: 'relative'
   },
   header: {
@@ -78,7 +77,7 @@ class Detail extends Component {
 
     // Make the AppBar transparent and add a back button
     this.props.configureAppBar({
-      secondary: this.props.item.title,
+      title: this.props.item.title,
       transparent: true,
       back: true
     });

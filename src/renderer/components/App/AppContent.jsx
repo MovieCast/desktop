@@ -4,10 +4,14 @@ import { withStyles } from 'material-ui/styles';
 
 const styleSheet = {
   content: {
-    paddingTop: 64,
+    // paddingTop: 64,
     flex: '1 1 100%',
     maxWidth: '100%',
-    height: 'calc(100vh - 29px)'
+    // height: 'calc(100vh - 64px - 29px)',
+    height: '100vh',
+    position: 'relative',
+    top: -29,
+    // marginTop: 'calc(64px + 29px)'
   }
 };
 

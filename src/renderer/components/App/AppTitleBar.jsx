@@ -2,6 +2,7 @@ import { remote } from 'electron';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
@@ -19,6 +20,9 @@ const styles = theme => ({
     width: '100%',
     backgroundColor: theme.palette.primary[700],
     zIndex: 30000
+  },
+  rootTransparent: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)' // Hihi, I lied, it's not 100% transparent :P
   },
   resizeBar: {
     WebkitAppRegion: 'no-drag',
@@ -98,9 +102,14 @@ class AppTitleBar extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, application: { appTitleBar } } = this.props;
+
+    const rootClassName = classNames(classes.root, {
+      [classes.rootTransparent]: appTitleBar.transparent
+    });
+
     return (
-      <div className={classes.root}>
+      <div className={rootClassName}>
         <div className={classes.resizeBar} />
         <div className={classes.wrapper}>
           <div className={classes.title}>
@@ -126,6 +135,7 @@ class AppTitleBar extends Component {
 /* eslint-disable react/forbid-prop-types */
 AppTitleBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  application: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

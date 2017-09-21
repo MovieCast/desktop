@@ -1,10 +1,14 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { CONFIGURE_APP_BAR } from '../actions/application';
+import { CONFIGURE_APP_BAR, CONFIGURE_TITLE_BAR } from '../actions/application';
 
 import { productName } from '../../package.json';
 import { createReducer } from '../util';
 
 const initialState = {
+  appTitleBar: {
+    transparent: false,
+    hidden: false
+  },
   appBar: {
     title: productName,
     secondary: false,
@@ -20,6 +24,17 @@ export default createReducer(initialState, {
     ...state,
     appBar: {
       ...state.appBar,
+      ...action.payload
+    },
+    appTitleBar: {
+      ...state.appTitleBar,
+      transparent: action.payload.transparent
+    }
+  }),
+  [CONFIGURE_TITLE_BAR]: (state, action) => ({
+    ...state,
+    appTitleBar: {
+      ...state.appTitleBar,
       ...action.payload
     }
   }),

@@ -6,7 +6,6 @@ const api = axios.create({
 });
 
 export function getMovies({ page = 1, genre = 'all', sort = 'year' } = {}) {
-  console.log(page);
   const request = api.get(`/movies/${page}`, {
     params: {
       genre,

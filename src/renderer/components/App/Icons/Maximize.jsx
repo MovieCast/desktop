@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Maximize = props => {
-  if (!props.isMaximized) {
+const Maximize = ({ isMaximized, ...props }) => {
+  if (!isMaximized) {
     return (
       <svg height="100%" width="100%" shapeRendering="crispEdges" {...props}>
         <rect x="18" y="10" width="9" height="9" stroke="white" fill="none" />

@@ -7,91 +7,74 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import { Menu as MenuIcon, ArrowBack as BackIcon, FileDownload as DownloadIcon } from 'material-ui-icons';
-import AppTitleBar from './AppTitleBar';
 import AppDrawer from './AppDrawer';
-import AppControls from './AppControls';
 import AutoUpdater from '../AutoUpdater/AutoUpdater';
 
+import AppTitleBar from '../../containers/AppTitleBar';
 import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
 
-const styleSheet = theme => {
-  console.log(theme.palette);
-  return {
-    '@global': {
-      html: {
-        boxSizing: 'border-box',
-        userSelect: 'none'
-      },
-      '*, *:before, *:after': {
-        boxSizing: 'inherit',
-      },
-      body: {
-        margin: 0,
-        background: theme.palette.background.default,
-        color: theme.palette.text.primary,
-        lineHeight: '1.2',
-        overflowX: 'hidden',
-        WebkitFontSmoothing: 'antialiased', // Antialiasing.
-      }
+const styleSheet = theme => ({
+  '@global': {
+    html: {
+      boxSizing: 'border-box',
+      userSelect: 'none'
     },
-    appFrame: {
-      display: 'flex',
-      alignItems: 'stretch',
-      minHeight: '100vh',
-      width: '100%',
+    '*, *:before, *:after': {
+      boxSizing: 'inherit',
     },
-    grow: {
-      flex: '1 1 auto',
-    },
-    title: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      marginLeft: 24,
-      flex: '0 1 auto',
-    },
-    appBar: {
-      // WebkitAppRegion: 'drag',
-    // Not sure about this one, it looks a bit weird.
-    // transition: theme.transitions.create('background'),
-      transition: theme.transitions.create(['box-shadow', 'opacity']),
-    },
-    button: {
-      WebkitAppRegion: 'no-drag'
-    },
-    appBarTransparent: {
-    // backgroundColor: 'transparent',
-      backgroundColor: 'rgba(0, 0, 0, 0.2)' // Not completely transparent!
-    },
-    appBarNoShadow: {
-      boxShadow: 'none',
-    },
-    appBarTitleSecondary: {
-      color: 'rgba(255, 255, 255, 0.7)'
-    },
-    appBarHidden: {
-      opacity: 0
-    },
-    appBarShift: {
-      width: 'calc(100% - 250px)',
-    },
-    wrapper: {
-      position: 'relative',
-      top: 29,
-      width: '100%',
-      height: 'calc(100vh - 29px)' // This no wurks!
-    },
-  };
-};
+    body: {
+      margin: 0,
+      background: theme.palette.background.default,
+      color: theme.palette.text.primary,
+      lineHeight: '1.2',
+      overflowX: 'hidden',
+      WebkitFontSmoothing: 'antialiased', // Antialiasing.
+    }
+  },
+  appFrame: {
+    display: 'flex',
+    alignItems: 'stretch',
+    minHeight: '100vh',
+    width: '100%',
+  },
+  grow: {
+    flex: '1 1 auto',
+  },
+  title: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginLeft: 24,
+    flex: '0 1 auto',
+  },
+  appBar: {
+    transition: theme.transitions.create(['box-shadow', 'opacity']),
+  },
+  appBarTransparent: {
+    backgroundColor: 'transparent'
+  },
+  appBarNoShadow: {
+    boxShadow: 'none',
+  },
+  appBarTitleSecondary: {
+    color: 'rgba(255, 255, 255, 0.7)'
+  },
+  appBarHidden: {
+    opacity: 0
+  },
+  wrapper: {
+    position: 'relative',
+    top: 29,
+    width: '100%',
+    height: 'calc(100vh - 29px)' // This no wurks!
+    // height: '100vh'
+  },
+});
 
 class AppFrame extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      drawerOpen: false,
-      torrentEngineInfo: false
-    };
+  state = {
+    drawerOpen: false,
+    torrentEngineInfo: false
   }
 
   handleDrawerClose = () => {
@@ -114,6 +97,9 @@ class AppFrame extends Component {
 
   render() {
     const { children, classes, updater, application: { appBar } } = this.props;
+
+    // TODO: Move AppBar to it's own 'smart' component,
+    // so AppFrame doesn't have to update when AppBar is updated
     const appBarClassName = classNames(classes.appBar, {
       [classes.appBarTransparent]: appBar.transparent,
       [classes.appBarNoShadow]: !appBar.shadow,
@@ -130,7 +116,6 @@ class AppFrame extends Component {
               <IconButton
                 color="contrast"
                 onClick={this.handleBackAndDrawerButton}
-                className={classes.button}
               >
                 {appBar.back ? <BackIcon /> : <MenuIcon />}
               </IconButton>
@@ -148,11 +133,9 @@ class AppFrame extends Component {
                 color="contrast"
                 onClick={this.handleTorrentEngineInfo}
                 title="TorrentEngine Info"
-                className={classes.button}
               >
                 <DownloadIcon />
               </IconButton>
-              {/* <AppControls /> */}
             </Toolbar>
           </AppBar>
           <AppDrawer
