@@ -52,7 +52,8 @@ class Catalog extends Component {
     const { filter: { genre, sort } } = this.props;
 
     this.props.configureAppBar({
-      title: 'Movies' // TODO: This should be able to switch between shows and movies
+      title: 'Movies', // TODO: This should be able to switch between shows and movies
+      search: true
     });
 
     this.props.fetchItems({

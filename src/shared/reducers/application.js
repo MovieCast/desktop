@@ -15,7 +15,9 @@ const initialState = {
     transparent: false,
     shadow: false,
     hidden: false,
-    back: false
+    back: false,
+    search: false,
+    term: ''
   }
 };
 

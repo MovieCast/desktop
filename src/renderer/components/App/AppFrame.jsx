@@ -8,6 +8,7 @@ import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import { Menu as MenuIcon, ArrowBack as BackIcon, FileDownload as DownloadIcon } from 'material-ui-icons';
 import AppDrawer from './AppDrawer';
+import AppSearch from './AppSearch';
 import AutoUpdater from '../AutoUpdater/AutoUpdater';
 
 import AppTitleBar from '../../containers/AppTitleBar';
@@ -142,6 +143,8 @@ class AppFrame extends Component {
                   </Typography>}
               </div>
               <div className={classes.grow} />
+              {/* TODO: Find a better way to communicate with the search bar */}
+              {appBar.search && <AppSearch onSearch={appBar.onSearch} />}
               <IconButton
                 color="contrast"
                 onClick={this.handleTorrentEngineInfo}
