@@ -5,11 +5,12 @@ const api = axios.create({
   baseURL: 'http://tv-v2.api-fetch.website'
 });
 
-export function getMovies({ page = 1, genre = 'all', sort = 'year' } = {}) {
+export function getMovies({ page = 1, genre = 'all', sort = 'trending', keywords = '' } = {}) {
   const request = api.get(`/movies/${page}`, {
     params: {
       genre,
-      sort
+      sort,
+      keywords
     }
   });
   return request;

@@ -9,6 +9,7 @@ import { fade } from 'material-ui/styles/colorManipulator';
 import { withStyles } from 'material-ui/styles';
 
 import { searchTerm } from '../../../shared/actions/application';
+import { fetchMovies, setFilter } from '../../../shared/actions/catalog';
 
 const styles = theme => ({
   wrapper: {
@@ -64,6 +65,11 @@ class AppSearch extends Component {
 
   updateRedux = _.debounce(() => {
     this.props.searchTerm(this.state.term);
+
+    this.props.setFilter({
+      page: 1,
+      keywords: this.state.term
+    });
   }, 500);
 
   render() {
@@ -93,5 +99,5 @@ export default compose(
   withStyles(styles, {
     name: 'AppSearch',
   }),
-  connect(mapStateToProps, { searchTerm })
+  connect(mapStateToProps, { searchTerm, setFilter })
 )(AppSearch);

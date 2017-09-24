@@ -9,7 +9,8 @@ const initialState = {
   filter: {
     page: 1,
     genre: 'all',
-    sort: 'trending'
+    sort: 'trending',
+    keywords: ''
   },
   entities: {
     movies: []
