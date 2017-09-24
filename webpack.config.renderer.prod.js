@@ -16,12 +16,15 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-renderer',
 
-  entry: './src/renderer/index',
+  entry: {
+    renderer: path.join(__dirname, 'src/renderer/index.js'),
+    torrentEngine: path.join(__dirname, 'src/renderer/torrentEngine.js')
+  },
 
   output: {
     path: path.join(__dirname, 'src', 'dist', 'renderer'),
     publicPath: './',
-    filename: 'renderer.prod.js'
+    filename: '[name].prod.js'
   },
 
   module: {
@@ -163,7 +166,15 @@ export default merge.smart(baseConfig, {
 
     new HtmlWebpackPlugin({
       template: 'src/renderer/app.html',
+      chunks: ['renderer'],
       filename: 'app.html',
+      inject: 'body'
+    }),
+
+    new HtmlWebpackPlugin({
+      template: 'src/renderer/torrentEngine.html',
+      chunks: ['torrentEngine'],
+      filename: 'torrentEngine.html',
       inject: 'body'
     }),
 
