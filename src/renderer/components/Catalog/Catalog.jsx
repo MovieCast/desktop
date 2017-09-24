@@ -3,11 +3,10 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { Link } from 'react-router-dom';
+
 import { AppBar, Tabs, Tab, Grid, CircularProgress, Button } from 'material-ui';
-import { GridListTile, GridListTileBar } from 'material-ui/GridList';
-import DynamicImg from '../Util/DynamicImg';
-import Rating from '../Util/Rating';
+
+import CatalogItem from './CatalogItem';
 
 // styles
 import styles from './Catalog.css';
@@ -15,11 +14,13 @@ import styles from './Catalog.css';
 const styleSheet = theme => ({
   root: {
     height: 'calc(100% - 64px - 29px)',
-    marginTop: 'calc(64px + 29px)'
+    marginTop: 'calc(64px + 29px)',
+    width: '100%'
   },
   gridList: {
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
+    position: 'relative'
   },
   titleBar: {
     background:
@@ -27,14 +28,17 @@ const styleSheet = theme => ({
       'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
   },
   more: {
-    background: theme.palette.background.paper,
-    width: 230,
-    height: 345,
-    display: 'flex'
+    display: 'flex',
+    height: '100%',
+    backgroundColor: theme.palette.background.paper,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
   },
   poster: {
     width: 230,
-    height: 345
+    height: 345,
+    display: 'block'
   }
 });
 
@@ -107,28 +111,21 @@ class Catalog extends Component {
         </AppBar>
         <div className={styles.scroll}>
           <Grid container align="flex-start" justify="space-around" className={classes.gridList}>
-            {_.map(result, (item =>
-              (<Grid key={item._id} item>
-                <GridListTile component={Link} to={`/movie/${item._id}`}>
-                  <DynamicImg
-                    src={item.images.poster}
-                    alt={item.title}
-                    className={classes.poster}
-                  />
-                  <GridListTileBar
-                    title={item.title}
-                    subtitle={
-                      <span style={{ display: 'flex' }}>
-                        {item.year} - <Rating rating={item.rating.percentage / 10} size={12} />
-                      </span>
-                    }
-                  />
-                </GridListTile>
-              </Grid>)
-            ))}
-            <Grid container align="center" justify="center" direction="column" className={classes.more}>
-              <CircularProgress className={classes.progress} size={50} />
-              <Button onClick={this.loadMore}>Load More</Button>
+            {_.map(result, (item => (
+              <CatalogItem
+                key={item._id}
+                id={item._id}
+                title={item.title}
+                poster={item.images.poster}
+                year={item.year}
+                rating={item.rating.percentage / 10}
+              />
+            )))}
+            <Grid item align="center" justify="center" direction="column" style={{ height: 345, width: 230 }}>
+              <div className={classes.more}>
+                <CircularProgress className={classes.progress} size={50} />
+                <Button onClick={this.loadMore}>Load More</Button>
+              </div>
             </Grid>
           </Grid>
         </div>
