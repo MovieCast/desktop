@@ -49,7 +49,9 @@ function handleViewport(Component, options) {
       }
     }
 
-    handleIntersection = _.debounce((entries) => {
+    // TODO: Find out whether throttle or debounce does
+    //       a better job.
+    handleIntersection = _.throttle((entries) => {
       const entry = entries[0] || {};
       const { intersectionRatio } = entry;
 
@@ -58,7 +60,7 @@ function handleViewport(Component, options) {
       if (this.state.inViewport !== inViewport) {
         this.setState({ inViewport, intersectionRatio });
       }
-    }, 200);
+    }, 400);
 
     render() {
       return (

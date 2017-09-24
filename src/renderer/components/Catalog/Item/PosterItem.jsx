@@ -26,7 +26,7 @@ class PosterItem extends Component {
   render() {
     const { classes, id, title, poster, year, rating } = this.props;
     return (
-      <BaseItem once>
+      <BaseItem>
         <GridListTile component={Link} to={`/movie/${id}`} classes={{ tile: classes.tile }}>
           <DynamicImg
             src={poster}
