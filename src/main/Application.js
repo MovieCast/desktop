@@ -125,7 +125,7 @@ export default class Application {
     try {
       const url = process.env.NODE_ENV === 'production' ?
         `file://${path.join(__dirname, '../renderer/app.html')}` :
-        'http://localhost:1212/dist/app.html';
+        'http://localhost:1212/dist/app.html?react_perf';
 
       // Create a new main window instance
       this.mainWindow = await WindowFactory.createWindow({

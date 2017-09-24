@@ -19,7 +19,7 @@ const styles = theme => ({
     left: 0,
     width: '100%',
     backgroundColor: theme.palette.primary[700],
-    zIndex: 30000
+    zIndex: 1400
   },
   rootTransparent: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)' // Hihi, I lied, it's not 100% transparent :P

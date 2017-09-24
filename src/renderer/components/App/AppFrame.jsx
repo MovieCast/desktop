@@ -77,6 +77,19 @@ class AppFrame extends Component {
     torrentEngineInfo: false
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log(nextProps, this.props);
+  //   if (nextState !== this.state) {
+  //     return true;
+  //   }
+
+  //   if (nextProps.children !== this.props.children) {
+  //     return true;
+  //   }
+
+  //   return false;
+  // }
+
   handleDrawerClose = () => {
     this.setState({ drawerOpen: false });
   };

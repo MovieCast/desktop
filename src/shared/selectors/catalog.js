@@ -25,9 +25,7 @@ const getMoviesResult = createSelector(
   getMovies,
   (result, movies) => {
     if (!result) return null;
-    const test = result.map(movieId => movies[movieId]);
-    console.log(result, movies, test);
-    return test;
+    return result.map(movieId => movies[movieId]);
   }
 );
 
