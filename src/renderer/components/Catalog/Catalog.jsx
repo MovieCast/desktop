@@ -4,9 +4,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
-import { AppBar, Tabs, Tab, Grid, CircularProgress, Button } from 'material-ui';
+import { AppBar, Tabs, Tab, Grid } from 'material-ui';
 
-import CatalogItem from './CatalogItem';
+import PosterItem from './Item/PosterItem';
+import MoreItem from './Item/MoreItem';
 
 // styles
 import styles from './Catalog.css';
@@ -61,12 +62,18 @@ class Catalog extends Component {
     });
   }
 
+  componentDidMount() {
+    // Calculate needed "ghost" items to fix spacing in last row
+  }
+
   loadMore = () => {
     const { filter: { page } } = this.props;
 
-    this.props.setFilter({
-      page: page + 1
-    });
+    setTimeout(() => {
+      this.props.setFilter({
+        page: page + 1
+      });
+    }, 500);
   }
 
   loadDetail(event, item) {
@@ -74,6 +81,8 @@ class Catalog extends Component {
   }
 
   handleChange(event, index) {
+    this.setState({ sort: index });
+
     let sort;
     switch (index) {
       case 0: // Year
@@ -89,12 +98,14 @@ class Catalog extends Component {
         sort = 'year';
     }
 
-    this.props.setFilter({
-      page: 1,
-      sort
-    });
 
-    this.setState({ sort: index });
+    // Give the transition some time to complete
+    setTimeout(() => {
+      this.props.setFilter({
+        page: 1,
+        sort
+      });
+    }, 500);
   }
 
   render() {
@@ -112,7 +123,7 @@ class Catalog extends Component {
         <div className={styles.scroll}>
           <Grid container align="flex-start" justify="space-around" className={classes.gridList}>
             {_.map(result, (item => (
-              <CatalogItem
+              <PosterItem
                 key={item._id}
                 id={item._id}
                 title={item.title}
@@ -121,12 +132,9 @@ class Catalog extends Component {
                 rating={item.rating.percentage / 10}
               />
             )))}
-            <Grid item align="center" justify="center" direction="column" style={{ height: 345, width: 230 }}>
-              <div className={classes.more}>
-                <CircularProgress className={classes.progress} size={50} />
-                <Button onClick={this.loadMore}>Load More</Button>
-              </div>
-            </Grid>
+            <MoreItem onVisible={this.loadMore} />
+
+            {/* Show "ghost" items here */}
           </Grid>
         </div>
       </div>
