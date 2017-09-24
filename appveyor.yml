@@ -11,6 +11,9 @@ cache:
   - node_modules -> package.json
   - app/node_modules -> app/package.json
 
+platform:
+  - x64
+
 matrix:
   fast_finish: true
 
@@ -36,7 +39,4 @@ build_script:
   - yarn package
 
 artifacts:
-  - path: release\win-unpacked\
-    name: 'MovieCast Portable {version}'
-    type: Zip
   - path: release\*.exe
