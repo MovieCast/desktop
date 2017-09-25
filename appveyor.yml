@@ -1,42 +1,38 @@
-os: unstable
-
+# Test against the latest version of this Node.js version
 environment:
-  #GH_TOKEN:
-  #    secure: Ga+40bO3lQTmQOxV/e8JwZyd0SukxC6SFRlDZ1B478dZ29qxXDsWzStTdDt0FXg3
-  matrix:
-    - nodejs_version: 7
+  nodejs_version: 7
 
+# Setup cache for node modules
 cache:
   - "%LOCALAPPDATA%/Yarn"
   - node_modules -> package.json
   - app/node_modules -> app/package.json
 
-matrix:
-  fast_finish: true
+# The platform we want to build for
+platform:
+  - x64
 
-build: off
-
-version: '0.0.1-dev.{build}'
-
-shallow_clone: true
-
-clone_depth: 1
-
+# Install scripts. (runs after repo cloning)
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node $env:nodejs_version $env:platform
   - set CI=true
   - yarn
   - cd src && yarn
 
+# Post-install test scripts.
 test_script:
   - node --version
   - yarn lint
+  - yarn package:publish
 
-build_script:
-  - yarn package
+# Don't actually build.
+build: off
 
+# Publish artifacts
 artifacts:
-  - path: release\win-unpacked\
-    name: 'MovieCast Portable {version}'
-    type: Zip
   - path: release\*.exe
+
+# Only build releases for master branch
+branches:
+  only:
+    - master
