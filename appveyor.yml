@@ -1,0 +1,38 @@
+# Test against the latest version of this Node.js version
+environment:
+  nodejs_version: 7
+
+# Setup cache for node modules
+cache:
+  - "%LOCALAPPDATA%/Yarn"
+  - node_modules -> package.json
+  - app/node_modules -> app/package.json
+
+# The platform we want to build for
+platform:
+  - x64
+
+# Install scripts. (runs after repo cloning)
+install:
+  - ps: Install-Product node $env:nodejs_version $env:platform
+  - set CI=true
+  - yarn
+  - cd src && yarn
+
+# Post-install test scripts.
+test_script:
+  - node --version
+  - yarn lint
+  - yarn package:publish
+
+# Don't actually build.
+build: off
+
+# Publish artifacts
+artifacts:
+  - path: release\*.exe
+
+# Only build releases for master branch
+branches:
+  only:
+    - master
