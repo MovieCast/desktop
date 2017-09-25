@@ -1,3 +1,5 @@
+import { autoUpdater } from 'electron-updater';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgress, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from 'material-ui';
@@ -11,10 +13,6 @@ import Message from './Message';
 class AutoUpdater extends Component {
   state = {
     showError: false
-  }
-
-  showError = () => {
-
   }
 
   render() {
@@ -42,7 +40,16 @@ class AutoUpdater extends Component {
         <Message
           open={updater.updateDownloaded}
           icon={<RefreshIcon />}
-          message="Update downloaded, restarting in 5 seconds"
+          message="Update downloaded, would you like to install it?"
+          actions={[
+            <Button
+              key="install"
+              color="inherit"
+              onClick={() => autoUpdater.quitAndInstall()}
+            >
+            Install
+          </Button>
+          ]}
         />
         <Message
           open={!!updater.updateError && !this.state.showError}
