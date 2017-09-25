@@ -12,6 +12,13 @@ cache:
 platform:
   - x64
 
+# Don't actually build.
+build: off
+
+# Some clone shit
+shallow_clone: true
+clone_depth: 1
+
 # Install scripts. (runs after repo cloning)
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
@@ -24,9 +31,6 @@ test_script:
   - node --version
   - yarn lint
   - yarn package:publish
-
-# Don't actually build.
-build: off
 
 # Publish artifacts
 artifacts:

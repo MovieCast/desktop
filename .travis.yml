@@ -1,19 +1,12 @@
-sudo: required
-dist: trusty
+sudo: false
 
-language: c
-
-matrix:
-  include:
-    - os: osx
-    - os: linux
-      env: CC=clang CXX=clang++ npm_config_clang=1
-      compiler: clang
+language: node_js
 
 node_js:
   - 7
 
 cache:
+  yarn: true
   directories:
     - node_modules
     - app/node_modules
@@ -26,16 +19,14 @@ addons:
       - g++-4.8
       - icnsutils
       - graphicsmagick
-      - libgnome-keyring-dev
       - xz-utils
       - xorriso
-      - xvfb
 
 install:
+  - export CXX="g++-4.8"
   - yarn
-  - cd src && yarn
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  - cd app && yarn && cd ..
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
 
 before_script:
   - export DISPLAY=:99.0
