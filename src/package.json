@@ -13,5 +13,9 @@
     "postinstall": "npm rebuild --runtime=electron --target=1.6.6 --disturl=https://atom.io/download/atom-shell --build-from-source"
   },
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moviecast/moviecast-desktop/issues"
+  },
+  "homepage": "https://github.com/moviecast/moviecast-desktop#readme",
   "dependencies": {}
 }

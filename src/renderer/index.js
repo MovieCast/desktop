@@ -26,30 +26,23 @@ const dispatch = store.dispatch;
 init();
 
 function init() {
-  ipc.on('te-warning', (event, err) => {
-    console.warn(`torrentEngine: ${err.message}`);
+  ipc.on('info', (event, ...args) => {
+    console.info(...args);
   });
 
-  ipc.on('te-error', (event, err) => {
-    console.error(`torrentEngine: ${err.message}`);
+  ipc.on('debug', (event, ...args) => {
+    console.debug(...args);
   });
 
-  ipc.on('te-infohash', (event, torrentKey, infoHash) => {
-    dispatch(torrentInfoHash(torrentKey, infoHash));
+  ipc.on('warn', (event, ...args) => {
+    console.warn(...args);
   });
 
-  ipc.on('te-metadata', (event, torrentKey, info) => {
-    dispatch(torrentMetaData(torrentKey, info));
+  ipc.on('error', (event, ...args) => {
+    console.error(...args);
   });
 
-  ipc.on('te-progress', (event, torrentKey, info) => {
-    console.log(torrentKey, info);
-    dispatch(torrentProgress(torrentKey, info));
-  });
-
-  ipc.on('te-done', (event, torrentKey, info) => {
-    dispatch(torrentDone(torrentKey, info));
-  });
+  ipc.send('ipcReady');
 
   render(App);
 

@@ -16,7 +16,7 @@
     "prestart": "npm run build",
     "start": "cross-env NODE_ENV=production electron ./src/",
     "dev": "cross-env START_HOT=1 npm run dev:renderer",
-    "dev:main": "cross-env HOT=1 NODE_ENV=development electron -r babel-register ./src/main/index",
+    "dev:main": "cross-env HOT=1 NODE_ENV=development electron -r babel-register ./src/main/refactor/index",
     "dev:renderer": "cross-env NODE_ENV=development node --trace-warnings -r babel-register ./node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.config.renderer.dev.js",
     "package": "npm run build && build --publish never",
     "package:all": "npm run build && build -mwl",
@@ -143,6 +143,8 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "application-config": "^1.0.1",
+    "arch": "^2.1.0",
     "axios": "^0.16.2",
     "bluebird": "^3.5.0",
     "crypto": "^1.0.1",
