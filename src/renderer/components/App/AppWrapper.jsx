@@ -1,42 +1,44 @@
+/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { MuiThemeProvider } from 'material-ui/styles';
-import getContext, { getTheme } from '../../styles/getContext';
+import JssProvider from 'react-jss/lib/JssProvider';
+
+import createContext, { getTheme } from '../../styles/createContext';
 import AppFrame from '../../containers/AppFrame';
 
 class AppWrapper extends React.Component {
   componentWillMount() {
-    this.styleContext = getContext();
-  }
-
-  componentDidMount() {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles && jssStyles.parentNode) {
-      jssStyles.parentNode.removeChild(jssStyles);
-    }
+    this.styleContext = createContext();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.ui.palette !== this.props.ui.palette) {
-      this.styleContext.theme = getTheme(nextProps.ui.palette);
+      this.styleContext.theme = getTheme(nextProps.ui);
     }
   }
 
   styleContext = null;
 
   render() {
-    const { children } = this.props;
+    const { children, history } = this.props;
+
+    console.log(history);
 
     return (
-      <MuiThemeProvider
-        theme={this.styleContext.theme}
-        sheetsManager={this.styleContext.sheetsManager}
+      <JssProvider
+        registry={this.styleContext.sheetsRegistry}
+        jss={this.styleContext.jss}
+        generateClassName={this.styleContext.generateClassName}
       >
-        {children}
-      </MuiThemeProvider>
+        <MuiThemeProvider
+          theme={this.styleContext.theme}
+          sheetsManager={this.styleContext.sheetsManager}
+        >
+          {children}
+        </MuiThemeProvider>
+      </JssProvider>
     );
   }
 }
@@ -44,10 +46,11 @@ class AppWrapper extends React.Component {
 AppWrapper.propTypes = {
   children: PropTypes.node.isRequired,
   ui: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps({ settings: { ui } }) {
   return { ui };
 }
 
-export default withRouter(connect(mapStateToProps)(AppWrapper));
+export default connect(mapStateToProps)(AppWrapper);

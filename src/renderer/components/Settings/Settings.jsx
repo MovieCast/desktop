@@ -83,7 +83,8 @@ class Settings extends Component {
             text="Palette"
             value={settings.ui.palette}
             options={['Dark', 'Light']}
-            onOptionsClick={(event, index, value) => changeSettings({ ui: { palette: value } })}
+            values={['dark', 'light']}
+            onOptionsClick={(event, index, value) => changeSettings({ ui: { palette: value.toLowerCase() } })}
           />
           <SettingsCategoryListItem
             icon={<StartScreenIcon />}
