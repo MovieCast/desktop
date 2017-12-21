@@ -6,9 +6,10 @@ import { DELAYED_INIT } from '../../config';
 import ipc from './ipc';
 import * as logger from './logger';
 import * as menu from './menu';
+import * as extensions from './extensions';
 import * as Store from './store';
 import windows from './windows';
-import * as updater from './updater';
+// import * as updater from './updater';
 
 console.time('main:init');
 
@@ -37,9 +38,12 @@ function init() {
 
     isReady = true;
 
+    // Install dev extensions
+    extensions.init();
+
     // windows.app.init(results.store); // Restore the window to the last state we saved it in
     windows.app.init();
-    // windows.engine.init();
+    windows.engine.init();
     menu.init();
 
     // To keep app startup fast, some code is delayed.
@@ -77,8 +81,11 @@ function init() {
 function delayedInit(results) {
   if (app.isQuitting) return;
 
+  logger.debug('delayedInit: results', results);
+
   if (process.env.NODE_ENV === 'production') {
-    updater.init(results.store);
+    logger.warn('updater: Updating process is currently disabled due to some interal issues.');
+    // updater.init(results.store);
   } else {
     logger.warn('updater: Not starting because in development environment!');
   }

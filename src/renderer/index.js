@@ -42,6 +42,22 @@ function init() {
     console.error(...args);
   });
 
+  ipc.on('te-infohash', (event, key, infoHash) => {
+    store.dispatch(torrentInfoHash(key, infoHash));
+  });
+
+  ipc.on('te-metadata', (event, key, info) => {
+    store.dispatch(torrentMetaData(key, info));
+  });
+
+  ipc.on('te-progress', (event, key, info) => {
+    store.dispatch(torrentProgress(key, info));
+  });
+
+  ipc.on('te-done', (event, key, info) => {
+    store.dispatch(torrentDone(key, info));
+  });
+
   ipc.send('ipcReady');
 
   render(App);
@@ -59,7 +75,7 @@ function render(Component) {
     >
       <Component store={store} history={history} />
     </AppContainer>,
-  document.getElementById('root')
+    document.getElementById('root')
   );
 }
 

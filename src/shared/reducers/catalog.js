@@ -2,7 +2,7 @@ import _ from 'lodash';
 import merge from 'deepmerge';
 import { createReducer } from '../util';
 // import { fromJS } from 'immutable';
-import { FETCH_MOVIE, FETCH_MOVIES_SUCCESS, SET_FILTER } from '../actions/catalog';
+import { FETCH_MOVIE_SUCCESS, FETCH_MOVIES_SUCCESS, SET_FILTER } from '../actions/catalog';
 
 
 const initialState = {
@@ -13,7 +13,8 @@ const initialState = {
     keywords: ''
   },
   entities: {
-    movies: []
+    movies: [],
+    torrents: []
   },
   result: []
 };
@@ -28,8 +29,8 @@ export default createReducer(initialState, {
   }),
 
 
-  [FETCH_MOVIE]: (state) => {
-    console.warn('FETCH_MOVIE: This action is not working yet');
+  [FETCH_MOVIE_SUCCESS]: (state) => {
+    console.warn('FETCH_MOVIE_SUCCESS: Unhandled process!');
     return state;
   },
 

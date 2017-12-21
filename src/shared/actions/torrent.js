@@ -119,7 +119,7 @@ export function startStreamServer(torrentKey) {
 }
 
 export function stopStreamServer() {
-    // global.torrentEngine.stopStreamServer();
+  // global.torrentEngine.stopStreamServer();
 
   ipc.send('te-stopStreamServer');
 

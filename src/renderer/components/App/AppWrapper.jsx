@@ -6,7 +6,7 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import JssProvider from 'react-jss/lib/JssProvider';
 
 import createContext, { getTheme } from '../../styles/createContext';
-import AppFrame from '../../containers/AppFrame';
+// import AppFrame from '../../containers/AppFrame';
 
 class AppWrapper extends React.Component {
   componentWillMount() {
@@ -22,9 +22,7 @@ class AppWrapper extends React.Component {
   styleContext = null;
 
   render() {
-    const { children, history } = this.props;
-
-    console.log(history);
+    const { children } = this.props;
 
     return (
       <JssProvider
@@ -45,8 +43,7 @@ class AppWrapper extends React.Component {
 
 AppWrapper.propTypes = {
   children: PropTypes.node.isRequired,
-  ui: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  ui: PropTypes.object.isRequired
 };
 
 function mapStateToProps({ settings: { ui } }) {

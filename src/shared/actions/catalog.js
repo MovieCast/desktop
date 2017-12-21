@@ -8,7 +8,11 @@ import movieNormalizer from '../normalizers/movie';
 export const FETCH_MOVIES_REQUEST = 'FETCH_MOVIES_REQUEST';
 export const FETCH_MOVIES_SUCCESS = 'FETCH_MOVIES_SUCCESS';
 export const FETCH_MOVIES_FAILURE = 'FETCH_MOVIES_FAILURE';
-export const FETCH_MOVIE = 'FETCH_MOVIE';
+
+export const FETCH_MOVIE_REQUEST = 'FETCH_MOVIE_REQUEST';
+export const FETCH_MOVIE_SUCCESS = 'FETCH_MOVIE_SUCCESS';
+export const FETCH_MOVIE_FAILURE = 'FETCH_MOVIE_FAILURE';
+
 export const SET_FILTER = 'SET_FILTER';
 
 /**
@@ -74,9 +78,10 @@ export const fetchMovies = createAliasedAction(
 );
 
 export const fetchMovie = createAliasedAction(
-  FETCH_MOVIE,
+  FETCH_MOVIE_REQUEST,
   (id) => ({
-    type: FETCH_MOVIE,
-    payload: getMovie(id),
+    types: [FETCH_MOVIE_REQUEST, FETCH_MOVIE_SUCCESS, FETCH_MOVIE_FAILURE],
+    request: () => getMovie(id),
+    parser: ({ data }) => movieNormalizer(data)
   })
 );

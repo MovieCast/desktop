@@ -33,7 +33,6 @@ global.WEBTORRENT_ANNOUNCE = announceList
  * move to it's own window
  */
 class TorrentEngine {
-
   /**
    * MovieCast Version
    */

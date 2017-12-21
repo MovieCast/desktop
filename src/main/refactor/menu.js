@@ -1,10 +1,15 @@
 /* eslint-disable import/prefer-default-export */
 import { shell, Menu } from 'electron';
 import { bugs, version } from '../../../package.json';
+import { app, engine } from './windows';
 
 export function init() {
   const menu = Menu.buildFromTemplate(getMenuTemplate());
   Menu.setApplicationMenu(menu);
+
+  if (process.env.NODE_ENV === 'development') {
+    addFancyInspectContextMenuThing();
+  }
 }
 
 /**
@@ -26,18 +31,26 @@ function getMenuTemplate() {
     submenu: [{
       label: '&Reload',
       accelerator: 'CmdOrCtrl+R',
-      click(item, window) {
-        if (window) { window.webContents.reloadIgnoringCache(); }
+      click: () => {
+        app.win.webContents.reloadIgnoringCache();
       }
     }, {
       label: 'Toggle &Full Screen',
       accelerator: 'F11',
-      role: 'togglefullscreen'
+      click: () => {
+        app.toggleFullScreen();
+      }
     }, {
       label: 'Toggle &Developer Tools',
       accelerator: 'Alt+CmdOrCtrl+I',
-      click(item, window) {
-        if (window) { window.toggleDevTools(); }
+      click: () => {
+        app.win.toggleDevTools();
+      }
+    }, {
+      label: 'Show Torrent Engine Process',
+      accelerator: 'Alt+CmdOrCtrl+E',
+      click: () => {
+        engine.win.toggleDevTools();
       }
     }]
   },
@@ -54,14 +67,29 @@ function getMenuTemplate() {
       type: 'separator'
     }, {
       label: 'Report Issue',
-      click() {
+      click: () => {
         shell.openExternal(bugs.url);
       }
     }, {
       label: 'Suggest Feature',
-      click() {
+      click: () => {
         shell.openExternal(bugs.url);
       }
     }]
   }];
+}
+
+function addFancyInspectContextMenuThing() { // Yea...
+  app.win.webContents.on('context-menu', (e, props) => {
+    const { x, y } = props;
+
+    Menu
+      .buildFromTemplate([{
+        label: 'Inspect element',
+        click: () => {
+          app.win.inspectElement(x, y);
+        }
+      }])
+      .popup(app.win);
+  });
 }

@@ -6,14 +6,14 @@ const getMoviesMap = (state) => state.entities.movies;
 
 // Select movie result from state
 const getResult = createSelector(
-    getResultMap,
-    (resultMap) => resultMap
+  getResultMap,
+  (resultMap) => resultMap
 );
 
 // Select movies from state
 const getMovies = createSelector(
-    getMoviesMap,
-    (moviesMap) => moviesMap
+  getMoviesMap,
+  (moviesMap) => moviesMap
 );
 
 // Select filter from state

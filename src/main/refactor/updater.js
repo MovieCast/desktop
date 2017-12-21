@@ -9,6 +9,8 @@ import {
   updateDownloaded
 } from '../../shared/actions/updater';
 
+// TODO: Make a customized updater which will do no more then downloading the installer.
+
 export function init(store) {
   autoUpdater.on('checking-for-update', () => {
     store.dispatch(checkingForUpdate());
