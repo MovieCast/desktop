@@ -12,7 +12,8 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
 export default merge.smart(baseConfig, {
-  devtool: 'source-map',
+  // devtool: 'source-map',
+  devtool: 'none',
 
   target: 'electron-renderer',
 

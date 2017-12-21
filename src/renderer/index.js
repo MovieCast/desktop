@@ -43,19 +43,19 @@ function init() {
   });
 
   ipc.on('te-infohash', (event, key, infoHash) => {
-    store.dispatch(torrentInfoHash(key, infoHash));
+    dispatch(torrentInfoHash(key, infoHash));
   });
 
   ipc.on('te-metadata', (event, key, info) => {
-    store.dispatch(torrentMetaData(key, info));
+    dispatch(torrentMetaData(key, info));
   });
 
   ipc.on('te-progress', (event, key, info) => {
-    store.dispatch(torrentProgress(key, info));
+    dispatch(torrentProgress(key, info));
   });
 
   ipc.on('te-done', (event, key, info) => {
-    store.dispatch(torrentDone(key, info));
+    dispatch(torrentDone(key, info));
   });
 
   ipc.send('ipcReady');

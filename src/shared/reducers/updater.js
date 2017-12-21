@@ -6,7 +6,7 @@ import {
   UPDATE_DOWNLOADED,
   UPDATE_ERROR,
   UPDATE_NOT_AVAILABLE,
- } from '../actions/updater';
+} from '../actions/updater';
 
 const initialState = {
   checkingForUpdate: false,

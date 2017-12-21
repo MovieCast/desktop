@@ -24,7 +24,7 @@
     "package:win": "npm run build && build --win --x64",
     "package:publish": "npm run build && build --publish onTagOrDraft"
   },
-  "browserslist": "electron 1.6",
+  "browserslist": "electron 1.7",
   "build": {
     "productName": "MovieCast",
     "appId": "xyz.moviecast.MovieCast",
@@ -102,8 +102,8 @@
     "cross-spawn": "^5.1.0",
     "css-loader": "^0.28.3",
     "devtron": "^1.4.0",
-    "electron": "^1.6.11",
-    "electron-builder": "^19.17.0",
+    "electron": "^1.7.10",
+    "electron-builder": "19.49.0",
     "electron-devtools-installer": "^2.2.0",
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^15.1.0",
@@ -171,7 +171,7 @@
     "reselect": "^3.0.1",
     "source-map-support": "^0.4.15",
     "typeface-roboto": "0.0.31",
-    "webtorrent": "^0.98.19",
+    "webtorrent": "^0.98.20",
     "zero-fill": "^2.2.3"
   },
   "devEngines": {
