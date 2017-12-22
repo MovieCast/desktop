@@ -72,6 +72,7 @@ function init() {
     if (!app.isQuitting) {
       e.preventDefault();
       hide();
+      app.quit();
     }
   });
 }

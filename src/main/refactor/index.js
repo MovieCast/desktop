@@ -68,7 +68,7 @@ function init() {
     // Give the state saver some time to save,
     // if it takes more then 4 seconds, quit
     setTimeout(() => {
-      logger.error('Saving state took too long. Quitting.');
+      console.error('Saving state took too long. Quitting.');
       app.quit();
     }, 4000);
   });
