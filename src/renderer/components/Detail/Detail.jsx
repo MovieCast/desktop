@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {
   Typography,
-  Button
+  Button,
+  Chip
 } from 'material-ui';
 import { PlayArrow as PlayIcon } from 'material-ui-icons';
 import { withStyles } from 'material-ui/styles';
 import DynamicImg from '../Util/DynamicImg';
 import Rating from '../Util/Rating';
+
+import { capitalize } from '../../utils/stringUtil';
 
 const styleSheet = theme => ({
   wrapper: {
@@ -16,7 +20,8 @@ const styleSheet = theme => ({
   header: {
     position: 'relative',
     width: '100vw',
-    height: '40vh'
+    height: '40vh',
+    transition: theme.transitions.create('height', { duration: 1300 })
   },
   background: {
     position: 'absolute',
@@ -27,10 +32,11 @@ const styleSheet = theme => ({
   },
   meta: {
     position: 'absolute',
-    bottom: 0,
-    display: 'block',
+    bottom: 5,
+    display: 'flex',
+    alignItems: 'center',
     // left: 'calc(((100vh - 140px - 50px) * 2 / 3) + 170px)'
-    zIndex: 1
+    zIndex: 3
   },
   content: theme.mixins.gutters({
     position: 'absolute',
@@ -57,20 +63,36 @@ const styleSheet = theme => ({
     paddingTop: 24
   },
   metaHeaderDot: {
-    display: 'inline-block',
     position: 'relative',
     backgroundColor: '#ffffff',
-    margin: '0 16px 2px',
+    margin: '0 16px',
     width: 7,
     height: 7,
     borderRadius: '50%'
   },
-  metaHeaderText: {
-    display: 'inline-block'
+  row: {
+    display: 'inline-flex',
+    flexWrap: 'wrap'
   },
+  chip: {
+    marginLeft: 4,
+    marginRight: 4
+  },
+
+  hidden: {
+    opacity: 0,
+    zIndex: 0
+  },
+  fullHeight: {
+    height: '100vh'
+  }
 });
 
 class Detail extends Component {
+  state = {
+    downloading: false
+  }
+
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.fetchItem(id);
@@ -85,26 +107,48 @@ class Detail extends Component {
 
   render() {
     const { item, classes } = this.props;
+
+    const headerClassName = classNames(classes.header, {
+      [classes.fullHeight]: this.state.downloading
+    });
+
+    const metaClassName = classNames(classes.meta, {
+      [classes.hidden]: this.state.downloading
+    });
+
+    const contentClassName = classNames(classes.content, {
+      [classes.hidden]: this.state.downloading
+    });
+
     return (
       <div className={classes.wrapper}>
-        <div className={classes.header}>
+        <div className={headerClassName}>
           <DynamicImg className={classes.background} src={item.images.banner} alt={item.title} />
-          <div className={classes.meta}>
+          <div className={metaClassName}>
             <Rating
-              className={classes.metaHeaderText}
               rating={item.rating.percentage / 10}
               title={item.rating.percentage}
             />
             <span className={classes.metaHeaderDot} />
-            <Typography className={classes.metaHeaderText}>{item.genres.join(', ')}</Typography>
+            <div className={classes.row}>
+              {item.genres.map(genre => (
+                <Chip
+                  label={capitalize(genre)}
+                  key={genre}
+                  className={classes.chip}
+                />
+              ))}
+            </div>
             <span className={classes.metaHeaderDot} />
-            <Typography className={classes.metaHeaderText}>{item.year}</Typography>
+            <Typography>{item.year}</Typography>
             <span className={classes.metaHeaderDot} />
-            <Typography className={classes.metaHeaderText}>{item.runtime} min</Typography>
+            <Typography>{item.runtime} min</Typography>
           </div>
         </div>
-        <div className={classes.content}>
-          <Button fab color="primary" className={classes.playButton}>
+
+
+        <div className={contentClassName}>
+          <Button fab color="primary" className={classes.playButton} onClick={() => this.setState({ downloading: true })}>
             <PlayIcon />
           </Button>
           <Typography type="headline">{item.title}</Typography>

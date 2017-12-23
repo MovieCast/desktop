@@ -37,7 +37,6 @@ const styleSheet = theme => ({
 });
 
 class ControlBar extends Component {
-
   getFractionPlayed() {
     const { player } = this.props;
     return player.currentTime / player.duration;

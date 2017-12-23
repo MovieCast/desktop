@@ -28,15 +28,16 @@ export const SET_FILTER = 'SET_FILTER';
 export function playItem(itemId, torrentIndex) {
   return (dispatch, getState) => {
     const { catalog, torrent } = getState();
-    const item = catalog.items[itemId];
-    const torrentItem = item.torrents[torrentIndex];
+    const item = catalog.entities.movies[itemId];
+    const torrentItem = item.torrents.en[torrentIndex];
+    console.log(item);
     // Save snapshot of the key because addTorrent will change nextKey
     const torrentKey = torrent.nextKey;
 
-    const magnetURI = `magnet:?xt=urn:btih:${torrentItem.hash}&dn=${encodeURI(item.title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
+    // const magnetURI = `magnet:?xt=urn:btih:${torrentItem.hash}&dn=${encodeURI(item.title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
 
     // Start torrent and stream http server for it
-    dispatch(addTorrent(magnetURI));
+    dispatch(addTorrent(torrentItem.url));
     dispatch(startStreamServer(torrentKey));
 
     // Setup the player with the correct title and src

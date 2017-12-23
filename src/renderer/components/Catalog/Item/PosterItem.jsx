@@ -22,7 +22,6 @@ const styles = theme => ({
 });
 
 class PosterItem extends Component {
-
   render() {
     const { classes, id, title, poster, year, rating } = this.props;
     return (
@@ -39,7 +38,7 @@ class PosterItem extends Component {
               <span style={{ display: 'flex' }}>
                 {year} - <Rating rating={rating} size={12} />
               </span>
-              }
+            }
           />
         </GridListTile>
       </BaseItem>

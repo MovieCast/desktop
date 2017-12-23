@@ -23,7 +23,6 @@ const styles = theme => ({
 });
 
 class BaseItem extends Component {
-
   state = {
     isVisible: false
   };

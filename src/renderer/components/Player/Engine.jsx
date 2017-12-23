@@ -14,7 +14,6 @@ const styleSheet = {
 };
 
 class Engine extends Component {
-
   componentDidMount() {
     const { player } = this.props;
 
