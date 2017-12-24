@@ -27,19 +27,27 @@ init();
 
 function init() {
   ipc.on('info', (event, ...args) => {
-    console.info(...args);
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`[%cIPC/INFO%c] ${args[0]}`, 'color: blue;', 'color: black;');
+    console.info(...params);
   });
 
   ipc.on('debug', (event, ...args) => {
-    console.debug(...args);
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`%c[%cIPC/DEBUG%c] %c${args[0]}`, 'color: black;', 'color: green;', 'color: black;', 'color: blue;');
+    console.debug(...params);
   });
 
   ipc.on('warn', (event, ...args) => {
-    console.warn(...args);
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`[%cIPC/WARNING%c] ${args[0]}`, 'color: orange;', 'color: black;');
+    console.warn(...params);
   });
 
   ipc.on('error', (event, ...args) => {
-    console.error(...args);
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`%c[%cIPC/ERROR%c] ${args[0]}`, 'color: black;', 'color: red;', 'color: black;');
+    console.error(...params);
   });
 
   ipc.on('te-infohash', (event, key, infoHash) => {

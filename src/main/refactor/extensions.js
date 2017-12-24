@@ -18,6 +18,6 @@ function init(force = false) {
 
   Promise
     .all(extensions.map(name => installExtension(name, force)))
-    .then(logger.info)
+    .then(data => logger.info('extensions: Installed the following extensions', data))
     .catch(console.log);
 }
