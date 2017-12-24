@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import {
   Typography,
   Button,
-  Chip
+  Chip,
+  LinearProgress
 } from 'material-ui';
 import { PlayArrow as PlayIcon } from 'material-ui-icons';
 import { withStyles } from 'material-ui/styles';
@@ -35,20 +36,20 @@ const styleSheet = theme => ({
     bottom: 5,
     display: 'flex',
     alignItems: 'center',
-    // left: 'calc(((100vh - 140px - 50px) * 2 / 3) + 170px)'
-    zIndex: 3
+    zIndex: 3,
+    transition: theme.transitions.create('opacity', { duration: 1300 })
   },
   content: theme.mixins.gutters({
-    position: 'absolute',
+    position: 'relative',
     top: 0,
     height: '100vh',
     width: '100%',
     display: 'block',
-    marginTop: '40vh',
     paddingTop: 24,
     right: 0,
     background: theme.palette.background.default,
     zIndex: 2,
+    transition: theme.transitions.create('all', { duration: 1300 }),
     boxShadow: '0px -7px 8px -4px rgba(0, 0, 0, 0.2), 0px -12px 17px 2px rgba(0, 0, 0, 0.14), 0px -5px 22px 4px rgba(0, 0, 0, 0.12)',
   }),
   playButton: {
@@ -79,12 +80,27 @@ const styleSheet = theme => ({
     marginRight: 4
   },
 
-  hidden: {
-    opacity: 0,
-    zIndex: 0
+  downloading: {
+    // See: https://github.com/cssinjs/jss-nested
+    '& $header': {
+      height: '100vh',
+      '& $meta': {
+        opacity: 0
+      }
+    },
+    '& $content': {
+      opacity: 0,
+      zIndex: 0
+    }
   },
-  fullHeight: {
-    height: '100vh'
+
+  middleWrapper: {
+    display: 'flex',
+    height: '100vh',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 50,
+    position: 'relative'
   }
 });
 
@@ -108,23 +124,29 @@ class Detail extends Component {
   render() {
     const { item, classes } = this.props;
 
-    const headerClassName = classNames(classes.header, {
-      [classes.fullHeight]: this.state.downloading
-    });
-
-    const metaClassName = classNames(classes.meta, {
-      [classes.hidden]: this.state.downloading
-    });
-
-    const contentClassName = classNames(classes.content, {
-      [classes.hidden]: this.state.downloading
+    const wrapperClassName = classNames(classes.wrapper, {
+      [classes.downloading]: this.state.downloading
     });
 
     return (
-      <div className={classes.wrapper}>
-        <div className={headerClassName}>
+      <div className={wrapperClassName}>
+        <div className={classes.header}>
           <DynamicImg className={classes.background} src={item.images.banner} alt={item.title} />
-          <div className={metaClassName}>
+
+          {this.state.downloading ? (
+            <div className={classes.middleWrapper}>
+              <div style={{ width: '100%' }}>
+                <LinearProgress style={{ width: '100%' }} />
+                <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: 5 }}>
+                  <span>Download Speed: 0kbps</span>
+                  <span>Upload Speed: 0kbps</span>
+                  <span>Peers: 0</span>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          <div className={classes.meta}>
             <Rating
               rating={item.rating.percentage / 10}
               title={item.rating.percentage}
@@ -146,8 +168,7 @@ class Detail extends Component {
           </div>
         </div>
 
-
-        <div className={contentClassName}>
+        <div className={classes.content}>
           <Button fab color="primary" className={classes.playButton} onClick={() => this.setState({ downloading: true })}>
             <PlayIcon />
           </Button>

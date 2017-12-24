@@ -41,7 +41,6 @@ const styleSheet = theme => ({
 });
 
 class Overlay extends Component {
-
   getFractionPlayed = () => {
     const { player } = this.props;
     return player.currentTime / player.duration;
