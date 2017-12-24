@@ -56,7 +56,7 @@ class BaseItem extends Component {
 
 BaseItem.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.object,
 
   once: PropTypes.bool,
   onVisible: PropTypes.func,
@@ -68,6 +68,8 @@ BaseItem.propTypes = {
 BaseItem.defaultProps = {
   innerRef: () => {},
   onVisible: () => {},
+
+  children: null,
 
   once: false
 };

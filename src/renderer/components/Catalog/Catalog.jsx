@@ -1,12 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import _ from 'lodash';
 import React, { Component } from 'react';
+import dimensions from 'react-dimensions';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import { AppBar, Tabs, Tab, Grid } from 'material-ui';
 
 import PosterItem from './Item/PosterItem';
+import GhostItem from './Item/GhostItem';
 import MoreItem from './Item/MoreItem';
 
 // styles
@@ -70,11 +72,11 @@ class Catalog extends Component {
   loadMore = () => {
     const { filter: { page } } = this.props;
 
-    setTimeout(() => {
-      this.props.setFilter({
-        page: page + 1
-      });
-    }, 500);
+    // setTimeout(() => {
+    //   this.props.setFilter({
+    //     page: page + 1
+    //   });
+    // }, 500);
   }
 
   loadDetail(event, item) {
@@ -110,7 +112,19 @@ class Catalog extends Component {
   }
 
   render() {
-    const { classes, result } = this.props;
+    const { classes, result, containerWidth } = this.props;
+
+    // Alrighty then, lets see if we can calculate the needed "ghost" items
+    // to fill up the empty space in the last row.
+    // First we'll calculate how many items can fit in this container
+    // After that we can see how many items are missing in the last row
+    // NOTICE: Move this part out of the render function, to improve performance.
+    //         These calculations only have to be recalculated when
+    //         the width changes by a certain amount of pixels
+    const itemsPerRow = Math.floor(containerWidth / 230);
+    const amountOfRows = (result.length / itemsPerRow);
+    const percentageMissing = 1 - (amountOfRows % 1);
+    const missingItems = Math.round((percentageMissing * itemsPerRow) - 1);
 
     return (
       <div className={classes.root}>
@@ -135,7 +149,9 @@ class Catalog extends Component {
             )))}
             <MoreItem onVisible={this.loadMore} />
 
-            {/* Show "ghost" items here */}
+            {_.map([...new Array(missingItems).keys()], (key) => (
+              <GhostItem key={key} />
+            ))}
           </Grid>
         </div>
       </div>
@@ -152,8 +168,11 @@ Catalog.propTypes = {
   fetchItems: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
   configureAppBar: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+
+  containerWidth: PropTypes.number.isRequired,
+  // containerHeight: PropTypes.number.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(styleSheet)(Catalog);
+export default dimensions()(withStyles(styleSheet)(Catalog));
