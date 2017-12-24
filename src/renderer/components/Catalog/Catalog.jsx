@@ -72,11 +72,11 @@ class Catalog extends Component {
   loadMore = () => {
     const { filter: { page } } = this.props;
 
-    // setTimeout(() => {
-    //   this.props.setFilter({
-    //     page: page + 1
-    //   });
-    // }, 500);
+    setTimeout(() => {
+      this.props.setFilter({
+        page: page + 1
+      });
+    }, 500);
   }
 
   loadDetail(event, item) {

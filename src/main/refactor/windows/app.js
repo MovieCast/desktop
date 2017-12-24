@@ -28,8 +28,8 @@ function init() {
 
   // Temp fix till our store is ready
   const display = screen.getPrimaryDisplay();
-  const defaultWidth = display.size.width * 0.8;
-  const defaultHeight = display.size.height * 0.8;
+  const defaultWidth = Math.round(display.size.width * 0.8);
+  const defaultHeight = Math.round(display.size.height * 0.8);
 
   const win = manager.win = new BrowserWindow({
     backgroundColor: '#282828',
