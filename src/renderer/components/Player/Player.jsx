@@ -19,7 +19,6 @@ const styleSheet = {
 };
 
 class Player extends Component {
-
   componentWillMount() {
     // Make the AppBar transparent and add a back button
     this.props.configureAppBar({
