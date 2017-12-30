@@ -16,6 +16,10 @@ const styles = theme => ({
   root: {
     transition: theme.transitions.create(['box-shadow', 'opacity']),
   },
+  appBar: {
+    transition: theme.transitions.create(['box-shadow', 'opacity']),
+    position: 'relative'
+  },
   transparent: {
     backgroundColor: 'transparent'
   },
@@ -45,7 +49,7 @@ class ViewAppBar extends Component {
   render() {
     const {
       title, secondary, back, transparent, shadow,
-      visible, onBackAndDrawerButtonClick, classes } = this.props;
+      visible, onDrawerClick, onBackClick, classes } = this.props;
 
     const appBarClassName = classNames(classes.appBar, {
       [classes.transparent]: transparent,
@@ -54,11 +58,11 @@ class ViewAppBar extends Component {
     });
 
     return (
-      <AppBar className={appBarClassName} position="absolute">
+      <AppBar className={appBarClassName} position="relative">
         <Toolbar>
           <IconButton
             color="contrast"
-            onClick={onBackAndDrawerButtonClick}
+            onClick={back ? onBackClick : onDrawerClick}
           >
             {back ? <BackIcon /> : <MenuIcon />}
           </IconButton>
@@ -86,7 +90,8 @@ ViewAppBar.propTypes = {
   shadow: PropTypes.bool,
   visible: PropTypes.bool,
 
-  onBackAndDrawerButtonClick: PropTypes.func,
+  onBackClick: PropTypes.func,
+  onDrawerClick: PropTypes.func,
 
   classes: PropTypes.object.isRequired
 };
@@ -99,7 +104,8 @@ ViewAppBar.defaultProps = {
   shadow: true,
   visible: true,
 
-  onBackAndDrawerButtonClick: () => {}
+  onBackClick: () => {},
+  onDrawerClick: () => {}
 };
 
 export default withStyles(styles)(ViewAppBar);

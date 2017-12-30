@@ -12,11 +12,14 @@ import { withStyles } from 'material-ui/styles';
 import DynamicImg from '../Util/DynamicImg';
 import Rating from '../Util/Rating';
 
+import { withView, VIEW_CONTEXT_TYPES } from '../View';
+
 import { capitalize } from '../../utils/stringUtil';
 
 const styleSheet = theme => ({
   wrapper: {
-    position: 'relative'
+    position: 'relative',
+    marginTop: -64
   },
   header: {
     position: 'relative',
@@ -113,12 +116,9 @@ class Detail extends Component {
     const { id } = this.props.match.params;
     this.props.fetchItem(id);
 
-    // Make the AppBar transparent and add a back button
-    this.props.configureAppBar({
-      title: this.props.item.title,
-      transparent: true,
-      back: true
-    });
+    this.context.setBarTitle(this.props.item.title);
+    this.context.setBarTransparency(true);
+    this.context.setBarBack(true);
   }
 
   render() {
@@ -188,7 +188,6 @@ Detail.propTypes = {
   match: PropTypes.object.isRequired,
   fetchItem: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  configureAppBar: PropTypes.func.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
@@ -196,4 +195,8 @@ Detail.defaultProps = {
   item: {}
 };
 
-export default withStyles(styleSheet)(Detail);
+Detail.contextTypes = {
+  ...VIEW_CONTEXT_TYPES
+};
+
+export default withView(withStyles(styleSheet)(Detail));

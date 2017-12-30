@@ -1,5 +1,5 @@
 /* eslint-disable react/forbid-prop-types */
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
@@ -9,18 +9,19 @@ const styleSheet = {
     width: '100%',
     height: '100vh',
     position: 'relative',
-    top: -29,
   }
 };
 
-function ViewContent(props) {
-  const { classes, children } = props;
+class ViewContent extends Component {
+  render() {
+    const { classes, children } = this.props;
 
-  return (
-    <div className={classes.content}>
-      {children}
-    </div>
-  );
+    return (
+      <div className={classes.content}>
+        {children}
+      </div>
+    );
+  }
 }
 
 ViewContent.propTypes = {

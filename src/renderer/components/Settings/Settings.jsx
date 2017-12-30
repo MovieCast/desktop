@@ -14,14 +14,14 @@ import {
   HighQuality as HighQualityIcon
 } from 'material-ui-icons';
 
+import { withView, VIEW_CONTEXT_TYPES } from '../View';
+
 import SettingsCategoryList from './SettingsCategoryList';
 import SettingsCategoryListItem from './SettingsCategoryListItem';
 
 const styleSheet = {
   root: {
     width: '100%',
-    height: 'calc(100% - 64px - 29px)',
-    marginTop: 'calc(64px + 29px)'
   },
 };
 
@@ -34,11 +34,9 @@ class Settings extends Component {
   };
 
   componentWillMount() {
-    this.props.configureAppBar({
-      title: 'Settings',
-      shadow: true,
-      back: true
-    });
+    this.context.setBarTitle('Settings');
+    this.context.setBarShadow(true);
+    this.context.setBarBack(true);
   }
 
   handleToggle = (event, category, value) => {
@@ -139,4 +137,8 @@ Settings.propTypes = {
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(styleSheet)(Settings);
+Settings.contextTypes = {
+  ...VIEW_CONTEXT_TYPES
+};
+
+export default withView(withStyles(styleSheet)(Settings));

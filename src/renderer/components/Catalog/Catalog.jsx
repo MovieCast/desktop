@@ -11,13 +11,15 @@ import PosterItem from './Item/PosterItem';
 import GhostItem from './Item/GhostItem';
 import MoreItem from './Item/MoreItem';
 
+import { withView, VIEW_CONTEXT_TYPES } from '../View';
+
 // styles
 import styles from './Catalog.css';
 
 const styleSheet = theme => ({
   root: {
     height: 'calc(100% - 64px - 29px)',
-    marginTop: 'calc(64px + 29px)',
+    // marginTop: 'calc(64px + 29px)',
     width: '100%'
   },
   gridList: {
@@ -57,6 +59,9 @@ class Catalog extends Component {
       title: 'Movies', // TODO: This should be able to switch between shows and movies
       search: true
     });
+
+    this.context.setBarTitle('Movies');
+    this.context.setBarShadow(false);
 
     this.props.fetchItems({
       page: 1,
@@ -175,4 +180,8 @@ Catalog.propTypes = {
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default dimensions()(withStyles(styleSheet)(Catalog));
+Catalog.contextTypes = {
+  ...VIEW_CONTEXT_TYPES
+};
+
+export default withView(dimensions()(withStyles(styleSheet)(Catalog)));

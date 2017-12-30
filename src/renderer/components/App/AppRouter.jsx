@@ -14,20 +14,20 @@ export default function AppRouter({ history }) {
   return (
     <Router history={history}>
       <AppFrame>
-        <AppContent>
-          <Switch>
-            <Route path="/movie/:id" component={MovieDetail} state={{ title: 'Test' }} />
-            <Route path="/movies" component={MoviesCatalog} />
-            <Route path="/settings" component={SettingsPage} />
-            <Route path="/player" component={Player} />
+        {/* <AppContent> */}
+        <Switch>
+          <Route path="/movie/:id" component={MovieDetail} state={{ title: 'Test' }} />
+          <Route path="/movies" component={MoviesCatalog} />
+          <Route path="/settings" component={SettingsPage} />
+          <Route path="/player" component={Player} />
 
-            <Route
-              path="/"
-              render={() => (
-                <Redirect to="movies" />)}
-            />
-          </Switch>
-        </AppContent>
+          <Route
+            path="/"
+            render={() => (
+              <Redirect to="movies" />)}
+          />
+        </Switch>
+        {/* </AppContent> */}
       </AppFrame>
     </Router>
   );

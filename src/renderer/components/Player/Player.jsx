@@ -8,10 +8,13 @@ import Engine from './Engine';
 import Overlay from './Overlay';
 import ControlBar from './ControlBar';
 
+import { withView, VIEW_CONTEXT_TYPES } from '../View';
+
 const styleSheet = {
   root: {
     position: 'relative',
-    height: '100%'
+    height: '100%',
+    marginTop: -64 - 29
   },
   hideCursor: {
     cursor: 'none'
@@ -21,12 +24,11 @@ const styleSheet = {
 class Player extends Component {
   componentWillMount() {
     // Make the AppBar transparent and add a back button
-    this.props.configureAppBar({
-      secondary: `Playing: ${this.props.player.title}`,
-      transparent: true,
-      hidden: !this.props.player.showUi,
-      back: true
-    });
+
+    this.context.setBarTitle(`Playing: ${this.props.player.title}`);
+    this.context.setBarTransparency(true);
+    this.context.setBarBack(true);
+    this.context.setBarVisibility(!this.props.player.showUi);
   }
 
   componentDidMount() {
@@ -37,6 +39,7 @@ class Player extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.player.showUi !== this.props.player.showUi) {
+      this.context.setBarVisibility(!this.props.player.showUi);
       this.props.configureAppBar({
         hidden: !nextProps.player.showUi,
       });
@@ -44,9 +47,7 @@ class Player extends Component {
 
     // TODO: Handle this directly in the application reducer
     if (nextProps.player.title !== this.props.player.title) {
-      this.props.configureAppBar({
-        secondary: `Playing: ${this.props.player.title}`,
-      });
+      this.context.setBarTitle(`Playing: ${this.props.player.title}`);
     }
   }
 
@@ -157,4 +158,8 @@ Player.propTypes = {
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(styleSheet)(Player);
+Player.contextTypes = {
+  ...VIEW_CONTEXT_TYPES
+};
+
+export default withView(withStyles(styleSheet)(Player));

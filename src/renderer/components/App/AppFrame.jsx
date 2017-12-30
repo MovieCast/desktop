@@ -67,7 +67,6 @@ const styleSheet = theme => ({
     position: 'relative',
     top: 29,
     width: '100%',
-    height: 'calc(100vh - 29px)' // This no wurks!
     // height: '100vh'
   },
 });
@@ -110,23 +109,14 @@ class AppFrame extends Component {
   };
 
   render() {
-    const { children, classes, updater, application: { appBar } } = this.props;
-
-    // TODO: Move AppBar to it's own 'smart' component,
-    // so AppFrame doesn't have to update when AppBar is updated
-    const appBarClassName = classNames(classes.appBar, {
-      [classes.appBarTransparent]: appBar.transparent,
-      [classes.appBarNoShadow]: !appBar.shadow,
-      [classes.appBarHidden]: appBar.hidden
-    });
+    const { children, classes, updater } = this.props;
 
     return (
       <div className={classes.appFrame}>
         <AppTitleBar />
         <div className={classes.wrapper}>
-          <AppBar className={appBarClassName} position="absolute">
+          {/* <AppBar className={appBarClassName} position="absolute">
             <Toolbar>
-              {/* Preparation for Icon to Icon transition */}
               <IconButton
                 color="contrast"
                 onClick={this.handleBackAndDrawerButton}
@@ -143,7 +133,6 @@ class AppFrame extends Component {
                   </Typography>}
               </div>
               <div className={classes.grow} />
-              {/* TODO: Find a better way to communicate with the search bar */}
               {appBar.search && <AppSearch onSearch={appBar.onSearch} />}
               <IconButton
                 color="contrast"
@@ -153,7 +142,7 @@ class AppFrame extends Component {
                 <DownloadIcon />
               </IconButton>
             </Toolbar>
-          </AppBar>
+          </AppBar> */}
           <AppDrawer
             className={classes.drawer}
             onRequestClose={this.handleDrawerClose}
@@ -182,5 +171,9 @@ AppFrame.propTypes = {
   history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
+
+// AppFrame.childContextTypes = {
+//   testFunc: () => {}
+// };
 
 export default withStyles(styleSheet)(AppFrame);
