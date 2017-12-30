@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/prefer-default-export, global-require */
 import { autoUpdater } from 'electron-updater';
 import {
   checkingForUpdate,
@@ -12,6 +12,9 @@ import {
 // TODO: Make a customized updater which will do no more then downloading the installer.
 
 export function init(store) {
+  autoUpdater.logger = require('electron-log');
+  autoUpdater.logger.transports.file.level = 'debug';
+
   autoUpdater.on('checking-for-update', () => {
     store.dispatch(checkingForUpdate());
   });
@@ -40,6 +43,9 @@ export function init(store) {
   autoUpdater.on('update-downloaded', (info) => {
     store.dispatch(updateDownloaded());
     console.log(info);
+    setTimeout(() => {
+      autoUpdater.quitAndInstall();
+    }, 5000);
   });
 
   autoUpdater.checkForUpdates();

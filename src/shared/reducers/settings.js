@@ -3,12 +3,12 @@ import { CHANGE_SETTINGS, RESET_SETTINGS } from '../actions/settings';
 
 const initialState = {
   ui: {
-    language: 'English',
-    palette: 'Dark',
-    startScreen: 'Movies',
+    language: 'english',
+    palette: 'dark',
+    startScreen: 'movies',
   },
   subtitles: {
-    language: 'English',
+    language: 'english',
     size: '24px'
   },
   quality: {
