@@ -87,6 +87,7 @@ function render(Component) {
   );
 }
 
+// Ples fix this part...
 if (module.hot) {
   module.hot.accept('./components/App/App', () => {
     const NextApp = require('./components/App/App'); // eslint-disable-line global-require

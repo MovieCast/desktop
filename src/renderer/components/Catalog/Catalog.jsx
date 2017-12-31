@@ -11,7 +11,9 @@ import PosterItem from './Item/PosterItem';
 import GhostItem from './Item/GhostItem';
 import MoreItem from './Item/MoreItem';
 
-import { withView, VIEW_CONTEXT_TYPES } from '../View';
+import AppSearch from '../App/AppSearch';
+
+import { withView, View } from '../View';
 
 // styles
 import styles from './Catalog.css';
@@ -57,11 +59,16 @@ class Catalog extends Component {
 
     this.props.configureAppBar({
       title: 'Movies', // TODO: This should be able to switch between shows and movies
-      search: true
+      search: true,
     });
 
-    this.context.setBarTitle('Movies');
-    this.context.setBarShadow(false);
+    // this.context.setBarTitle('Movies');
+    // this.context.setBarShadow(false);
+
+    this.context.setBarConfig({
+      title: 'Movies',
+      rightComponents: [<AppSearch />]
+    });
 
     this.props.fetchItems({
       page: 1,
@@ -181,7 +188,8 @@ Catalog.propTypes = {
 /* eslint-enable react/forbid-prop-types */
 
 Catalog.contextTypes = {
-  ...VIEW_CONTEXT_TYPES
+  // ...VIEW_CONTEXT_TYPES
+  ...View.childContextTypes
 };
 
 export default withView(dimensions()(withStyles(styleSheet)(Catalog)));

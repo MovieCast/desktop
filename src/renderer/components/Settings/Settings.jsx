@@ -14,7 +14,7 @@ import {
   HighQuality as HighQualityIcon
 } from 'material-ui-icons';
 
-import { withView, VIEW_CONTEXT_TYPES } from '../View';
+import { withView, View } from '../View';
 
 import SettingsCategoryList from './SettingsCategoryList';
 import SettingsCategoryListItem from './SettingsCategoryListItem';
@@ -34,9 +34,15 @@ class Settings extends Component {
   };
 
   componentWillMount() {
-    this.context.setBarTitle('Settings');
-    this.context.setBarShadow(true);
-    this.context.setBarBack(true);
+    // this.context.setBarTitle('Settings');
+    // this.context.setBarShadow(true);
+    // this.context.setBarBack(true);
+
+    this.context.setBarConfig({
+      title: 'Settings',
+      shadow: true,
+      back: true
+    });
   }
 
   handleToggle = (event, category, value) => {
@@ -138,7 +144,7 @@ Settings.propTypes = {
 /* eslint-enable react/forbid-prop-types */
 
 Settings.contextTypes = {
-  ...VIEW_CONTEXT_TYPES
+  ...View.childContextTypes
 };
 
 export default withView(withStyles(styleSheet)(Settings));

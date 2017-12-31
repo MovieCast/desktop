@@ -49,7 +49,7 @@ class ViewAppBar extends Component {
   render() {
     const {
       title, secondary, back, transparent, shadow,
-      visible, onDrawerClick, onBackClick, classes } = this.props;
+      visible, onDrawerClick, onBackClick, classes, rightComponents } = this.props;
 
     const appBarClassName = classNames(classes.appBar, {
       [classes.transparent]: transparent,
@@ -76,6 +76,7 @@ class ViewAppBar extends Component {
             </Typography>}
           </div>
           <div className={classes.grow} />
+          {rightComponents}
         </Toolbar>
       </AppBar>
     );
@@ -90,6 +91,8 @@ ViewAppBar.propTypes = {
   shadow: PropTypes.bool,
   visible: PropTypes.bool,
 
+  rightComponents: PropTypes.array,
+
   onBackClick: PropTypes.func,
   onDrawerClick: PropTypes.func,
 
@@ -103,6 +106,8 @@ ViewAppBar.defaultProps = {
   transparent: false,
   shadow: true,
   visible: true,
+
+  rightComponents: [],
 
   onBackClick: () => {},
   onDrawerClick: () => {}

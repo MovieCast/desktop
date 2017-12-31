@@ -12,7 +12,7 @@ import { withStyles } from 'material-ui/styles';
 import DynamicImg from '../Util/DynamicImg';
 import Rating from '../Util/Rating';
 
-import { withView, VIEW_CONTEXT_TYPES } from '../View';
+import { withView, View } from '../View';
 
 import { capitalize } from '../../utils/stringUtil';
 
@@ -116,9 +116,14 @@ class Detail extends Component {
     const { id } = this.props.match.params;
     this.props.fetchItem(id);
 
-    this.context.setBarTitle(this.props.item.title);
-    this.context.setBarTransparency(true);
-    this.context.setBarBack(true);
+    // this.context.setBarTitle(this.props.item.title);
+    // this.context.setBarTransparency(true);
+    // this.context.setBarBack(true);
+    this.context.setBarConfig({
+      title: this.props.item.title,
+      transparent: true,
+      back: true
+    });
   }
 
   render() {
@@ -196,7 +201,7 @@ Detail.defaultProps = {
 };
 
 Detail.contextTypes = {
-  ...VIEW_CONTEXT_TYPES
+  ...View.childContextTypes
 };
 
 export default withView(withStyles(styleSheet)(Detail));

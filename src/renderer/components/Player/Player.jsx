@@ -8,7 +8,7 @@ import Engine from './Engine';
 import Overlay from './Overlay';
 import ControlBar from './ControlBar';
 
-import { withView, VIEW_CONTEXT_TYPES } from '../View';
+import { withView, View } from '../View';
 
 const styleSheet = {
   root: {
@@ -25,10 +25,16 @@ class Player extends Component {
   componentWillMount() {
     // Make the AppBar transparent and add a back button
 
-    this.context.setBarTitle(`Playing: ${this.props.player.title}`);
-    this.context.setBarTransparency(true);
-    this.context.setBarBack(true);
-    this.context.setBarVisibility(!this.props.player.showUi);
+    // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
+    // this.context.setBarTransparency(true);
+    // this.context.setBarBack(true);
+    // this.context.setBarVisibility(!this.props.player.showUi);
+    this.context.setBarConfig({
+      title: `Playing: ${this.props.player.title}`,
+      transparent: true,
+      back: true,
+      visible: true
+    });
   }
 
   componentDidMount() {
@@ -39,7 +45,12 @@ class Player extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.player.showUi !== this.props.player.showUi) {
-      this.context.setBarVisibility(!this.props.player.showUi);
+      // this.context.setBarVisibility(!this.props.player.showUi);
+
+      this.context.setBarConfig({
+        visible: !this.props.player.showUi
+      });
+
       this.props.configureAppBar({
         hidden: !nextProps.player.showUi,
       });
@@ -47,7 +58,10 @@ class Player extends Component {
 
     // TODO: Handle this directly in the application reducer
     if (nextProps.player.title !== this.props.player.title) {
-      this.context.setBarTitle(`Playing: ${this.props.player.title}`);
+      // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
+      this.context.setBarConfig({
+        title: `Playing: ${this.props.player.title}`,
+      });
     }
   }
 
@@ -159,7 +173,7 @@ Player.propTypes = {
 /* eslint-enable react/forbid-prop-types */
 
 Player.contextTypes = {
-  ...VIEW_CONTEXT_TYPES
+  ...View.childContextTypes
 };
 
 export default withView(withStyles(styleSheet)(Player));
