@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -9,14 +10,19 @@ import {
 } from 'material-ui';
 import { PlayArrow as PlayIcon } from 'material-ui-icons';
 import { withStyles } from 'material-ui/styles';
+import prettierBytes from 'prettier-bytes';
+
 import DynamicImg from '../Util/DynamicImg';
 import Rating from '../Util/Rating';
+
+import { withView, View } from '../View';
 
 import { capitalize } from '../../utils/stringUtil';
 
 const styleSheet = theme => ({
   wrapper: {
-    position: 'relative'
+    position: 'relative',
+    marginTop: -64 - 29
   },
   header: {
     position: 'relative',
@@ -106,19 +112,117 @@ const styleSheet = theme => ({
 
 class Detail extends Component {
   state = {
-    downloading: false
+    preparing: false,
+    downloading: false,
+    torrent: null
   }
 
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.fetchItem(id);
 
-    // Make the AppBar transparent and add a back button
-    this.props.configureAppBar({
+    // this.context.setBarTitle(this.props.item.title);
+    // this.context.setBarTransparency(true);
+    // this.context.setBarBack(true);
+    this.context.setStatusBarConfig({
+      transparent: true
+    });
+    this.context.setAppBarConfig({
       title: this.props.item.title,
       transparent: true,
       back: true
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // TODO: Add a button to select quality.
+
+    if (nextProps.item && nextProps.item.torrents.en) {
+      const highestQuality = Object.keys(nextProps.item.torrents.en)[0];
+      this.setState({ torrent: nextProps.item.torrents.en[highestQuality] });
+    }
+  }
+
+  // TODO: Move to TorrentHelper
+  getTorrent() {
+    // return _.find(this.props.torrent.torrents, torrent => torrent.magnetURI === this.state.torrent.uri);
+    return this.props.torrent.torrents[0];
+  }
+
+  playItem() {
+    this.props.addTorrent(this.state.torrent.url);
+    this.setState({ downloading: true });
+  }
+
+  renderMeta() {
+    const { classes, item } = this.props;
+
+    return (
+      <div className={classes.meta}>
+        <Rating
+          rating={item.rating.percentage / 10}
+          title={item.rating.percentage}
+        />
+        <span className={classes.metaHeaderDot} />
+        <div className={classes.row}>
+          {item.genres.map(genre => (
+            <Chip
+              label={capitalize(genre)}
+              key={genre}
+              className={classes.chip}
+            />
+          ))}
+        </div>
+        <span className={classes.metaHeaderDot} />
+        <Typography>{item.year}</Typography>
+        <span className={classes.metaHeaderDot} />
+        <Typography>{item.runtime} min</Typography>
+      </div>
+    );
+  }
+
+  renderContent() {
+    const { classes, item } = this.props;
+
+    return (
+      <div className={classes.content}>
+        <Button fab color="primary" className={classes.playButton} onClick={() => this.playItem()}>
+          <PlayIcon />
+        </Button>
+        <Typography type="headline">{item.title}</Typography>
+        <div className={classes.info}>
+          <Typography>{item.synopsis}</Typography>
+        </div>
+      </div>
+    );
+  }
+
+  renderProgress() {
+    const { classes } = this.props;
+
+    const torrent = this.getTorrent();
+
+    console.log(torrent);
+
+    // SORRYY SORRYY SORRYYYYYY
+    if (torrent && torrent.status === 'READY') {
+      this.props.startStreamServer(0);
+    }
+    // END OF SORRYY SORRYY SORRYYYYYY
+
+    return (
+      <div className={classes.middleWrapper}>
+        <div style={{ width: '100%' }}>
+          <LinearProgress style={{ width: '100%' }} />
+          {torrent && (
+            <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: 5 }}>
+              <span>Download Speed: {prettierBytes(torrent.downloadSpeed ? torrent.downloadSpeed : 0)}</span>
+              <span>Upload Speed: {prettierBytes(torrent.uploadSpeed ? torrent.uploadSpeed : 0)}</span>
+              <span>Peers: {torrent.numPeers}</span>
+            </div>)}
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -133,50 +237,12 @@ class Detail extends Component {
         <div className={classes.header}>
           <DynamicImg className={classes.background} src={item.images.banner} alt={item.title} />
 
-          {this.state.downloading ? (
-            <div className={classes.middleWrapper}>
-              <div style={{ width: '100%' }}>
-                <LinearProgress style={{ width: '100%' }} />
-                <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: 5 }}>
-                  <span>Download Speed: 0kbps</span>
-                  <span>Upload Speed: 0kbps</span>
-                  <span>Peers: 0</span>
-                </div>
-              </div>
-            </div>
-          ) : null}
+          {this.state.downloading && this.renderProgress()}
 
-          <div className={classes.meta}>
-            <Rating
-              rating={item.rating.percentage / 10}
-              title={item.rating.percentage}
-            />
-            <span className={classes.metaHeaderDot} />
-            <div className={classes.row}>
-              {item.genres.map(genre => (
-                <Chip
-                  label={capitalize(genre)}
-                  key={genre}
-                  className={classes.chip}
-                />
-              ))}
-            </div>
-            <span className={classes.metaHeaderDot} />
-            <Typography>{item.year}</Typography>
-            <span className={classes.metaHeaderDot} />
-            <Typography>{item.runtime} min</Typography>
-          </div>
+          {this.renderMeta()}
         </div>
 
-        <div className={classes.content}>
-          <Button fab color="primary" className={classes.playButton} onClick={() => this.setState({ downloading: true })}>
-            <PlayIcon />
-          </Button>
-          <Typography type="headline">{item.title}</Typography>
-          <div className={classes.info}>
-            <Typography>{item.synopsis}</Typography>
-          </div>
-        </div>
+        {this.renderContent()}
       </div>
     );
   }
@@ -185,15 +251,22 @@ class Detail extends Component {
 /* eslint-disable react/forbid-prop-types */
 Detail.propTypes = {
   item: PropTypes.object,
+  torrent: PropTypes.object,
   match: PropTypes.object.isRequired,
   fetchItem: PropTypes.func.isRequired,
+  addTorrent: PropTypes.func.isRequired,
+  startStreamServer: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  configureAppBar: PropTypes.func.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
 Detail.defaultProps = {
-  item: {}
+  item: {},
+  torrent: {}
 };
 
-export default withStyles(styleSheet)(Detail);
+Detail.contextTypes = {
+  ...View.childContextTypes
+};
+
+export default withView(withStyles(styleSheet)(Detail));

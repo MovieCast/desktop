@@ -9,7 +9,7 @@ import * as menu from './menu';
 import * as extensions from './extensions';
 import * as Store from './store';
 import windows from './windows';
-// import * as updater from './updater';
+import * as updater from './updater';
 
 console.time('main:init');
 
@@ -84,8 +84,7 @@ function delayedInit(results) {
   logger.debug('delayedInit: results', results);
 
   if (process.env.NODE_ENV === 'production') {
-    logger.warn('updater: Updating process is currently disabled due to some interal issues.');
-    // updater.init(results.store);
+    updater.init(results.store);
   } else {
     logger.warn('updater: Not starting because in development environment!');
   }

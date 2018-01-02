@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import { app, screen, BrowserWindow } from 'electron';
 import * as config from '../../../config';
-import logger from '../logger';
+import * as logger from '../logger';
 
 const manager = module.exports = {
   init,
@@ -166,7 +166,7 @@ function setProgress(progress) {
 
 function toggleDevTools() {
   if (!manager.win) return;
-  logger.debug('toggleDevTools');
+  logger.debug('toggleDevTools: app');
   if (manager.win.webContents.isDevToolsOpened()) {
     manager.win.webContents.closeDevTools();
   } else {

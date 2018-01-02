@@ -14,14 +14,14 @@ import {
   HighQuality as HighQualityIcon
 } from 'material-ui-icons';
 
+import { withView, View } from '../View';
+
 import SettingsCategoryList from './SettingsCategoryList';
 import SettingsCategoryListItem from './SettingsCategoryListItem';
 
 const styleSheet = {
   root: {
     width: '100%',
-    height: 'calc(100% - 64px - 29px)',
-    marginTop: 'calc(64px + 29px)'
   },
 };
 
@@ -34,7 +34,11 @@ class Settings extends Component {
   };
 
   componentWillMount() {
-    this.props.configureAppBar({
+    // this.context.setBarTitle('Settings');
+    // this.context.setBarShadow(true);
+    // this.context.setBarBack(true);
+
+    this.context.setAppBarConfig({
       title: 'Settings',
       shadow: true,
       back: true
@@ -139,4 +143,8 @@ Settings.propTypes = {
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(styleSheet)(Settings);
+Settings.contextTypes = {
+  ...View.childContextTypes
+};
+
+export default withView(withStyles(styleSheet)(Settings));

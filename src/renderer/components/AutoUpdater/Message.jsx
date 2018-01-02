@@ -7,17 +7,13 @@ import CloseIcon from 'material-ui-icons/Close';
 
 const styleSheet = theme => ({
   anchorTopLeft: {
-    top: (theme.spacing.unit * 3) + 64
+    top: (theme.spacing.unit * 3) + 25
   },
   anchorTopCenter: {
-    top: (theme.spacing.unit * 3) + 64
+    top: (theme.spacing.unit * 3) + 25
   },
   anchorTopRight: {
-    top: (theme.spacing.unit * 3) + 64
-  },
-  icon: {
-    width: theme.spacing.unit * 4,
-    height: theme.spacing.unit * 4,
+    top: (theme.spacing.unit * 3) + 25
   },
   iconContainer: {
     display: 'inline-flex',
@@ -47,7 +43,6 @@ class Message extends Component {
       this.setState({ orgOpen: open });
     }
     if (this.state.open !== open && this.state.orgOpen !== open) {
-      console.log(this.state.open !== open && this.state.orgOpen !== open);
       this.setState({ open });
     }
   }
@@ -67,7 +62,7 @@ class Message extends Component {
 
     const messageContainer = (
       <span id="message-id" className={classes.iconContainer}>
-        {icon && React.cloneElement(icon, { className: classes.icon })}
+        {icon && React.cloneElement(icon, { style: { width: 32, height: 32 } })}
         <span className={classes.iconText}>{message}</span>
       </span>
     );
@@ -95,9 +90,9 @@ class Message extends Component {
           anchorTopRight
         }}
         open={this.state.open}
-        onRequestClose={onRequestClose || this.handleRequestClose}
         autoHideDuration={duration}
-        transition={<Slide direction={position.direction} />}
+        onClose={onRequestClose || this.handleRequestClose}
+        transition={position.animation}
         SnackbarContentProps={{
           'aria-describedby': 'message-id',
         }}
@@ -128,9 +123,25 @@ Message.defaultProps = {
   position: {
     vertical: 'top',
     horizontal: 'right',
-    direction: 'left'
+    animation: TransitionLeft
   },
   onRequestClose: undefined
 };
 
 export default withStyles(styleSheet)(Message);
+
+export function TransitionLeft(props) {
+  return <Slide direction="left" {...props} />;
+}
+
+export function TransitionUp(props) {
+  return <Slide direction="up" {...props} />;
+}
+
+export function TransitionRight(props) {
+  return <Slide direction="right" {...props} />;
+}
+
+export function TransitionDown(props) {
+  return <Slide direction="down" {...props} />;
+}

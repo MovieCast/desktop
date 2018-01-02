@@ -5,19 +5,25 @@ import dimensions from 'react-dimensions';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
-import { AppBar, Tabs, Tab, Grid } from 'material-ui';
+import { AppBar, Tabs, Tab, Grid, IconButton } from 'material-ui';
+import { FileDownload as DownloadIcon } from 'material-ui-icons';
 
 import PosterItem from './Item/PosterItem';
 import GhostItem from './Item/GhostItem';
 import MoreItem from './Item/MoreItem';
 
+import AppSearch from '../App/AppSearch';
+
+import { withView, View } from '../View';
+
 // styles
 import styles from './Catalog.css';
+import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
 
 const styleSheet = theme => ({
   root: {
-    height: 'calc(100% - 64px - 29px)',
-    marginTop: 'calc(64px + 29px)',
+    height: 'calc(100% - 64px)',
+    // marginTop: 'calc(64px + 29px)',
     width: '100%'
   },
   gridList: {
@@ -47,7 +53,8 @@ const styleSheet = theme => ({
 
 class Catalog extends Component {
   state = {
-    sort: 0
+    sort: 0,
+    torrentEngineInfo: false
   }
 
   componentWillMount() {
@@ -55,7 +62,21 @@ class Catalog extends Component {
 
     this.props.configureAppBar({
       title: 'Movies', // TODO: This should be able to switch between shows and movies
-      search: true
+      search: true,
+    });
+
+    // this.context.setBarTitle('Movies');
+    // this.context.setBarShadow(false);
+
+    this.context.setAppBarConfig({
+      title: 'Movies',
+      rightComponents: [<AppSearch />, <IconButton
+        color="contrast"
+        onClick={this.handleTorrentEngineInfo}
+        title="TorrentEngine Info"
+      >
+        <DownloadIcon />
+      </IconButton>]
     });
 
     this.props.fetchItems({
@@ -67,6 +88,10 @@ class Catalog extends Component {
 
   componentDidMount() {
     // Calculate needed "ghost" items to fix spacing in last row
+  }
+
+  handleTorrentEngineInfo = () => {
+    this.setState({ torrentEngineInfo: true });
   }
 
   loadMore = () => {
@@ -128,6 +153,12 @@ class Catalog extends Component {
 
     return (
       <div className={classes.root}>
+
+        <TorrentEngineDialog
+          open={this.state.torrentEngineInfo}
+          onRequestClose={() => this.setState({ torrentEngineInfo: false })}
+        />
+
         <AppBar position="static">
           <Tabs value={this.state.sort} onChange={this.handleChange.bind(this)}>
             <Tab label="Trending" />
@@ -175,4 +206,9 @@ Catalog.propTypes = {
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default dimensions()(withStyles(styleSheet)(Catalog));
+Catalog.contextTypes = {
+  // ...VIEW_CONTEXT_TYPES
+  ...View.childContextTypes
+};
+
+export default withView(dimensions()(withStyles(styleSheet)(Catalog)));

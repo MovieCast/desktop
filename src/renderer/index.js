@@ -13,7 +13,8 @@ import {
   torrentInfoHash,
   torrentMetaData,
   torrentProgress,
-  torrentDone
+  torrentDone,
+  streamServerStarted
 } from '../shared/actions/torrent';
 
 console.time('init');
@@ -66,6 +67,10 @@ function init() {
     dispatch(torrentDone(key, info));
   });
 
+  ipc.on('te-stream-server-started', (event, info) => {
+    dispatch(streamServerStarted(info));
+  });
+
   ipc.send('ipcReady');
 
   render(App);
@@ -87,6 +92,7 @@ function render(Component) {
   );
 }
 
+// Ples fix this part...
 if (module.hot) {
   module.hot.accept('./components/App/App', () => {
     const NextApp = require('./components/App/App'); // eslint-disable-line global-require
