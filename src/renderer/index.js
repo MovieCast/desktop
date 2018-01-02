@@ -13,7 +13,8 @@ import {
   torrentInfoHash,
   torrentMetaData,
   torrentProgress,
-  torrentDone
+  torrentDone,
+  streamServerStarted
 } from '../shared/actions/torrent';
 
 console.time('init');
@@ -64,6 +65,10 @@ function init() {
 
   ipc.on('te-done', (event, key, info) => {
     dispatch(torrentDone(key, info));
+  });
+
+  ipc.on('te-stream-server-started', (event, info) => {
+    dispatch(streamServerStarted(info));
   });
 
   ipc.send('ipcReady');
