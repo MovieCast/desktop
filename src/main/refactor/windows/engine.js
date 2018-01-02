@@ -1,6 +1,8 @@
 import { app, BrowserWindow } from 'electron';
 import * as config from '../../../config';
 
+import { debug } from '../logger';
+
 const engine = module.exports = {
   init,
   send,
@@ -49,6 +51,7 @@ function send(...args) {
 
 function toggleDevTools() {
   if (!engine.win) return;
+  debug('toggleDevTools: engine');
   if (engine.win.webContents.isDevToolsOpened()) {
     engine.win.webContents.closeDevTools();
     engine.win.hide();

@@ -44,13 +44,13 @@ function getMenuTemplate() {
       label: 'Toggle &Developer Tools',
       accelerator: 'Alt+CmdOrCtrl+I',
       click: () => {
-        app.win.toggleDevTools();
+        app.toggleDevTools();
       }
     }, {
       label: 'Show Torrent Engine Process',
       accelerator: 'Alt+CmdOrCtrl+E',
       click: () => {
-        engine.win.toggleDevTools();
+        engine.toggleDevTools();
       }
     }]
   },
