@@ -22,7 +22,7 @@ import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
 
 const styleSheet = theme => ({
   root: {
-    height: 'calc(100% - 64px - 29px)',
+    height: 'calc(100% - 64px)',
     // marginTop: 'calc(64px + 29px)',
     width: '100%'
   },
@@ -68,7 +68,7 @@ class Catalog extends Component {
     // this.context.setBarTitle('Movies');
     // this.context.setBarShadow(false);
 
-    this.context.setBarConfig({
+    this.context.setAppBarConfig({
       title: 'Movies',
       rightComponents: [<AppSearch />, <IconButton
         color="contrast"

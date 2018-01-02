@@ -22,7 +22,7 @@ import { capitalize } from '../../utils/stringUtil';
 const styleSheet = theme => ({
   wrapper: {
     position: 'relative',
-    marginTop: -64
+    marginTop: -64 - 29
   },
   header: {
     position: 'relative',
@@ -124,7 +124,10 @@ class Detail extends Component {
     // this.context.setBarTitle(this.props.item.title);
     // this.context.setBarTransparency(true);
     // this.context.setBarBack(true);
-    this.context.setBarConfig({
+    this.context.setStatusBarConfig({
+      transparent: true
+    });
+    this.context.setAppBarConfig({
       title: this.props.item.title,
       transparent: true,
       back: true

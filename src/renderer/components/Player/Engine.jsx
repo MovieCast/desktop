@@ -5,8 +5,8 @@ import { withStyles } from 'material-ui/styles';
 
 const styleSheet = {
   root: {
-    position: 'absolute',
-    top: 0,
+    // position: 'absolute',
+    // top: 0,
     width: '100%',
     height: '100vh',
     background: '#000'

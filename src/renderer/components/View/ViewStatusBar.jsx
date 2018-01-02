@@ -6,20 +6,18 @@ import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
-import Minimize from './Icons/Minimize';
-import Maximize from './Icons/Maximize';
-import Close from './Icons/Close';
+import Minimize from '../App/Icons/Minimize';
+import Maximize from '../App/Icons/Maximize';
+import Close from '../App/Icons/Close';
 
 const styles = theme => ({
   root: {
     WebkitAppRegion: 'drag',
-    // position: 'absolute',
-    // top: 0,
     height: 29,
-    left: 0,
     width: '100%',
     backgroundColor: theme.palette.primary[700],
-    zIndex: 1400
+    zIndex: 1400,
+    position: 'relative'
   },
   rootTransparent: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)' // Hihi, I lied, it's not 100% transparent :P
@@ -56,7 +54,7 @@ const styles = theme => ({
   }
 });
 
-class AppTitleBar extends Component {
+class ViewStatusBar extends Component {
   state = {
     isMaximized: false
   }
@@ -102,41 +100,51 @@ class AppTitleBar extends Component {
   }
 
   render() {
-    const { classes, application: { appTitleBar } } = this.props;
+    const { classes, transparent, visible } = this.props;
 
     const rootClassName = classNames(classes.root, {
-      [classes.rootTransparent]: appTitleBar.transparent
+      [classes.rootTransparent]: transparent,
     });
 
-    return (
-      <div className={rootClassName}>
-        <div className={classes.resizeBar} />
-        <div className={classes.wrapper}>
-          <div className={classes.title}>
-            <Typography>MovieCast</Typography>
-          </div>
-          <div className={classes.controls}>
-            <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
-              <Minimize />
+    if (visible) {
+      return (
+        <div className={rootClassName}>
+          <div className={classes.resizeBar} />
+          <div className={classes.wrapper}>
+            <div className={classes.title}>
+              <Typography>MovieCast</Typography>
             </div>
-            <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
-              <Maximize isMaximized={this.state.isMaximized} />
-            </div>
-            <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
-              <Close />
+            <div className={classes.controls}>
+              <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
+                <Minimize />
+              </div>
+              <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
+                <Maximize isMaximized={this.state.isMaximized} />
+              </div>
+              <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
+                <Close />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    return null;
   }
 }
 
 /* eslint-disable react/forbid-prop-types */
-AppTitleBar.propTypes = {
+ViewStatusBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  application: PropTypes.object.isRequired
+  transparent: PropTypes.bool,
+  visible: PropTypes.bool
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(styles)(AppTitleBar);
+ViewStatusBar.defaultProps = {
+  transparent: false,
+  visible: true
+};
+
+export default withStyles(styles)(ViewStatusBar);

@@ -11,6 +11,7 @@ import {
 import ViewAppBar from './ViewAppBar';
 import ViewDrawer from './ViewDrawer';
 import ViewContent from './ViewContent';
+import ViewStatusBar from './ViewStatusBar';
 
 /**
  * View Component
@@ -20,6 +21,10 @@ import ViewContent from './ViewContent';
  */
 export default class View extends Component {
   state = {
+    statusBar: {
+      transparent: false,
+      visible: true
+    },
     appBar: {
       title: 'MovieCast',
       transparent: false,
@@ -65,7 +70,8 @@ export default class View extends Component {
       // setBarShadow: (shadow) => this.setState({ shadow }),
       // setBarBack: (back) => this.setState({ back }),
       // setBarVisibility: (visible) => this.setState({ visible }),
-      setBarConfig: (config) => this.setState({ appBar: { ...this.state.appBar, ...config } }),
+      setStatusBarConfig: (config) => this.setState({ statusBar: { ...this.state.statusBar, ...config } }),
+      setAppBarConfig: (config) => this.setState({ appBar: { ...this.state.appBar, ...config } }),
       setDrawerConfig: (config) => this.setState({ drawer: { ...this.state.drawer, ...config } })
     };
   }
@@ -73,12 +79,12 @@ export default class View extends Component {
   render() {
     const { render } = this.props;
     return (
-
       <div>
+        <ViewStatusBar {...this.state.statusBar} />
         <ViewAppBar {...this.state.appBar} />
         <ViewDrawer {...this.state.drawer} /> {/* FK, this has to be moved to an upper component :( */}
 
-        <ViewContent>
+        <ViewContent hasStatusBar={this.state.statusBar.visible}>
           {render && render()}
         </ViewContent>
       </div>
@@ -99,6 +105,7 @@ View.contextTypes = {
 };
 
 View.childContextTypes = {
-  setBarConfig: PropTypes.func,
+  setStatusBarConfig: PropTypes.func,
+  setAppBarConfig: PropTypes.func,
   setDrawerConfig: PropTypes.func,
 };

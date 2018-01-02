@@ -28,44 +28,17 @@ const styleSheet = theme => ({
       background: theme.palette.background.default,
       color: theme.palette.text.primary,
       lineHeight: '1.2',
-      overflowX: 'hidden',
+      overflow: 'hidden',
       WebkitFontSmoothing: 'antialiased', // Antialiasing.
     }
   },
   appFrame: {
-    display: 'flex',
-    alignItems: 'stretch',
-    minHeight: '100vh',
+    height: '100vh',
     width: '100%',
   },
-  grow: {
-    flex: '1 1 auto',
-  },
-  title: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    marginLeft: 24,
-    flex: '0 1 auto',
-  },
-  appBar: {
-    transition: theme.transitions.create(['box-shadow', 'opacity']),
-  },
-  appBarTransparent: {
-    backgroundColor: 'transparent'
-  },
-  appBarNoShadow: {
-    boxShadow: 'none',
-  },
-  appBarTitleSecondary: {
-    color: 'rgba(255, 255, 255, 0.7)'
-  },
-  appBarHidden: {
-    opacity: 0
-  },
   wrapper: {
-    position: 'relative',
-    top: 29,
+    // position: 'relative',
+    // top: 29,
     width: '100%',
     // height: '100vh'
   },
@@ -113,49 +86,15 @@ class AppFrame extends Component {
 
     return (
       <div className={classes.appFrame}>
-        <AppTitleBar />
-        <div className={classes.wrapper}>
-          {/* <AppBar className={appBarClassName} position="absolute">
-            <Toolbar>
-              <IconButton
-                color="contrast"
-                onClick={this.handleBackAndDrawerButton}
-              >
-                {appBar.back ? <BackIcon /> : <MenuIcon />}
-              </IconButton>
-              <div className={classes.title}>
-                <Typography type="title" color="inherit" noWrap gutterBottom={!!appBar.secondary}>
-                  {appBar.title}
-                </Typography>
-                {appBar.secondary &&
-                  <Typography type="caption" color="secondary" className={classes.appBarTitleSecondary}>
-                    {appBar.secondary}
-                  </Typography>}
-              </div>
-              <div className={classes.grow} />
-              {appBar.search && <AppSearch onSearch={appBar.onSearch} />}
-              <IconButton
-                color="contrast"
-                onClick={this.handleTorrentEngineInfo}
-                title="TorrentEngine Info"
-              >
-                <DownloadIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar> */}
-          <AppDrawer
-            className={classes.drawer}
-            onRequestClose={this.handleDrawerClose}
-            open={this.state.drawerOpen}
-          />
-          <AutoUpdater updater={updater} />
-          {children}
+        {/* <AppTitleBar /> */}
 
-          <TorrentEngineDialog
-            open={this.state.torrentEngineInfo}
-            onRequestClose={() => this.setState({ torrentEngineInfo: false })}
-          />
-        </div>
+        <AutoUpdater updater={updater} />
+        {children}
+
+        <TorrentEngineDialog
+          open={this.state.torrentEngineInfo}
+          onRequestClose={() => this.setState({ torrentEngineInfo: false })}
+        />
       </div>
     );
   }

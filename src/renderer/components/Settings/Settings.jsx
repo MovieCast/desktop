@@ -38,7 +38,7 @@ class Settings extends Component {
     // this.context.setBarShadow(true);
     // this.context.setBarBack(true);
 
-    this.context.setBarConfig({
+    this.context.setAppBarConfig({
       title: 'Settings',
       shadow: true,
       back: true
