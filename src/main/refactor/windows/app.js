@@ -44,12 +44,12 @@ function init() {
     width: defaultWidth,
     // x: initialBounds.x,
     // y: initialBounds.y
-  }
+  };
 
-  if(process.platform == 'darwin') {
+  if (process.platform === 'darwin') {
     options.frame = true;
     options.titleBarStyle = 'hidden';
-  };
+  }
 
   const win = manager.win = new BrowserWindow(options);
 
