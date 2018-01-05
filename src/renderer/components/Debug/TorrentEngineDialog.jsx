@@ -91,11 +91,17 @@ export class TorrentEngineDialog extends Component {
   }
 
   setupPlayer() {
-    const { setUrl, setTitle, torrent: { server } } = this.props;
+    const { setUrl, setTitle, torrent: { server, torrents } } = this.props;
     
-    setUrl(server.location.local + '/1');
-    setTitle('unable_to_fetch_error');
-    this.context.router.history.push('/player');
+    const torrent = torrents[server.torrentKey];
+
+    const fileIndex = torrent.files.findIndex(file => file.name.includes('.mp4'));
+
+    if(fileIndex != -1) {
+      setUrl(server.location.local + '/' + fileIndex);
+      setTitle('unable_to_fetch_error');
+      this.context.router.history.push('/player');
+    }
   }
 
   render() {

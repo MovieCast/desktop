@@ -66,7 +66,7 @@ const PEER_ID = Buffer.from(VERSION_PREFIX + crypto.randomBytes(9).toString('bas
 // Connect to the WebTorrent and BitTorrent networks.
 // MovieCast is just like WebTorrent Desktop a hybrid
 // client, as explained here: https://webtorrent.io/faq
-const client = new WebTorrent({ peerId: PEER_ID });
+let client = new WebTorrent({ peerId: PEER_ID });
 
 // WebTorrent-to-HTTP streaming sever
 let server = null;
@@ -183,7 +183,8 @@ function addTorrentEvents(torrent) {
         startPiece: file._startPiece,
         endPiece: file._endPiece,
         numPieces,
-        numPiecesPresent
+        numPiecesPresent,
+        name: file.name
       };
     });
     const info = {
@@ -301,3 +302,14 @@ function getTorrentFileInfo(file) {
     path: file.path
   };
 }
+
+window.testOfflineMode = () => {
+  console.log('Test, going OFFLINE');
+  client = window.client = new WebTorrent({
+    peerId: PEER_ID,
+    tracker: false,
+    dht: false,
+    webSeeds: false
+  });
+  listenToClientEvents();
+};
