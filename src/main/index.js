@@ -2,7 +2,7 @@
 
 import { app, ipcMain } from 'electron';
 import parallel from 'run-parallel';
-import { DELAYED_INIT } from '../../config';
+import { DELAYED_INIT } from '../config';
 import ipc from './ipc';
 import * as logger from './logger';
 import * as menu from './menu';

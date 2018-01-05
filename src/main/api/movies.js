@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as logger from '../refactor/logger';
+import * as logger from '../logger';
 
 const api = axios.create({
   // Using popcorn-api for now, until we finished our own scraper

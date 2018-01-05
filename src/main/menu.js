@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { shell, Menu } from 'electron';
-import { bugs, version } from '../../../package.json';
+import { bugs, version } from '../../package.json';
 import { app, engine } from './windows';
 
 export function init() {

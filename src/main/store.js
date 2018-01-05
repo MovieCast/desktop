@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import StoreFactory, { SCOPE_MAIN } from '../../shared/store/StoreFactory';
+import StoreFactory, { SCOPE_MAIN } from '../shared/store/StoreFactory';
 
 global.state = {};
 

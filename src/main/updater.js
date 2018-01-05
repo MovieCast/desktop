@@ -7,7 +7,7 @@ import {
   updateNotAvailable,
   updateError,
   updateDownloaded
-} from '../../shared/actions/updater';
+} from '../shared/actions/updater';
 
 // TODO: Make a customized updater which will do no more then downloading the installer.
 

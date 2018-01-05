@@ -15,7 +15,7 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-main',
 
-  entry: './src/main/refactor/index',
+  entry: './src/main/index',
 
   // 'main.js' in root
   output: {

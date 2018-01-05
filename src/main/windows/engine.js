@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron';
-import * as config from '../../../config';
+import * as config from '../../config';
 
 import { debug } from '../logger';
 

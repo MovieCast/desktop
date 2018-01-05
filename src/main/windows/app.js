@@ -1,7 +1,7 @@
 /* eslint-disable import/no-named-as-default-member, no-param-reassign, no-mixed-operators */
 import _ from 'lodash';
 import { app, screen, BrowserWindow } from 'electron';
-import * as config from '../../../config';
+import * as config from '../../config';
 import * as logger from '../logger';
 
 const manager = module.exports = {
