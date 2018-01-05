@@ -13,7 +13,7 @@ import Close from '../App/Icons/Close';
 const styles = theme => ({
   root: {
     WebkitAppRegion: 'drag',
-    height: 29,
+    height: process.platform !== 'darwin' ? 29 : 22, // Sorry for this hack will be fixed later
     width: '100%',
     backgroundColor: theme.palette.primary[700],
     zIndex: 1400,
@@ -103,29 +103,31 @@ class ViewStatusBar extends Component {
     const { classes, transparent, visible } = this.props;
 
     const rootClassName = classNames(classes.root, {
-      [classes.rootTransparent]: transparent,
+      [classes.rootTransparent]: transparent
     });
 
     if (visible) {
       return (
         <div className={rootClassName}>
           <div className={classes.resizeBar} />
-          <div className={classes.wrapper}>
-            <div className={classes.title}>
-              <Typography>MovieCast</Typography>
+          {process.platform !== 'darwin' && (
+            <div className={classes.wrapper}>
+              <div className={classes.title}>
+                <Typography>MovieCast</Typography>
+              </div>
+              <div className={classes.controls}>
+                <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
+                  <Minimize />
+                </div>
+                <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
+                  <Maximize isMaximized={this.state.isMaximized} />
+                </div>
+                <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
+                  <Close />
+                </div>
+              </div>
             </div>
-            <div className={classes.controls}>
-              <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
-                <Minimize />
-              </div>
-              <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
-                <Maximize isMaximized={this.state.isMaximized} />
-              </div>
-              <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
-                <Close />
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       );
     }

@@ -31,7 +31,7 @@ function init() {
   const defaultWidth = Math.round(display.size.width * 0.8);
   const defaultHeight = Math.round(display.size.height * 0.8);
 
-  const win = manager.win = new BrowserWindow({
+  const options = {
     backgroundColor: '#282828',
     backgroundThrottling: false,
     height: defaultHeight,
@@ -44,7 +44,14 @@ function init() {
     width: defaultWidth,
     // x: initialBounds.x,
     // y: initialBounds.y
-  });
+  }
+
+  if(process.platform == 'darwin') {
+    options.frame = true;
+    options.titleBarStyle = 'hidden';
+  };
+
+  const win = manager.win = new BrowserWindow(options);
 
   win.loadURL(config.WINDOW_MAIN);
 

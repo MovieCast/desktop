@@ -22,6 +22,10 @@ const styleSheet = theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
+  },
+  fakeNiceBar: {
+    height: process.platform !== 'darwin' ? 29 : 22, // Sorry for this hack will be fixed later
+    backgroundColor: theme.palette.grey[900]
   }
 });
 
@@ -58,6 +62,7 @@ class ViewDrawer extends Component {
         keepMounted={false}
       >
         <div className={classes.nav}>
+          <div className={classes.fakeNiceBar}></div>
           <Toolbar className={classes.toolbar}>
             <Typography type="title" color="inherit">
               {title}
