@@ -62,7 +62,7 @@ class ViewDrawer extends Component {
         keepMounted={false}
       >
         <div className={classes.nav}>
-          <div className={classes.fakeNiceBar}></div>
+          <div className={classes.fakeNiceBar} />
           <Toolbar className={classes.toolbar}>
             <Typography type="title" color="inherit">
               {title}

@@ -11,6 +11,10 @@ import {
   Fullscreen as FullscreenIcon,
   FullscreenExit as FullscreenExitIcon,
 } from 'material-ui-icons';
+
+// import PlaybackBar from './ControlBar/PlaybackBar';
+import Slider from './ControlBar/Slider';
+
 import formatTime from '../../helpers/formatTime';
 
 const styleSheet = theme => ({
@@ -75,11 +79,20 @@ class ControlBar extends Component {
             </Typography>
           </div>
 
-          <LinearProgress
+          {/* <LinearProgress
             className={classes.progress}
             mode="determinate"
             value={this.getFractionPlayed() * 100}
-          />
+          /> */}
+
+          {/* <PlaybackBar
+            fractionPlayed={this.getFractionPlayed() * 100}
+            onClick={() => console.log('onClick')}
+            onDragStart={() => console.log('onDragStart')}
+            onDrag={() => console.log('onDrag')}
+          /> */}
+
+          <Slider max={player.duration} value={player.currentTime} onChange={this.props.onSeek} />
 
           <IconButton color="contrast">
             <VolumeUpIcon />

@@ -71,6 +71,10 @@ class Engine extends Component {
     this.player.removeAttribute('src');
   }
 
+  seek(value) {
+    this.player.currentTime = value;
+  }
+
   setVolume(volume) {
     this.player.volume = volume;
   }

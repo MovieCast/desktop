@@ -13,6 +13,8 @@ import ViewDrawer from './ViewDrawer';
 import ViewContent from './ViewContent';
 import ViewStatusBar from './ViewStatusBar';
 
+import { APP_NAME } from '../../../config';
+
 /**
  * View Component
  *
@@ -26,7 +28,7 @@ export default class View extends Component {
       visible: true
     },
     appBar: {
-      title: 'MovieCast',
+      title: APP_NAME,
       transparent: false,
       shadow: false,
       back: false,
@@ -36,7 +38,7 @@ export default class View extends Component {
     },
 
     drawer: {
-      title: 'MovieCast',
+      title: APP_NAME,
       open: false,
       onRequestClose: () => this.setState({ drawer: { ...this.state.drawer, open: false } }),
       items: [{

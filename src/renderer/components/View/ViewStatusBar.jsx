@@ -10,6 +10,8 @@ import Minimize from '../App/Icons/Minimize';
 import Maximize from '../App/Icons/Maximize';
 import Close from '../App/Icons/Close';
 
+import { APP_NAME } from '../../../config';
+
 const styles = theme => ({
   root: {
     WebkitAppRegion: 'drag',
@@ -113,7 +115,7 @@ class ViewStatusBar extends Component {
           {process.platform !== 'darwin' && (
             <div className={classes.wrapper}>
               <div className={classes.title}>
-                <Typography>MovieCast</Typography>
+                <Typography>{APP_NAME}</Typography>
               </div>
               <div className={classes.controls}>
                 <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>

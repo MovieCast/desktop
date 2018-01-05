@@ -45,7 +45,7 @@ class Player extends Component {
   componentDidMount() {
     this.handleHover();
     // Let's auto start :D
-    // this.props.togglePlay(true);
+    this.props.togglePlay(true);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -112,6 +112,11 @@ class Player extends Component {
     this.props.toggleFullscreen();
   }
 
+  handleSeek = (event, value) => {
+    console.log(value);
+    this.player.seek(value);
+  }
+
   handleHover = debounce(() => {
     this.hoverTimeout && clearTimeout(this.hoverTimeout);
 
@@ -155,6 +160,7 @@ class Player extends Component {
             player={player}
             onTogglePlay={this.handleTogglePlay}
             onToggleFullscreen={this.toggleFullscreen}
+            onSeek={this.handleSeek}
           />
         </Engine>
 
