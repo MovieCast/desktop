@@ -1,7 +1,7 @@
 {
   "name": "moviecast-desktop",
   "productName": "MovieCast",
-  "version": "0.0.1-alpha.7",
+  "version": "0.0.1-alpha.8",
   "description": "Watch movies like never before.",
   "main": "./dist/main/main.prod.js",
   "author": {
