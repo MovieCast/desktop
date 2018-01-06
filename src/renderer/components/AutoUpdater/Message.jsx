@@ -50,6 +50,12 @@ class Message extends Component {
   handleRequestClose = (event, reason) => {
     if (reason === 'clickaway') return;
 
+    console.log(event, reason);
+
+    this.setState({ open: false });
+  }
+
+  close() {
     this.setState({ open: false });
   }
 
@@ -67,16 +73,16 @@ class Message extends Component {
       </span>
     );
 
-    const actionContainer = [].concat(actions, [
-      <IconButton
-        key="close"
-        color="inherit"
-        className={classes.icon}
-        onClick={this.handleRequestClose}
-      >
-        <CloseIcon />
-      </IconButton>
-    ]);
+    // const actionContainer = [].concat(actions(this), [
+    //   <IconButton
+    //     key="close"
+    //     color="inherit"
+    //     className={classes.icon}
+    //     onClick={this.handleRequestClose}
+    //   >
+    //     <CloseIcon />
+    //   </IconButton>
+    // ]);
 
     return (
       <Snackbar
@@ -91,13 +97,13 @@ class Message extends Component {
         }}
         open={this.state.open}
         autoHideDuration={duration}
-        onClose={onRequestClose || this.handleRequestClose}
+        onRequestClose={onRequestClose || this.handleRequestClose}
         transition={position.animation}
         SnackbarContentProps={{
           'aria-describedby': 'message-id',
         }}
         message={messageContainer}
-        action={actionContainer}
+        action={actions(this)}
       />
     );
   }
@@ -109,7 +115,7 @@ Message.propTypes = {
   open: PropTypes.bool,
   message: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired, // Fix that later...
-  actions: PropTypes.array,
+  actions: PropTypes.func,
   duration: PropTypes.number,
   position: PropTypes.object,
   onRequestClose: PropTypes.func
@@ -118,10 +124,10 @@ Message.propTypes = {
 
 Message.defaultProps = {
   open: false,
-  actions: [],
+  actions: () => {},
   duration: null,
   position: {
-    vertical: 'top',
+    vertical: 'bottom',
     horizontal: 'right',
     animation: TransitionLeft
   },
@@ -145,3 +151,21 @@ export function TransitionRight(props) {
 export function TransitionDown(props) {
   return <Slide direction="down" {...props} />;
 }
+
+export function CloseAction({ message }) {
+  return (
+    <IconButton
+      key="close"
+      color="inherit"
+      onClick={() => message.close()}
+    >
+      <CloseIcon />
+    </IconButton>
+  );
+}
+
+CloseAction.propTypes = {
+  message: PropTypes.shape({
+    close: PropTypes.func
+  }).isRequired
+};
