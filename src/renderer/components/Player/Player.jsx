@@ -93,7 +93,12 @@ class Player extends Component {
   }
 
   handleReady = () => {
+    this.props.setBuffering(false);
     this.props.updateDuration(this.player.getDuration());
+  }
+
+  handleWaiting = () => {
+    this.props.setBuffering(true);
   }
 
   handleEnded = () => {
@@ -150,6 +155,7 @@ class Player extends Component {
           onEnded={this.handleEnded}
           onLoadedMetadata={(event, data) => { console.log(event, data); }}
           onReady={this.handleReady}
+          onWaiting={this.handleWaiting}
           onTimeUpdate={this.handleTimeUpdate}
         >
           <Overlay
@@ -177,6 +183,7 @@ Player.propTypes = {
   player: PropTypes.object.isRequired,
   // Player actions
   togglePlay: PropTypes.func.isRequired,
+  setBuffering: PropTypes.func.isRequired,
   // setUrl: PropTypes.func.isRequired,
   // updateVolume: PropTypes.func.isRequired,
   // updatePlaybackRate: PropTypes.func.isRequired,

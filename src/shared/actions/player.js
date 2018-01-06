@@ -12,6 +12,7 @@ import { getTorrentSummary } from '../helpers/torrent';
 export const TOGGLE_PLAY = 'TOGGLE_PLAY';
 export const SET_URL = 'SET_URL';
 export const SET_TITLE = 'SET_TITLE';
+export const SET_BUFFERING = 'SET_BUFFERING';
 export const UPDATE_VOLUME = 'CHANGE_VOLUME';
 export const UPDATE_PLAYBACK_RATE = 'CHANGE_PLAYBACK_RATE';
 export const UPDATE_DURATION = 'UPDATE_DURATION';
@@ -19,15 +20,6 @@ export const UPDATE_CURRENT_TIME = 'UPDATE_CURRENT_TIME';
 export const UPDATE_TRACKS = 'UPDATE_TRACKS';
 export const TOGGLE_FULLSCREEN = 'TOGGLE_FULLSCREEN';
 export const TOGGLE_UI = 'TOGGLE_UI';
-
-// export function setupPlayer(title) {
-//   return (dispatch, getState) => {
-//     const { torrent } = getState();
-
-//     dispatch(setTitle(title));
-//     dispatch(setUrl(torrent.))
-//   };
-// }
 
 export function playTorrent(torrentID) {
   return async (dispatch, getState) => {
@@ -69,6 +61,13 @@ export function setTitle(title) {
   return {
     type: SET_TITLE,
     payload: title
+  };
+}
+
+export function setBuffering(state) {
+  return {
+    type: SET_BUFFERING,
+    payload: state
   };
 }
 

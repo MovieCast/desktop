@@ -106,7 +106,8 @@ class Engine extends Component {
       onStalled,
       onError,
       onTimeUpdate,
-      onProgress
+      onProgress,
+      onWaiting
     } = this.props;
 
     return (
@@ -126,6 +127,7 @@ class Engine extends Component {
           onError={onError}
           onTimeUpdate={onTimeUpdate}
           onProgress={onProgress}
+          onWaiting={onWaiting}
         />
         {children}
       </div>
@@ -148,7 +150,8 @@ Engine.propTypes = {
   onStalled: PropTypes.func,
   onError: PropTypes.func,
   onTimeUpdate: PropTypes.func,
-  onProgress: PropTypes.func
+  onProgress: PropTypes.func,
+  onWaiting: PropTypes.func,
 };
 
 Engine.defaultProps = {
@@ -163,7 +166,8 @@ Engine.defaultProps = {
   onStalled: () => {},
   onError: () => {},
   onTimeUpdate: () => {},
-  onProgress: () => {}
+  onProgress: () => {},
+  onWaiting: () => {}
 };
 
 export default withStyles(styleSheet)(Engine);
