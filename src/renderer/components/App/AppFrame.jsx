@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import { Menu as MenuIcon, ArrowBack as BackIcon, FileDownload as DownloadIcon } from 'material-ui-icons';
-import AppDrawer from './AppDrawer';
-import AppSearch from './AppSearch';
-import AutoUpdater from '../AutoUpdater/AutoUpdater';
+import AutoUpdater from '../../containers/AutoUpdater';
 
-import AppTitleBar from '../../containers/AppTitleBar';
 import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
 
 const styleSheet = theme => ({
@@ -82,13 +73,11 @@ class AppFrame extends Component {
   };
 
   render() {
-    const { children, classes, updater } = this.props;
+    const { children, classes } = this.props;
 
     return (
       <div className={classes.appFrame}>
-        {/* <AppTitleBar /> */}
-
-        <AutoUpdater updater={updater} />
+        <AutoUpdater />
         {children}
 
         <TorrentEngineDialog
@@ -106,13 +95,8 @@ AppFrame.propTypes = {
   classes: PropTypes.object.isRequired,
   // settings: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
-  updater: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
-
-// AppFrame.childContextTypes = {
-//   testFunc: () => {}
-// };
 
 export default withStyles(styleSheet)(AppFrame);

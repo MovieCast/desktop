@@ -13,6 +13,8 @@ import {
 import { withStyles } from 'material-ui/styles';
 import ViewDrawerNavItem from './ViewDrawerNavItem';
 
+import { APP_NAME } from '../../../config';
+
 const styleSheet = theme => ({
   paper: {
     width: 250,
@@ -35,6 +37,7 @@ class ViewDrawer extends Component {
 
     return items.map(item => (
       <ViewDrawerNavItem
+        key={item.text}
         {...item}
         onClick={onRequestClose}
       />
@@ -43,7 +46,7 @@ class ViewDrawer extends Component {
 
   renderCategories(categories) {
     return categories.map(category => (
-      <List subheader={<ListSubheader>{category.title}</ListSubheader>}>
+      <List key={category.title} subheader={<ListSubheader>{category.title}</ListSubheader>}>
         {this.renderItems(category.items)}
       </List>
     ));
@@ -88,12 +91,18 @@ ViewDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   onRequestClose: PropTypes.func,
   open: PropTypes.bool,
+  title: PropTypes.string,
+  items: PropTypes.array,
+  categories: PropTypes.array
 };
 /* eslint-enable react/forbid-prop-types */
 
 ViewDrawer.defaultProps = {
   open: false,
-  onRequestClose: () => {}
+  onRequestClose: () => {},
+  title: APP_NAME,
+  items: [],
+  categories: []
 };
 
 export default withStyles(styleSheet)(ViewDrawer);

@@ -70,13 +70,16 @@ class Catalog extends Component {
 
     this.context.setAppBarConfig({
       title: 'Movies',
-      rightComponents: [<AppSearch />, <IconButton
-        color="contrast"
-        onClick={this.handleTorrentEngineInfo}
-        title="TorrentEngine Info"
-      >
-        <DownloadIcon />
-      </IconButton>]
+      rightComponents: [
+        <AppSearch key="search" />,
+        <IconButton
+          key="torrentInfo"
+          color="contrast"
+          onClick={this.handleTorrentEngineInfo}
+          title="TorrentEngine Info"
+        >
+          <DownloadIcon />
+        </IconButton>]
     });
 
     this.props.fetchItems({
