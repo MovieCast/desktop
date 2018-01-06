@@ -94,7 +94,6 @@ export class TorrentEngineDialog extends Component {
     const { setUrl, setTitle, torrent: { server, torrents } } = this.props;
     
     const torrent = torrents[server.torrentKey];
-
     const fileIndex = torrent.files.findIndex(file => file.name.includes('.mp4'));
 
     if(fileIndex != -1) {

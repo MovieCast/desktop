@@ -1,4 +1,12 @@
 import { remote } from 'electron';
+import { push } from 'react-router-redux';
+import {
+  addTorrent,
+  startStreamServer
+} from './torrent';
+
+import { getTorrentSummary } from '../helpers/torrent';
+
 
 export const TOGGLE_PLAY = 'TOGGLE_PLAY';
 export const SET_URL = 'SET_URL';
@@ -19,6 +27,22 @@ export const TOGGLE_UI = 'TOGGLE_UI';
 //     dispatch(setUrl(torrent.))
 //   };
 // }
+
+export function playTorrent(torrentID) {
+  return async (dispatch, getState) => {
+    const readyPayload = await dispatch(addTorrent(torrentID));
+    const streamServerPayload = await dispatch(startStreamServer(readyPayload.key));
+
+    const torrentSummary = getTorrentSummary(getState(), readyPayload.key);
+    const fileIndex = torrentSummary.files.findIndex(file => file.name.includes('.mp4'));
+
+    if (fileIndex !== -1) {
+      dispatch(setUrl(`${streamServerPayload.location.local}/${fileIndex}`));
+      dispatch(setTitle('unable_to_fetch_error'));
+      dispatch(push('/player'));
+    }
+  };
+}
 
 export function togglePlay(force) {
   return {

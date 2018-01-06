@@ -12,6 +12,7 @@ import App from './components/App/App';
 import {
   torrentInfoHash,
   torrentMetaData,
+  torrentReady,
   torrentProgress,
   torrentDone,
   streamServerStarted
@@ -57,6 +58,11 @@ function init() {
 
   ipc.on('te-metadata', (event, key, info) => {
     dispatch(torrentMetaData(key, info));
+  });
+
+  ipc.on('te-ready', (event, key, info) => {
+    console.log('ready');
+    dispatch(torrentReady(key, info));
   });
 
   ipc.on('te-progress', (event, key, info) => {

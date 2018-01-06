@@ -15,6 +15,7 @@ import {
 } from 'electron-redux';
 
 import api from '../middleware/api';
+import createWaiterMiddleware from '../middleware/waiter';
 
 import rootReducer from '../reducers';
 import * as applicationActions from '../actions/application';
@@ -62,6 +63,7 @@ export default class StoreFactory {
 
   getMiddleware() {
     const initialMiddleware = [
+      createWaiterMiddleware(),
       thunk,
       promise,
       api

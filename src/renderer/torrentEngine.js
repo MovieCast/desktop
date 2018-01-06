@@ -160,8 +160,9 @@ function addTorrentEvents(torrent) {
   function onReady() {
     console.log(`Torrent#${torrent.key}: ready`);
     onProgress();
-    // const info = getTorrentInfo(torrent);
+    const info = getTorrentInfo(torrent);
     // dispatch(torrentReady(torrent.key, info));
+    ipc.send('te-ready', torrent.key, info);
   }
 
   function onDone() {

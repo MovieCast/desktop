@@ -150,7 +150,7 @@ class Detail extends Component {
   }
 
   playItem() {
-    this.props.addTorrent(this.state.torrent.url);
+    this.props.playTorrent(this.state.torrent.url);
     this.setState({ downloading: true });
   }
 
@@ -204,12 +204,6 @@ class Detail extends Component {
 
     console.log(torrent);
 
-    // SORRYY SORRYY SORRYYYYYY
-    if (torrent && torrent.status === 'READY') {
-      this.props.startStreamServer(0);
-    }
-    // END OF SORRYY SORRYY SORRYYYYYY
-
     return (
       <div className={classes.middleWrapper}>
         <div style={{ width: '100%' }}>
@@ -254,8 +248,7 @@ Detail.propTypes = {
   torrent: PropTypes.object,
   match: PropTypes.object.isRequired,
   fetchItem: PropTypes.func.isRequired,
-  addTorrent: PropTypes.func.isRequired,
-  startStreamServer: PropTypes.func.isRequired,
+  playTorrent: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 /* eslint-enable react/forbid-prop-types */
