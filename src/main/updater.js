@@ -15,6 +15,8 @@ export function init(store) {
   autoUpdater.logger = require('electron-log');
   autoUpdater.logger.transports.file.level = 'debug';
 
+  autoUpdater.autoDownload = false;
+
   autoUpdater.on('checking-for-update', () => {
     store.dispatch(checkingForUpdate());
   });
@@ -49,4 +51,8 @@ export function init(store) {
   });
 
   autoUpdater.checkForUpdates();
+}
+
+export function installUpdate() {
+  autoUpdater.downloadUpdate();
 }

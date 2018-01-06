@@ -1,3 +1,4 @@
+import { ipcRenderer as ipc } from 'electron';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgress, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from 'material-ui';
@@ -22,7 +23,22 @@ class AutoUpdater extends Component {
   timer: null
 
   state = {
-    showError: false
+    showError: false,
+    showChangelog: false
+  }
+
+  handleShowError = (event, message) => {
+    this.setState({ showError: true });
+    message.close();
+  }
+
+  handleShowChangelog = (event, message) => {
+    this.setState({ showChangelog: true });
+    // message.close();
+  }
+
+  handleRequestClose = (event, dialog) => {
+    this.setState({ [dialog]: false });
   }
 
   render() {
@@ -46,12 +62,18 @@ class AutoUpdater extends Component {
             <Button
               key="changelog"
               color="inherit"
+              onClick={(event) => {
+                this.handleShowChangelog(event, message);
+              }}
             >
             ChangeLog
             </Button>,
             <Button
               key="install"
               color="inherit"
+              onClick={() => {
+                ipc.send('installUpdate');
+              }}
             >
             Install
             </Button>,
@@ -80,9 +102,8 @@ class AutoUpdater extends Component {
             <Button
               key="details"
               color="inherit"
-              onClick={() => {
-                this.setState({ showError: true });
-                message.close();
+              onClick={(event) => {
+                this.handleShowError(event, message);
               }}
             >
             Details
@@ -100,7 +121,7 @@ class AutoUpdater extends Component {
           ])}
         />
 
-        <Dialog open={this.state.showError} onRequestClose={this.handleRequestClose}>
+        <Dialog open={this.state.showError} onRequestClose={(event) => this.handleRequestClose(event, 'showError')}>
           <DialogTitle>
             Update Error
           </DialogTitle>
@@ -117,31 +138,24 @@ class AutoUpdater extends Component {
             <Button disabled color="primary">
               Report
             </Button>
-            <Button onClick={() => this.setState({ showError: false })} color="primary">
+            <Button onClick={(event) => this.handleRequestClose(event, 'showError')} color="primary">
               Okay
             </Button>
           </DialogActions>
         </Dialog>
 
-        <Dialog open={this.state.showError} onRequestClose={this.handleRequestClose}>
+        <Dialog open={this.state.showChangelog} onRequestClose={(event) => this.handleRequestClose(event, 'showChangelog')}>
           <DialogTitle>
-            Update Error
+            Changelog
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              It seems like an error occured while updating MovieCast,
-              a detailed error is shown below.
-              <pre style={{ whiteSpace: 'pre-line' }}>
-                {updater.updateError}
-              </pre>
+              Changelog...proof of concept...
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button disabled color="primary">
-              Report
-            </Button>
-            <Button onClick={() => this.setState({ showError: false })} color="primary">
-              Okay
+            <Button onClick={(event) => this.handleRequestClose(event, 'showChangelog')} color="primary">
+              Close
             </Button>
           </DialogActions>
         </Dialog>

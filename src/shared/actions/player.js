@@ -2,7 +2,8 @@ import { remote } from 'electron';
 import { push } from 'react-router-redux';
 import {
   addTorrent,
-  startStreamServer
+  startStreamServer,
+  stopStreamServer
 } from './torrent';
 
 import { getTorrentSummary } from '../helpers/torrent';
@@ -30,6 +31,12 @@ export const TOGGLE_UI = 'TOGGLE_UI';
 
 export function playTorrent(torrentID) {
   return async (dispatch, getState) => {
+    const { torrent: { server } } = getState();
+
+    if (server.status === 'STARTED') {
+      dispatch(stopStreamServer());
+    }
+
     const readyPayload = await dispatch(addTorrent(torrentID));
     const streamServerPayload = await dispatch(startStreamServer(readyPayload.key));
 

@@ -2,6 +2,7 @@ import { app, ipcMain as ipc } from 'electron';
 
 import * as windows from './windows';
 import * as logger from './logger';
+import { installUpdate } from './updater';
 
 module.exports = {
   init
@@ -14,6 +15,10 @@ function init() {
     ipcBridge();
 
     app.emit('ipcReady');
+  });
+
+  ipc.on('installUpdate', () => {
+    installUpdate();
   });
 }
 

@@ -12,7 +12,7 @@
  * move to it's own window (doing that right now...)
  */
 
-import { ipcRenderer as ipc } from 'electron';
+import { ipcRenderer as ipc, dialog } from 'electron';
 // import TorrentEngine from '../main/TorrentEngine';
 import crypto from 'crypto';
 // import { EventEmitter } from 'events';
@@ -314,3 +314,7 @@ window.testOfflineMode = () => {
   });
   listenToClientEvents();
 };
+
+process.on('uncaughtException', (err) => {
+  dialog.showErrorBox('Torrent Engine Crash Report', err.stack);
+});

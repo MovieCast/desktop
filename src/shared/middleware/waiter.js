@@ -1,31 +1,17 @@
 export default function createWaiterMiddleware() {
   const pendingActions = [];
 
-  // eslint-disable-next-line
-  const middleware = store => next => action => {
-    // eslint-disable-next-line
-    // for (let i = pendingActionList.length - 1; i >= 0; i--) {
-    //   const pendingActionInfo = pendingActions[i];
-    //   if (pendingActionInfo.isSuccessAction(action)) {
-    //     pendingActionInfo.resolveCallback(pendingActionInfo.successArgumentCb(action));
-    //   } else if (pendingActionInfo.isErrorAction(action)) {
-    //     pendingActionInfo.rejectCallback(pendingActionInfo.errorArgumentCb(action));
-    //   }
-    //   pendingActions.splice(pendingActions.indexOf(pendingActionInfo), 1);
-    // }
-
+  const middleware = () => next => action => {
     for (let i = 0; i < pendingActions.length; i += 1) {
       const pendingAction = pendingActions[i];
 
       if (pendingAction.isSuccessAction(action)) {
         pendingAction.resolve(pendingAction.successCallback(action));
+        pendingActions.splice(pendingActions.indexOf(pendingAction), 1);
       } else if (pendingAction.isErrorAction(action)) {
         pendingAction.reject(pendingAction.errorCallback(action));
-      } else {
-        continue;
+        pendingActions.splice(pendingActions.indexOf(pendingAction), 1);
       }
-
-      pendingActions.splice(pendingActions.indexOf(pendingAction), 1);
     }
 
     const {
