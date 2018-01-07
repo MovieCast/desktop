@@ -1,0 +1,33 @@
+{
+  "views": {
+    "catalog": {
+      "trending": "الرائج حاليا",
+      "year": "السنة",
+      "az": "أ-ي"
+    },
+
+    "details": {
+      "play": "بدء"
+    },
+
+    "settings": {
+      "categories": {
+        "ui": "واجهة المستخدم",
+        "subtitles": "الترجمة",
+        "quality": "الجودة"
+      },
+      "language": "اللغة التلقائية",
+      "palette": "اللوحة",
+      "startScreen": "شاشة البدء",
+      "size": "الحجم",
+      "showQuality": "إظهار الجودة على القائمة"
+    },
+
+    "player": {
+      "playing": "يعرض:",
+      "subtitles": "الترجمة",
+      "fullscreen": "شاشة كاملة",
+      "exitFullscreen": "الخروج من الشاشة الكاملة"
+    }
+  }
+}

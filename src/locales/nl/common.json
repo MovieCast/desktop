@@ -1,0 +1,38 @@
+{
+  "common": {
+    "movies": "Films",
+    "shows": "Series",
+    "settings": "Instellingen",
+    "player": "Speler",
+
+    "accept": "Accepteren",
+    "cancel": "Annuleren",
+    "install": "Instaleren",
+    "details": "Details",
+    "changelog": "Changelog",
+    "search": "Zoeken",
+
+    "languages": {
+      "en": "Engels",
+      "ar": "Arabisch",
+      "zh": "Chinees",
+      "hr": "Kroatisch",
+      "nl": "Nederlands",
+      "fr": "Frans",
+      "de": "Duits",
+      "nb": "Noors",
+      "pt": "Portugees",
+      "es": "Spaans"
+    },
+
+    "updater": {
+      "checkingForUpdate": "Controleren op updates...",
+      "updateAvailable": "Er is een update beschikbaar.",
+      "updateNotAvailable": "Movie-Cast is up-to-date.",
+      "updateDownloading": "Downloaden update... {{value}}",
+      "updateDownloaded": "Update geslaagd. MovieCast restart in 5 seconden.",
+      "updateError": "Een error heeft plaats gevonden tijdens het update."
+    }
+  }
+
+}

@@ -1,0 +1,38 @@
+{
+  "common": {
+    "movies": "Filmer",
+    "shows": "Serier",
+    "settings": "Innstillinger",
+    "player": "Mediaspiller",
+
+    "accept": "Godta",
+    "cancel": "Avbryt",
+    "install": "Installer",
+    "details": "Detaljer",
+    "changelog": "Endringslogg",
+    "search": "Søk",
+
+    "languages": {
+      "en": "Engelsk",
+      "ar": "Arabisk",
+      "zh": "Kinesisk",
+      "hr": "Kroatisk",
+      "nl": "Nederlandsk",
+      "fr": "Fransk",
+      "de": "Tysk",
+      "nb": "Norsk Bokmål",
+      "pt": "Portugisisk",
+      "es": "Spansk"
+    },
+
+    "updater": {
+      "checkingForUpdate": "Søker etter oppdateringer...",
+      "updateAvailable": "Oppdatering tilgjengelig.",
+      "updateNotAvailable": "MovieCast er oppdatert.",
+      "updateDownloading": "Laster ned oppdateringer ... {{value}}",
+      "updateDownloaded": "Nedlasting av oppdatering vellykket, MovieCast vil starte på nytt om 5 sekunder.",
+      "updateError": "En feil oppsto under nedlasting av oppdateringer."
+    }
+  }
+
+}
