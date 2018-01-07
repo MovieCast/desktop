@@ -1,5 +1,6 @@
 import { ipcRenderer as ipc } from 'electron';
 import React, { Component } from 'react';
+import { translate, Interpolate } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { CircularProgress, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from 'material-ui';
 import {
@@ -12,10 +13,14 @@ import {
 import { withStyles } from 'material-ui/styles';
 
 import Message, { CloseAction } from './Message';
+import MarkdownElement from './MarkdownElement';
 
 const style = theme => ({
   circle: {
     transition: theme.transitions.create('all', { duration: 1300 }),
+  },
+  modalRoot: {
+    zIndex: 3000
   }
 });
 
@@ -42,14 +47,14 @@ class AutoUpdater extends Component {
   }
 
   render() {
-    const { updater, classes } = this.props;
+    const { t, updater, classes } = this.props;
 
     return (
       <div>
         <Message
           open={updater.checkingForUpdate}
           icon={<CircularProgress size={32} />}
-          message="Checking for updates..."
+          message={t('updater.checkingForUpdate')}
           actions={(message) => ([
             <CloseAction key="close" message={message} />
           ])}
@@ -57,7 +62,7 @@ class AutoUpdater extends Component {
         <Message
           open={updater.updateAvailable}
           icon={<RefreshIcon />}
-          message="There's an update available."
+          message={t('updater.updateAvailable')}
           actions={(message) => ([
             <Button
               key="changelog"
@@ -66,7 +71,7 @@ class AutoUpdater extends Component {
                 this.handleShowChangelog(event, message);
               }}
             >
-            ChangeLog
+              {t('changelog')}
             </Button>,
             <Button
               key="install"
@@ -75,7 +80,7 @@ class AutoUpdater extends Component {
                 ipc.send('installUpdate');
               }}
             >
-            Install
+              {t('install')}
             </Button>,
             <CloseAction key="close" message={message} />
           ])}
@@ -84,7 +89,7 @@ class AutoUpdater extends Component {
         <Message
           open={!!updater.updateDownloading}
           icon={<CircularProgress mode="determinate" value={updater.updateDownloading} size={32} classes={{ circle: classes.circle }} />}
-          message={`Downloading update ... ${updater.updateDownloading}%`}
+          message={<Interpolate i18nKey="updater.updateDownloading" value={updater.updateDownloading} />}
           actions={(message) => ([
             <CloseAction key="close" message={message} />
           ])}
@@ -92,7 +97,7 @@ class AutoUpdater extends Component {
         <Message
           open={updater.updateDownloaded}
           icon={<DoneIcon />}
-          message="Update successfully downloaded, MovieCast will restart in 5 seconds."
+          message={t('updater.updateDownloaded')}
         />
         <Message
           open={!!updater.updateError}
@@ -106,7 +111,7 @@ class AutoUpdater extends Component {
                 this.handleShowError(event, message);
               }}
             >
-            Details
+              {t('details')}
             </Button>,
             <CloseAction key="close" message={message} />
           ])}
@@ -114,7 +119,7 @@ class AutoUpdater extends Component {
         <Message
           open={updater.updateNotAvailable}
           icon={<SuccessIcon />}
-          message="MovieCast is up-to-date"
+          message={t('updater.updateNotAvailable')}
           duration={10e3}
           actions={(message) => ([
             <CloseAction key="close" message={message} />
@@ -144,13 +149,13 @@ class AutoUpdater extends Component {
           </DialogActions>
         </Dialog>
 
-        <Dialog open={this.state.showChangelog} onRequestClose={(event) => this.handleRequestClose(event, 'showChangelog')}>
+        <Dialog open={this.state.showChangelog} classes={{ root: classes.modalRoot }} onRequestClose={(event) => this.handleRequestClose(event, 'showChangelog')}>
           <DialogTitle>
-            Changelog
+            Changelog: {updater.updateInfo.releaseName}
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Changelog...proof of concept...
+              <MarkdownElement text={updater.updateInfo.releaseNotes} />
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -167,9 +172,10 @@ class AutoUpdater extends Component {
 
 /* eslint-disable react/forbid-prop-types */
 AutoUpdater.propTypes = {
+  t: PropTypes.func.isRequired,
   updater: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(style)(AutoUpdater);
+export default translate()(withStyles(style)(AutoUpdater));

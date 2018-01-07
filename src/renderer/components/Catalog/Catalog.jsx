@@ -160,9 +160,9 @@ class Catalog extends Component {
 
         <AppBar position="static">
           <Tabs value={this.state.sort} onChange={this.handleChange.bind(this)}>
-            <Tab label={t('trending')} />
-            <Tab label={t('year')} />
-            <Tab label={t('az')} />
+            <Tab label={t('views:catalog.trending')} />
+            <Tab label={t('views:catalog.year')} />
+            <Tab label={t('views:catalog.az')} />
           </Tabs>
         </AppBar>
         <div className={styles.scroll}>

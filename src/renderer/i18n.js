@@ -5,7 +5,7 @@ i18n.init({
   fallbackLng: 'en',
 
   // have a common namespace used around the full app
-  ns: ['common'],
+  ns: ['common', 'views'],
   defaultNS: 'common',
 
   debug: true,

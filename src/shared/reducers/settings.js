@@ -8,7 +8,7 @@ const initialState = {
     startScreen: 'movies',
   },
   subtitles: {
-    language: 'english',
+    language: 'en',
     size: '24px'
   },
   quality: {

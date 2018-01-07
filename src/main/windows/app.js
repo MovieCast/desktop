@@ -1,6 +1,6 @@
 /* eslint-disable import/no-named-as-default-member, no-param-reassign, no-mixed-operators */
 import _ from 'lodash';
-import { app, screen, BrowserWindow } from 'electron';
+import { app, screen, shell, BrowserWindow } from 'electron';
 import * as config from '../../config';
 import * as logger from '../logger';
 
@@ -52,6 +52,13 @@ function init() {
   }
 
   const win = manager.win = new BrowserWindow(options);
+
+  win.webContents.on('will-navigate', (e, url) => {
+    if (url !== win.webContents.getURL()) {
+      e.preventDefault();
+      shell.openExternal(url);
+    }
+  });
 
   win.loadURL(config.WINDOW_MAIN);
 

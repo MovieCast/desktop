@@ -22,12 +22,12 @@ export function init(store) {
   });
 
   autoUpdater.on('update-available', (info) => {
-    store.dispatch(updateAvailable());
+    store.dispatch(updateAvailable(info));
     console.log(info);
   });
 
   autoUpdater.on('update-not-available', (info) => {
-    store.dispatch(updateNotAvailable());
+    store.dispatch(updateNotAvailable(info));
     console.log(info);
   });
 
