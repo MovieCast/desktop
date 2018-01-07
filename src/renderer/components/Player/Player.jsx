@@ -9,6 +9,7 @@ import Overlay from './Overlay';
 import ControlBar from './ControlBar';
 
 import { withView, View } from '../View';
+import SubtitleDialog from './SubtitleDialog';
 
 const styleSheet = {
   root: {
@@ -24,6 +25,10 @@ const styleSheet = {
 };
 
 class Player extends Component {
+  state = {
+    showSubtitleDialog: false
+  }
+
   componentWillMount() {
     // Make the AppBar transparent and add a back button
     this.context.setStatusBarConfig({
@@ -109,6 +114,10 @@ class Player extends Component {
     this.props.togglePlay();
   }
 
+  handleToggleSubtitles = () => {
+    this.setState({ showSubtitleDialog: !this.state.showSubtitleDialog });
+  }
+
   toggleFullscreen = () => {
     this.props.toggleFullscreen();
   }
@@ -161,11 +170,13 @@ class Player extends Component {
           <ControlBar
             player={player}
             onTogglePlay={this.handleTogglePlay}
+            onToggleSubtitles={this.handleToggleSubtitles}
             onToggleFullscreen={this.toggleFullscreen}
             onSeek={this.handleSeek}
           />
         </Engine>
 
+        <SubtitleDialog open={this.state.showSubtitleDialog} onClose={this.handleToggleSubtitles} />
       </div>
     );
   }

@@ -51,6 +51,7 @@ class ControlBar extends Component {
       classes,
       player,
       onTogglePlay,
+      onToggleSubtitles,
       onToggleFullscreen
     } = this.props;
 
@@ -97,7 +98,7 @@ class ControlBar extends Component {
           <IconButton color="contrast">
             <VolumeUpIcon />
           </IconButton>
-          <IconButton color="contrast">
+          <IconButton color="contrast" onClick={onToggleSubtitles}>
             <SubtitlesIcon />
           </IconButton>
           <IconButton color="contrast" onClick={onToggleFullscreen}>
@@ -114,6 +115,7 @@ ControlBar.propTypes = {
   classes: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
   onTogglePlay: PropTypes.func,
+  onToggleSubtitles: PropTypes.func,
   onToggleFullscreen: PropTypes.func
 };
 /* eslint-enable react/forbid-prop-types */
@@ -122,6 +124,7 @@ ControlBar.defaultProps = {
   hidden: false,
   fullscreen: false,
   onTogglePlay: () => {},
+  onToggleSubtitles: () => {},
   onToggleFullscreen: () => {}
 };
 
