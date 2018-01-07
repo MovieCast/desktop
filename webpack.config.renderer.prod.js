@@ -30,6 +30,10 @@ export default merge.smart(baseConfig, {
 
   module: {
     rules: [
+      {
+        test: /locales/,
+        loader: '@alienfast/i18next-loader'
+      },
       // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,

@@ -3,6 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { getInitialStateRenderer } from 'electron-redux';
+
+import { I18nextProvider } from 'react-i18next';
+
 import StoreFactory, { SCOPE_RENDERER } from '../shared/store/StoreFactory';
 import './app.global.css';
 
@@ -17,6 +20,8 @@ import {
   torrentDone,
   streamServerStarted
 } from '../shared/actions/torrent';
+
+import i18n from './i18n';
 
 console.time('init');
 
@@ -92,7 +97,9 @@ function render(Component) {
         throw error;
       }}
     >
-      <Component store={store} history={history} />
+      <I18nextProvider i18n={i18n}>
+        <Component store={store} history={history} />
+      </I18nextProvider>
     </AppContainer>,
     document.getElementById('root')
   );

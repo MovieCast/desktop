@@ -3,7 +3,7 @@ import { CHANGE_SETTINGS, RESET_SETTINGS } from '../actions/settings';
 
 const initialState = {
   ui: {
-    language: 'english',
+    language: 'en',
     palette: 'dark',
     startScreen: 'movies',
   },

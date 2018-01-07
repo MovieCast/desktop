@@ -43,22 +43,22 @@ export default class View extends Component {
       onRequestClose: () => this.setState({ drawer: { ...this.state.drawer, open: false } }),
       items: [{
         to: '/movies',
-        text: 'Movies',
+        text: 'movies',
         icon: <MovieIcon />
       }, {
         to: '/shows',
-        text: 'Shows',
+        text: 'shows',
         icon: <ShowIcon />
       }, {
         to: '/settings',
-        text: 'Settings',
+        text: 'settings',
         icon: <SettingsIcon />
       }],
       categories: [{
         title: 'Demos',
         items: [{
           to: '/player',
-          text: 'Player',
+          text: 'player',
           icon: <VideoIcon />
         }]
       }]

@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import dimensions from 'react-dimensions';
+import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
@@ -60,16 +61,11 @@ class Catalog extends Component {
   componentWillMount() {
     const { filter: { genre, sort } } = this.props;
 
-    this.props.configureAppBar({
-      title: 'Movies', // TODO: This should be able to switch between shows and movies
-      search: true,
-    });
-
     // this.context.setBarTitle('Movies');
     // this.context.setBarShadow(false);
 
     this.context.setAppBarConfig({
-      title: 'Movies',
+      title: 'movies',
       rightComponents: [
         <AppSearch key="search" />,
         <IconButton
@@ -140,7 +136,7 @@ class Catalog extends Component {
   }
 
   render() {
-    const { classes, result, containerWidth } = this.props;
+    const { t, classes, result, containerWidth } = this.props;
 
     // Alrighty then, lets see if we can calculate the needed "ghost" items
     // to fill up the empty space in the last row.
@@ -164,9 +160,9 @@ class Catalog extends Component {
 
         <AppBar position="static">
           <Tabs value={this.state.sort} onChange={this.handleChange.bind(this)}>
-            <Tab label="Trending" />
-            <Tab label="Year" />
-            <Tab label="A-Z" />
+            <Tab label={t('trending')} />
+            <Tab label={t('year')} />
+            <Tab label={t('az')} />
           </Tabs>
         </AppBar>
         <div className={styles.scroll}>
@@ -196,12 +192,12 @@ class Catalog extends Component {
 /* eslint-disable react/forbid-prop-types */
 Catalog.propTypes = {
   // catalog: PropTypes.object.isRequired,
+  t: PropTypes.object.isRequired,
   result: PropTypes.array.isRequired,
   filter: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   fetchItems: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
-  configureAppBar: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 
   containerWidth: PropTypes.number.isRequired,
@@ -214,4 +210,4 @@ Catalog.contextTypes = {
   ...View.childContextTypes
 };
 
-export default withView(dimensions()(withStyles(styleSheet)(Catalog)));
+export default translate()(withView(dimensions()(withStyles(styleSheet)(Catalog))));

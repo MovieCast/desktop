@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import {
@@ -33,12 +34,13 @@ const styleSheet = theme => ({
 
 class ViewDrawer extends Component {
   renderItems(items) {
-    const { onRequestClose } = this.props;
+    const { t, onRequestClose } = this.props;
 
     return items.map(item => (
       <ViewDrawerNavItem
         key={item.text}
         {...item}
+        text={t(item.text)}
         onClick={onRequestClose}
       />
     ));
@@ -105,4 +107,4 @@ ViewDrawer.defaultProps = {
   categories: []
 };
 
-export default withStyles(styleSheet)(ViewDrawer);
+export default translate('common')(withStyles(styleSheet)(ViewDrawer));

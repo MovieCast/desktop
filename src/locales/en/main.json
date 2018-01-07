@@ -1,0 +1,14 @@
+{
+  "common": {
+    "movies": "Movies",
+    "shows": "Shows",
+    "settings": "Settings",
+    "player": "Player",
+
+    "trending": "Trending",
+    "year": "Year",
+    "az": "A-Z",
+
+    "playing": "Playing: "
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "common": {
+    "movies": "Films",
+    "shows": "Series",
+    "settings": "Instellingen",
+    "player": "Speler",
+
+    "trending": "Trending",
+    "year": "Jaar",
+    "az": "A-Z",
+
+    "playing": "Playing: "
+  }
+}

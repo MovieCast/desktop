@@ -26,16 +26,12 @@ const styleSheet = {
 class Player extends Component {
   componentWillMount() {
     // Make the AppBar transparent and add a back button
-
-    // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
-    // this.context.setBarTransparency(true);
-    // this.context.setBarBack(true);
-    // this.context.setBarVisibility(!this.props.player.showUi);
     this.context.setStatusBarConfig({
       transparent: true
     });
     this.context.setAppBarConfig({
-      title: `Playing: ${this.props.player.title}`,
+      // title: `Playing: ${this.props.player.title}`,
+      title: 'playing',
       transparent: true,
       back: true,
       visible: true
@@ -68,12 +64,12 @@ class Player extends Component {
     }
 
     // TODO: Handle this directly in the application reducer
-    if (nextProps.player.title !== this.props.player.title) {
-      // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
-      this.context.setAppBarConfig({
-        title: `Playing: ${this.props.player.title}`,
-      });
-    }
+    // if (nextProps.player.title !== this.props.player.title) {
+    //   // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
+    //   this.context.setAppBarConfig({
+    //     title: `Playing: ${this.props.player.title}`,
+    //   });
+    // }
   }
 
   shouldComponentUpdate(nextProps) {

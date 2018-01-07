@@ -78,6 +78,10 @@ export default merge.smart(baseConfig, {
         }
       },
       {
+        test: /locales/,
+        loader: '@alienfast/i18next-loader'
+      },
+      {
         test: /\.global\.css$/,
         use: [
           {

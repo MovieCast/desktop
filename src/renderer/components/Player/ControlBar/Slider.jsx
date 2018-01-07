@@ -33,6 +33,14 @@ const styles = theme => ({
     height: 2,
     backgroundColor: theme.palette.primary[300]
   },
+  filled: {
+    directionInverant: true,
+    position: 'absolute',
+    left: 0,
+    height: '100%',
+    backgroundColor: theme.palette.primary[100],
+    marginRight: 1,
+  },
   handle: {
     directionInverant: true,
     boxSizing: 'border-box',
@@ -48,7 +56,6 @@ const styles = theme => ({
     border: '0px solid transparent',
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
-    // transition:
     overflow: 'visible',
     outline: 'none'
   },
@@ -297,9 +304,9 @@ class Slider extends Component {
       value
     } = this.state;
 
+    const disabledGutter = 2 + (8 / 2);
+    const calcDisabledSpacing = disabled ? ` - ${disabledGutter}px` : '';
     const percent = getPercent(value, min, max);
-
-    // console.log(percent);
 
     return (
       <div
@@ -313,7 +320,7 @@ class Slider extends Component {
         onTouchStart={this.handleTouchStart}
       >
         <div ref={(node) => this.track = node} className={classes.track}>
-          <div />
+          <div className={classes.filled} style={{ width: `calc(${(percent * 100)}%${calcDisabledSpacing})` }} />
           <div
             ref={(node) => this.handle = node}
             style={{ left: `${percent * 100}%` }}

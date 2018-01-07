@@ -1,5 +1,6 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -48,7 +49,7 @@ const styles = theme => ({
 class ViewAppBar extends Component {
   render() {
     const {
-      title, secondary, back, transparent, shadow,
+      title, t, secondary, back, transparent, shadow,
       visible, onDrawerClick, onBackClick, classes, rightComponents } = this.props;
 
     const appBarClassName = classNames(classes.appBar, {
@@ -68,7 +69,7 @@ class ViewAppBar extends Component {
           </IconButton>
           <div className={classes.title}>
             <Typography type="title" color="inherit" noWrap gutterBottom={!!secondary}>
-              {title}
+              {t(title)}
             </Typography>
             {secondary &&
             <Typography type="caption" color="secondary" className={classes.appBarTitleSecondary}>
@@ -113,4 +114,4 @@ ViewAppBar.defaultProps = {
   onDrawerClick: () => {}
 };
 
-export default withStyles(styles)(ViewAppBar);
+export default translate('common')(withStyles(styles)(ViewAppBar));

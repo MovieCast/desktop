@@ -14,6 +14,8 @@ import {
   HighQuality as HighQualityIcon
 } from 'material-ui-icons';
 
+import { translate } from 'react-i18next';
+
 import { withView, View } from '../View';
 
 import SettingsCategoryList from './SettingsCategoryList';
@@ -39,7 +41,7 @@ class Settings extends Component {
     // this.context.setBarBack(true);
 
     this.context.setAppBarConfig({
-      title: 'Settings',
+      title: 'settings',
       shadow: true,
       back: true
     });
@@ -80,7 +82,11 @@ class Settings extends Component {
             text="Default Language"
             value={settings.ui.language}
             options={['English', 'Dutch']}
-            onOptionsClick={(event, index, value) => changeSettings({ ui: { language: value } })}
+            values={['en', 'nl']}
+            onOptionsClick={(event, index, value) => {
+              changeSettings({ ui: { language: value } });
+              this.props.i18n.changeLanguage(value);
+            }}
           />
           <SettingsCategoryListItem
             icon={<PaletteIcon />}
@@ -147,4 +153,4 @@ Settings.contextTypes = {
   ...View.childContextTypes
 };
 
-export default withView(withStyles(styleSheet)(Settings));
+export default translate('common')(withView(withStyles(styleSheet)(Settings)));
