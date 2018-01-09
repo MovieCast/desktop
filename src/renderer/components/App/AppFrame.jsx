@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import AutoUpdater from '../../containers/AutoUpdater';
 
-import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
-
 const styleSheet = theme => ({
   '@global': {
     html: {
@@ -26,52 +24,10 @@ const styleSheet = theme => ({
   appFrame: {
     height: '100vh',
     width: '100%',
-  },
-  wrapper: {
-    // position: 'relative',
-    // top: 29,
-    width: '100%',
-    // height: '100vh'
-  },
+  }
 });
 
 class AppFrame extends Component {
-  state = {
-    drawerOpen: false,
-    torrentEngineInfo: false
-  }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log(nextProps, this.props);
-  //   if (nextState !== this.state) {
-  //     return true;
-  //   }
-
-  //   if (nextProps.children !== this.props.children) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
-
-  handleDrawerClose = () => {
-    this.setState({ drawerOpen: false });
-  };
-
-  handleTorrentEngineInfo = () => {
-    this.setState({ torrentEngineInfo: true });
-  };
-
-  // TODO: Dont use goBack, since it breaks on refresh
-  handleBackAndDrawerButton = () => {
-    const { application: { appBar }, history } = this.props;
-    if (appBar.back) {
-      history.goBack();
-    } else {
-      this.setState({ drawerOpen: !this.state.drawerOpen });
-    }
-  };
-
   render() {
     const { children, classes } = this.props;
 
@@ -80,10 +36,10 @@ class AppFrame extends Component {
         <AutoUpdater />
         {children}
 
-        <TorrentEngineDialog
+        {/* <TorrentEngineDialog
           open={this.state.torrentEngineInfo}
           onRequestClose={() => this.setState({ torrentEngineInfo: false })}
-        />
+        /> */}
       </div>
     );
   }
@@ -93,9 +49,6 @@ class AppFrame extends Component {
 AppFrame.propTypes = {
   children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired,
-  // settings: PropTypes.object.isRequired,
-  application: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

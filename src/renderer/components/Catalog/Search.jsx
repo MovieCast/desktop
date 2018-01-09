@@ -52,24 +52,22 @@ const styles = theme => ({
   },
 });
 
-class AppSearch extends Component {
-
+class Search extends Component {
   state = {
-    term: ''
+    value: ''
+  }
+
+  componentWillMount() {
+    this.setState({ value: this.props.initialValue });
   }
 
   handleChange = (event) => {
-    this.setState({ term: event.target.value });
-    this.updateRedux();
+    this.setState({ value: event.target.value });
+    this.debouncedCallback();
   };
 
-  updateRedux = _.debounce(() => {
-    this.props.searchTerm(this.state.term);
-
-    this.props.setFilter({
-      page: 1,
-      keywords: this.state.term
-    });
+  debouncedCallback = _.debounce(() => {
+    this.props.onChange(this.state.value);
   }, 500);
 
   render() {
@@ -86,18 +84,15 @@ class AppSearch extends Component {
   }
 }
 
-AppSearch.propTypes = {
+Search.propTypes = {
   classes: PropTypes.object.isRequired,
-  searchTerm: PropTypes.func.isRequired
+  initialValue: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
-function mapStateToProps({ application: { appBar: { term } } }) {
-  return { term };
-}
+Search.defaultProps = {
+  initialValue: '',
+  onChange: () => {}
+};
 
-export default compose(
-  withStyles(styles, {
-    name: 'AppSearch',
-  }),
-  connect(mapStateToProps, { searchTerm, setFilter })
-)(AppSearch);
+export default withStyles(styles)(Search);

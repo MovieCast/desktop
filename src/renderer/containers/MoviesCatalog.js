@@ -12,7 +12,8 @@ import { getMoviesResult } from '../../shared/selectors/catalog';
 function mapStateToProps({ catalog }) {
   return {
     result: getMoviesResult(catalog),
-    filter: catalog.filter
+    filter: catalog.filter,
+    moreAvailable: catalog.moreAvailable
   };
 }
 

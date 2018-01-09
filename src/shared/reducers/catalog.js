@@ -12,6 +12,7 @@ const initialState = {
     sort: 'trending',
     keywords: ''
   },
+  moreAvailable: true,
   entities: {
     movies: [],
     torrents: []
@@ -25,7 +26,8 @@ export default createReducer(initialState, {
     entities: merge(state.entities, action.payload.entities),
 
     // de-dupe existing result, this does sometimes happen...
-    result: _.union(state.result, action.payload.result)
+    result: _.union(state.result, action.payload.result),
+    moreAvailable: action.payload.result.length > 0
   }),
 
 

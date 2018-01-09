@@ -13,7 +13,7 @@ import PosterItem from './Item/PosterItem';
 import GhostItem from './Item/GhostItem';
 import MoreItem from './Item/MoreItem';
 
-import AppSearch from '../App/AppSearch';
+import Search from './Search';
 
 import { withView, View } from '../View';
 
@@ -55,11 +55,12 @@ const styleSheet = theme => ({
 class Catalog extends Component {
   state = {
     sort: 0,
+    ghostItems: 0,
     torrentEngineInfo: false
   }
 
   componentWillMount() {
-    const { filter: { genre, sort } } = this.props;
+    const { filter: { genre, sort, keywords } } = this.props;
 
     // this.context.setBarTitle('Movies');
     // this.context.setBarShadow(false);
@@ -67,7 +68,11 @@ class Catalog extends Component {
     this.context.setAppBarConfig({
       title: 'movies',
       rightComponents: [
-        <AppSearch key="search" />,
+        <Search
+          key="search"
+          initialValue={keywords}
+          onChange={this.handleSearch}
+        />,
         <IconButton
           key="torrentInfo"
           color="contrast"
@@ -87,6 +92,31 @@ class Catalog extends Component {
 
   componentDidMount() {
     // Calculate needed "ghost" items to fix spacing in last row
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { result, moreAvailable, containerWidth } = nextProps;
+
+    // Alrighty then, lets see if we can calculate the needed "ghost" items
+    // to fill up the empty space in the last row.
+    // First we'll calculate how many items can fit in this container
+    // After that we can see how many items are missing in the last row
+    // NOTICE: Move this part out of the render function, to improve performance.
+    //         These calculations only have to be recalculated when
+    //         the width changes by a certain amount of pixels
+    const itemsPerRow = Math.floor(containerWidth / 230);
+    const amountOfRows = (result.length / itemsPerRow);
+    const percentageMissing = 1 - (amountOfRows % 1);
+    let missingItems = Math.round((percentageMissing * itemsPerRow) - 1);
+    if (!moreAvailable) {
+      missingItems += 1;
+    }
+
+    if (missingItems !== this.state.ghostItems) {
+      this.setState({
+        ghostItems: missingItems
+      });
+    }
   }
 
   handleTorrentEngineInfo = () => {
@@ -135,20 +165,15 @@ class Catalog extends Component {
     }, 500);
   }
 
-  render() {
-    const { t, classes, result, containerWidth } = this.props;
+  handleSearch = (keywords) => {
+    this.props.setFilter({
+      page: 1,
+      keywords
+    });
+  }
 
-    // Alrighty then, lets see if we can calculate the needed "ghost" items
-    // to fill up the empty space in the last row.
-    // First we'll calculate how many items can fit in this container
-    // After that we can see how many items are missing in the last row
-    // NOTICE: Move this part out of the render function, to improve performance.
-    //         These calculations only have to be recalculated when
-    //         the width changes by a certain amount of pixels
-    const itemsPerRow = Math.floor(containerWidth / 230);
-    const amountOfRows = (result.length / itemsPerRow);
-    const percentageMissing = 1 - (amountOfRows % 1);
-    const missingItems = Math.round((percentageMissing * itemsPerRow) - 1);
+  render() {
+    const { t, classes, result, moreAvailable } = this.props;
 
     return (
       <div className={classes.root}>
@@ -177,9 +202,9 @@ class Catalog extends Component {
                 rating={item.rating.percentage / 10}
               />
             )))}
-            <MoreItem onVisible={this.loadMore} />
+            {moreAvailable && <MoreItem onVisible={this.loadMore} />}
 
-            {_.map([...new Array(missingItems).keys()], (key) => (
+            {_.map([...new Array(this.state.ghostItems).keys()], (key) => (
               <GhostItem key={key} />
             ))}
           </Grid>
@@ -192,9 +217,10 @@ class Catalog extends Component {
 /* eslint-disable react/forbid-prop-types */
 Catalog.propTypes = {
   // catalog: PropTypes.object.isRequired,
-  t: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired,
   result: PropTypes.array.isRequired,
   filter: PropTypes.object.isRequired,
+  moreAvailable: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
   fetchItems: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,

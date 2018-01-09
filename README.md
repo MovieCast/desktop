@@ -3,6 +3,7 @@
 <h4 align="center">Streaming movies and shows has never been easier!</h4>
 
 <p align="center">
+  <a href="https://discord.gg/bcSzx7M"><img src="https://img.shields.io/discord/183209512809922561.svg" alt="Discord"></a>
   <a href="https://travis-ci.org/MovieCast/desktop"><img src="https://img.shields.io/travis/MovieCast/desktop/master.svg" alt="TravisCI"></a>
   <a href="https://github.com/MovieCast/desktop/releases"><img src="https://img.shields.io/github/release/MovieCast/desktop.svg" alt="Github Releases"></a>
   <a href="https://david-dm.org/MovieCast/desktop"><img src="https://img.shields.io/david/MovieCast/desktop.svg" alt="Dependency Status"></a>
