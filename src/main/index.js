@@ -30,7 +30,7 @@ function init() {
 
   parallel({
     appReady: (cb) => app.on('ready', () => cb(null)),
-    store: (cb) => Store.load(cb)
+    store: (cb) => Store.load().then(store => cb(null, store)).catch(err => cb(err, null))
   }, onReady);
 
   function onReady(err, results) {
@@ -62,8 +62,10 @@ function init() {
 
     app.isQuitting = true;
 
-    windows.app.dispatch('stateSaveImmediate'); // try to save state on exit
-    ipcMain.once('stateSaved', () => app.quit());
+    // windows.app.dispatch('stateSaveImmediate'); // try to save state on exit
+    // ipcMain.once('stateSaved', () => app.quit());
+
+    Store.save().then(() => app.quit()).catch(console.error);
 
     // Give the state saver some time to save,
     // if it takes more then 4 seconds, quit
@@ -99,4 +101,9 @@ function onAppOpen(newArgv) {
 
 process.on('uncaughtException', (err) => {
   console.log(err);
+});
+
+process.on('unhandledRejection', error => {
+  // Will print "unhandledRejection err is not defined"
+  console.log('unhandledRejection', error);
 });

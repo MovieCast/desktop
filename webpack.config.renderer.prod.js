@@ -170,14 +170,14 @@ export default merge.smart(baseConfig, {
     new ExtractTextPlugin('style.css'),
 
     new HtmlWebpackPlugin({
-      template: 'src/renderer/app.html',
+      template: 'static/app.html',
       chunks: ['renderer'],
       filename: 'app.html',
       inject: 'body'
     }),
 
     new HtmlWebpackPlugin({
-      template: 'src/renderer/torrentEngine.html',
+      template: 'static/torrentEngine.html',
       chunks: ['torrentEngine'],
       filename: 'torrentEngine.html',
       inject: 'body'

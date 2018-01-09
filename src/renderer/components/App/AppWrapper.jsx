@@ -11,6 +11,7 @@ import createContext, { getTheme } from '../../styles/createContext';
 class AppWrapper extends React.Component {
   componentWillMount() {
     this.styleContext = createContext();
+    this.styleContext.theme = getTheme(this.props.ui);
   }
 
   componentWillReceiveProps(nextProps) {

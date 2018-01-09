@@ -30,6 +30,8 @@ const store = storeFactory.configureStore(getInitialStateRenderer());
 const history = storeFactory.history;
 const dispatch = store.dispatch;
 
+i18n.changeLanguage(store.getState().settings.ui.language);
+
 init();
 
 function init() {
