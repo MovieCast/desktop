@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+
 import storage from 'electron-json-storage';
 import * as BlueBirdPromise from 'bluebird';
 
@@ -9,7 +11,12 @@ export default (key, backup) => {
     async load() {
       const storedState = await storageGet(key);
 
-      return JSON.parse(storedState);
+      try {
+        return JSON.parse(storedState);
+      } catch (err) {
+        console.warn('Can\'t parse saved file, will fall back to default config.');
+        return {};
+      }
     }
 
     async save(state) {
