@@ -137,9 +137,10 @@ class Detail extends Component {
   componentWillReceiveProps(nextProps) {
     // TODO: Add a button to select quality.
 
-    if (nextProps.item && nextProps.item.torrents.en) {
-      const highestQuality = Object.keys(nextProps.item.torrents.en)[0];
-      this.setState({ torrent: nextProps.item.torrents.en[highestQuality] });
+    if (nextProps.item && nextProps.item.torrents) {
+      console.log(nextProps.item);
+      const highestQuality = Object.keys(nextProps.item.torrents)[0];
+      this.setState({ torrent: nextProps.item.torrents[highestQuality] });
     }
   }
 
@@ -150,7 +151,7 @@ class Detail extends Component {
   }
 
   playItem() {
-    this.props.playTorrent(this.state.torrent.url);
+    this.props.playTorrent(this.state.torrent.hash);
     this.setState({ downloading: true });
   }
 
@@ -165,7 +166,7 @@ class Detail extends Component {
         />
         <span className={classes.metaHeaderDot} />
         <div className={classes.row}>
-          {item.genres.map(genre => (
+          {item.genres && item.genres.map(genre => (
             <Chip
               label={capitalize(genre)}
               key={genre}
@@ -220,30 +221,35 @@ class Detail extends Component {
   }
 
   render() {
-    const { item, classes } = this.props;
+    const { loading, item, classes } = this.props;
 
     const wrapperClassName = classNames(classes.wrapper, {
       [classes.downloading]: this.state.downloading
     });
 
-    return (
-      <div className={wrapperClassName}>
-        <div className={classes.header}>
-          <DynamicImg className={classes.background} src={item.images.banner} alt={item.title} />
+    if (!loading) {
+      return (
+        <div className={wrapperClassName}>
+          <div className={classes.header}>
+            <DynamicImg className={classes.background} src={item.images.background} alt={item.title} />
 
-          {this.state.downloading && this.renderProgress()}
+            {this.state.downloading && this.renderProgress()}
 
-          {this.renderMeta()}
+            {this.renderMeta()}
+          </div>
+
+          {this.renderContent()}
         </div>
+      );
+    }
 
-        {this.renderContent()}
-      </div>
-    );
+    return null;
   }
 }
 
 /* eslint-disable react/forbid-prop-types */
 Detail.propTypes = {
+  loading: PropTypes.bool,
   item: PropTypes.object,
   torrent: PropTypes.object,
   match: PropTypes.object.isRequired,
@@ -254,6 +260,7 @@ Detail.propTypes = {
 /* eslint-enable react/forbid-prop-types */
 
 Detail.defaultProps = {
+  loading: true,
   item: {},
   torrent: {}
 };

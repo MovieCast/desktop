@@ -9,9 +9,9 @@ import { getMoviesResult } from '../../shared/selectors/catalog';
 //   return { catalog };
 // }
 
-function mapStateToProps({ catalog }) {
+function mapStateToProps({ entities, catalog }) {
   return {
-    result: getMoviesResult(catalog),
+    result: getMoviesResult({ movies: entities.movies, result: catalog.result }),
     filter: catalog.filter,
     moreAvailable: catalog.moreAvailable
   };

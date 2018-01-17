@@ -4,6 +4,8 @@ import application from './application';
 import settings from './settings';
 import updater from './updater';
 import catalog from './catalog';
+import detail from './detail';
+import entities from './entities';
 import player from './player';
 import torrent from './torrent';
 
@@ -12,6 +14,8 @@ const rootReducer = combineReducers({
   settings,
   updater,
   catalog,
+  detail,
+  entities,
   player,
   torrent,
   router,

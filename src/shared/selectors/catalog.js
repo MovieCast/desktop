@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 // Select entities from state
 const getResultMap = (state) => state.result;
-const getMoviesMap = (state) => state.entities.movies;
+const getMoviesMap = (state) => state.movies;
 
 // Select movie result from state
 const getResult = createSelector(

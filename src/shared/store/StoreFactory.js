@@ -25,6 +25,8 @@ import * as catalogActions from '../actions/catalog';
 import * as playerActions from '../actions/player';
 import * as torrentActions from '../actions/torrent';
 
+import * as entitiesActions from '../actions/entities';
+
 export default class StoreFactory {
   static SCOPE_MAIN = 'SCOPE_MAIN';
   static SCOPE_RENDERER = 'SCOPE_RENDERER';
@@ -100,10 +102,12 @@ export default class StoreFactory {
       ...applicationActions,
       ...settingsActions,
       ...updaterActions,
-      ...catalogActions,
+      // ...catalogActions,
       ...playerActions,
       ...torrentActions,
       ...routerActions,
+
+      ...entitiesActions
     };
 
     // TODO: Include all action creators.
