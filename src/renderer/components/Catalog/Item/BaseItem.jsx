@@ -10,7 +10,8 @@ import handleViewport from '../../../internal/handleViewport';
 const styles = theme => ({
   root: {
     width: 230,
-    height: 345
+    height: 345,
+    borderRadius: 5
   },
   placeholder: {
     display: 'flex',
@@ -47,8 +48,10 @@ class BaseItem extends Component {
   render() {
     const { classes, children, innerRef } = this.props;
     return (
-      <Grid item ref={innerRef} className={classes.root}>
-        {this.state.isVisible ? children : <div className={classes.placeholder} /> }
+      <Grid item ref={innerRef}>
+        <div className={classes.root}>
+          {this.state.isVisible ? children : <div className={classes.placeholder} /> }
+        </div>
       </Grid>
     );
   }

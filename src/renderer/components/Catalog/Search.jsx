@@ -1,15 +1,10 @@
 import _ from 'lodash';
 
 import React, { Component } from 'react';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SearchIcon from 'material-ui-icons/Search';
 import { fade } from 'material-ui/styles/colorManipulator';
 import { withStyles } from 'material-ui/styles';
-
-import { searchTerm } from '../../../shared/actions/application';
-import { fetchMovies, setFilter } from '../../../shared/actions/catalog';
 
 const styles = theme => ({
   wrapper: {

@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import Catalog from '../components/Catalog/Catalog';
-import { fetchMovies, setFilter } from '../../shared/actions/catalog';
-import { configureAppBar } from '../../shared/actions/application';
+import { setFilter } from '../../shared/actions/catalog';
+import { fetchMovies } from '../../shared/actions/entities';
 import { getMoviesResult } from '../../shared/selectors/catalog';
 
 // function mapStateToProps({ catalog }) {
@@ -18,8 +17,7 @@ function mapStateToProps({ entities, catalog }) {
 }
 
 
-export default withRouter(connect(mapStateToProps, {
+export default connect(mapStateToProps, {
   fetchItems: fetchMovies,
-  setFilter,
-  configureAppBar
-})(Catalog));
+  setFilter
+})(Catalog);

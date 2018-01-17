@@ -18,7 +18,6 @@ import api from '../middleware/api';
 import createWaiterMiddleware from '../middleware/waiter';
 
 import rootReducer from '../reducers';
-import * as applicationActions from '../actions/application';
 import * as settingsActions from '../actions/settings';
 import * as updaterActions from '../actions/updater';
 import * as catalogActions from '../actions/catalog';
@@ -65,10 +64,10 @@ export default class StoreFactory {
 
   getMiddleware() {
     const initialMiddleware = [
+      api,
       createWaiterMiddleware(),
       thunk,
-      promise,
-      api
+      promise
     ];
 
     switch (this.scope) {
@@ -99,10 +98,9 @@ export default class StoreFactory {
     ];
 
     const actionCreators = {
-      ...applicationActions,
       ...settingsActions,
       ...updaterActions,
-      // ...catalogActions,
+      ...catalogActions,
       ...playerActions,
       ...torrentActions,
       ...routerActions,

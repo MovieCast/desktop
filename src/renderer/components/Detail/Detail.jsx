@@ -130,19 +130,17 @@ const styleSheet = theme => ({
 
 class Detail extends Component {
   state = {
+    loading: true,
     preparing: false,
     downloading: false,
     torrent: null,
-    quality: "720"
+    quality: '720'
   }
 
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.fetchItem(id);
 
-    // this.context.setBarTitle(this.props.item.title);
-    // this.context.setBarTransparency(true);
-    // this.context.setBarBack(true);
     this.context.setStatusBarConfig({
       transparent: true
     });
@@ -153,12 +151,10 @@ class Detail extends Component {
     });
   }
 
-  handleQualityChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
   componentWillReceiveProps(nextProps) {
-    // TODO: Add a button to select quality.
+    if (this.state.loading && !nextProps.loading) {
+      this.setState({ loading: nextProps.loading });
+    }
 
     if (nextProps.item && nextProps.item.torrents) {
       console.log(nextProps.item);
@@ -166,6 +162,34 @@ class Detail extends Component {
       this.setState({ torrent: nextProps.item.torrents[highestQuality] });
     }
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (nextProps.item !== this.props.item) {
+  //     return true;
+  //   }
+
+  //   if(nextState.)
+
+  //   return false;
+  // }
+
+  handleQualityChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  // componentWillReceiveProps(nextProps) {
+  //   // TODO: Add a button to select quality.
+
+  //   if (nextProps.item && nextProps.item.torrents) {
+  //     console.log(nextProps.item);
+  //     const highestQuality = Object.keys(nextProps.item.torrents)[0];
+  //     this.setState({ torrent: nextProps.item.torrents[highestQuality] });
+  //   }
+
+  //   if (nextProps.loading !== this.state.loading) {
+  //     this.setState({ loading: nextProps.loading });
+  //   }
+  // }
 
   // TODO: Move to TorrentHelper
   getTorrent() {
@@ -211,7 +235,7 @@ class Detail extends Component {
     return (
       <div className={classes.content}>
         <FormControl className={classes.qualityButton}>
-            <Select value={this.state.quality} onChange={this.handleQualityChange} input={<Input name="quality" id="quality-select"/>}>
+          <Select value={this.state.quality} onChange={this.handleQualityChange} input={<Input name="quality" id="quality-select" />}>
             <MenuItem value="720">720p</MenuItem>
             <MenuItem value="1080">1080p</MenuItem>
           </Select>
@@ -251,13 +275,14 @@ class Detail extends Component {
   }
 
   render() {
-    const { loading, item, classes } = this.props;
+    console.log('render');
+    const { item, classes } = this.props;
 
     const wrapperClassName = classNames(classes.wrapper, {
       [classes.downloading]: this.state.downloading
     });
 
-    if (!loading) {
+    if (!this.state.loading) {
       return (
         <div className={wrapperClassName}>
           <div className={classes.header}>

@@ -62,10 +62,6 @@ class Player extends Component {
       this.context.setAppBarConfig({
         visible: !this.props.player.showUi
       });
-
-      this.props.configureAppBar({
-        hidden: !nextProps.player.showUi,
-      });
     }
 
     // TODO: Handle this directly in the application reducer

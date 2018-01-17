@@ -1,9 +1,7 @@
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import Detail from '../components/Detail/Detail';
 import { fetchMovie } from '../../shared/actions/entities';
-import { configureAppBar } from '../../shared/actions/application';
 import { playTorrent } from '../../shared/actions/player';
 
 // This logic should be placed elsewere at some point
@@ -28,8 +26,7 @@ function mapStateToProps({ entities, torrent, detail: { loading } }, ownProps) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, {
+export default connect(mapStateToProps, {
   fetchItem: fetchMovie,
-  playTorrent,
-  configureAppBar
-})(Detail));
+  playTorrent
+})(Detail);

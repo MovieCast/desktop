@@ -20,6 +20,7 @@ import { withView, View } from '../View';
 // styles
 import styles from './Catalog.css';
 import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
+import PosterProposalItem from './Item/PosterProposalItem';
 
 const styleSheet = theme => ({
   root: {
@@ -193,7 +194,7 @@ class Catalog extends Component {
         <div className={styles.scroll}>
           <Grid container align="flex-start" justify="space-around" className={classes.gridList}>
             {_.map(result, (item => (
-              <PosterItem
+              <PosterProposalItem
                 key={item._id}
                 id={item._id}
                 title={item.title}
