@@ -6,7 +6,12 @@ import {
   Typography,
   Button,
   Chip,
-  LinearProgress
+  LinearProgress,
+  Input,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+  Select
 } from 'material-ui';
 import { PlayArrow as PlayIcon } from 'material-ui-icons';
 import { withStyles } from 'material-ui/styles';
@@ -18,6 +23,7 @@ import Rating from '../Util/Rating';
 import { withView, View } from '../View';
 
 import { capitalize } from '../../utils/stringUtil';
+import MenuItem from 'material-ui/Menu/MenuItem';
 
 const styleSheet = theme => ({
   wrapper: {
@@ -107,6 +113,18 @@ const styleSheet = theme => ({
     justifyContent: 'center',
     padding: 50,
     position: 'relative'
+  },
+
+  qualityButton: {
+    position: 'absolute',
+    top: 0,
+    right: 100,
+    padding: 8,
+    borderRadius: 2,
+    marginTop: -26,
+    marginRight: 24,
+    zIndex: 3,
+    background: theme.palette.background.default
   }
 });
 
@@ -114,7 +132,8 @@ class Detail extends Component {
   state = {
     preparing: false,
     downloading: false,
-    torrent: null
+    torrent: null,
+    quality: "720"
   }
 
   componentWillMount() {
@@ -133,6 +152,10 @@ class Detail extends Component {
       back: true
     });
   }
+
+  handleQualityChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   componentWillReceiveProps(nextProps) {
     // TODO: Add a button to select quality.
@@ -187,6 +210,13 @@ class Detail extends Component {
 
     return (
       <div className={classes.content}>
+        <FormControl className={classes.qualityButton}>
+            <Select value={this.state.quality} onChange={this.handleQualityChange} input={<Input name="quality" id="quality-select"/>}>
+            <MenuItem value="720">720p</MenuItem>
+            <MenuItem value="1080">1080p</MenuItem>
+          </Select>
+        </FormControl>
+
         <Button fab color="primary" className={classes.playButton} onClick={() => this.playItem()}>
           <PlayIcon />
         </Button>

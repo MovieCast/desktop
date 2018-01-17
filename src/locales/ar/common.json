@@ -29,7 +29,7 @@
       "checkingForUpdate": "التحقق من التحديثات",
       "updateAvailable": "يوجد تحديث متوافر",
       "updateNotAvailable": "moviecast محدث",
-      "updateDownloading": "تحميل التحديث...",
+      "updateDownloading": "تحميل التحديث ... {{value}}",
       "updateDownloaded": "تم تحميل التحديث بنجاح, moviecast سوف يعيد التشغيل خلال 5 ثواني",
       "updateError": "حدث خلل خلال تحميل التحديث"
     }

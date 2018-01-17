@@ -112,6 +112,7 @@ class Settings extends Component {
             text={t('views:settings.language')}
             value={settings.subtitles.language}
             options={[t('languages.en')]}
+            values={['en']}
             onOptionsClick={(event, index, value) => changeSettings({ subtitles: { language: value } })}
           />
           <SettingsCategoryListItem
