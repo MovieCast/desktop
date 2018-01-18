@@ -13,11 +13,8 @@ export default createReducer(initialState, {
     movies: merge(state.movies, payload.entities.movies)
   }),
 
-  [FETCH_MOVIE_SUCCESS]: (state, { payload }) => {
-    console.log(payload);
-    return {
-      ...state,
-      movies: merge(state.movies, payload.entities.movies)
-    };
-  }
+  [FETCH_MOVIE_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    movies: merge(state.movies, payload.entities.movies)
+  })
 });

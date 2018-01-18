@@ -21,7 +21,6 @@ const styleSheet = theme => ({
 });
 
 class DynamicImg extends Component {
-
   state = {
     status: this.props.src ? Status.LOADING : Status.PENDING
   };
@@ -32,6 +31,14 @@ class DynamicImg extends Component {
         status: nextProps.src ? Status.LOADING : Status.PENDING,
       });
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.src !== nextProps.src || this.state.status !== nextState.status) {
+      return true;
+    }
+
+    return false;
   }
 
   handleLoad = () => {

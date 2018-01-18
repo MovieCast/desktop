@@ -28,7 +28,7 @@ export default class View extends Component {
       visible: true
     },
     appBar: {
-      title: APP_NAME,
+      title: '',
       transparent: false,
       shadow: false,
       back: false,

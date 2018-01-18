@@ -39,8 +39,6 @@ export default function createWaiterMiddleware() {
 
     next(action);
 
-    console.log(promise);
-
     return promise;
   };
 

@@ -22,51 +22,24 @@ const styles = theme => ({
     height: '100%',
     width: '100%'
   },
-  image: {
+  button: {
     position: 'relative',
-    borderRadius: 5,
-    // height: 200,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('xs')]: {
-      width: '100% !important', // Overrides inline-style
-      height: 100,
-    },
-    '&:hover': {
-      zIndex: 1,
-    },
-    '&:hover $imageBackdrop': {
+    // borderRadius: 5, // Need to wait for this to be fixed in Chromium
+    '&:hover $buttonBackdrop': {
       opacity: 0.4
     },
-    '&:hover $imageMarked': {
-      opacity: 0,
-    },
-    '&:hover $imageTitle': {
-      border: '4px solid currentColor',
-    },
+    overflow: 'hidden',
+    boxShadow: theme.shadows[14]
   },
-  // imageButton: {
-  //   position: 'absolute',
-  //   left: 0,
-  //   right: 0,
-  //   top: 0,
-  //   bottom: 0,
-  //   display: 'flex',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   color: theme.palette.common.white,
-  // },
-  imageSrc: {
+  buttonImage: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center 40%',
-    borderRadius: 5
+    height: '100%',
+    objectFit: 'cover',
+    margin: '0 auto 0'
   },
-  imageBackdrop: {
+  buttonBackdrop: {
     position: 'absolute',
     left: 0,
     right: 0,
@@ -74,59 +47,67 @@ const styles = theme => ({
     bottom: 0,
     backgroundColor: theme.palette.common.black,
     opacity: 0.15,
-    transition: theme.transitions.create('opacity'),
-    borderRadius: 5
+    transition: theme.transitions.create('opacity')
   },
-  // imageTitle: {
-  //   position: 'relative',
-  //   padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
-  // },
-  // imageMarked: {
-  //   height: 3,
-  //   width: 18,
-  //   backgroundColor: theme.palette.common.white,
-  //   position: 'absolute',
-  //   bottom: -2,
-  //   left: 'calc(50% - 9px)',
-  //   transition: theme.transitions.create('opacity'),
-  // }
+  info: {
+    marginTop: 10,
+    marginBottom: 20,
+    overflow: 'hidden'
+  },
+  infoTitle: {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
+  },
+  infoRating: {
+    marginRight: 5
+  },
+  infoMeta: {
+    lineHeight: '19px',
+    marginRight: 5
+  }
 });
 
 class PosterItem extends Component {
   render() {
     const { classes, id, title, poster, year, rating } = this.props;
     return (
-      <BaseItem>
-        <ButtonBase
-          focusRipple
-          className={classes.image}
-          component={Link}
-          to={`/movie/${id}`}
-          // style={{
-          //   width: image.width,
-          // }}
-        >
-          <span
-            className={classes.imageSrc}
-            style={{
-              backgroundImage: `url(${poster})`,
-            }}
-          />
-          <span className={classes.imageBackdrop} />
-          <span className={classes.imageButton}>
+      <div style={{ width: 230 }}>
+        <BaseItem>
+          <ButtonBase
+            focusRipple
+            className={classes.button}
+            component={Link}
+            to={`/movie/${id}`}
+          >
+            <DynamicImg
+              className={classes.buttonImage}
+              src={poster}
+              alt={title}
+            />
+            <span className={classes.buttonBackdrop} />
+          </ButtonBase>
+        </BaseItem>
+        <div className={classes.info}>
+          <Typography
+            type="body2"
+            className={classes.infoTitle}
+          >{title}</Typography>
+          <span style={{ display: 'flex' }}>
+
             <Typography
-              component="span"
-              type="subheading"
-              color="inherit"
-              className={classes.imageTitle}
+              type="caption"
+              className={classes.infoMeta}
             >
-              {/* {title} */}
-              Failed to load img
-              <span className={classes.imageMarked} />
+              {year}
             </Typography>
+            <Rating
+              rating={rating}
+              size={12}
+              // className={classes.infoRating}
+            />
           </span>
-        </ButtonBase>
-      </BaseItem>
+        </div>
+      </div>
     );
   }
 }
@@ -135,9 +116,13 @@ PosterItem.propTypes = {
   classes: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  poster: PropTypes.string.isRequired,
+  poster: PropTypes.string,
   year: PropTypes.string.isRequired,
   rating: PropTypes.number.isRequired
+};
+
+PosterItem.defaultProps = {
+  poster: null
 };
 
 export default withStyles(styles)(PosterItem);

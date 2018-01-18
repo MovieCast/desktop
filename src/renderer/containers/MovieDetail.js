@@ -1,8 +1,11 @@
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Detail from '../components/Detail/Detail';
 import { fetchMovie } from '../../shared/actions/entities';
 import { playTorrent } from '../../shared/actions/player';
+
+import { DETAIL_VIEW_UNLOADED } from '../../shared/actions/detail';
 
 // This logic should be placed elsewere at some point
 // Select entities from state
@@ -26,7 +29,9 @@ function mapStateToProps({ entities, torrent, detail: { loading } }, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchItem: fetchMovie,
-  playTorrent
-})(Detail);
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ fetchItem: fetchMovie, playTorrent }, dispatch),
+  onUnload: () => dispatch({ type: DETAIL_VIEW_UNLOADED }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);

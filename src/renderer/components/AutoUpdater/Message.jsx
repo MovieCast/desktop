@@ -113,7 +113,7 @@ class Message extends Component {
 Message.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool,
-  message: PropTypes.string.isRequired,
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   icon: PropTypes.node.isRequired, // Fix that later...
   actions: PropTypes.func,
   duration: PropTypes.number,

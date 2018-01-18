@@ -11,12 +11,12 @@ const styles = theme => ({
   root: {
     width: 230,
     height: 345,
-    borderRadius: 5
   },
   placeholder: {
     display: 'flex',
     height: '100%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.15,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column'
@@ -45,14 +45,22 @@ class BaseItem extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.isVisible !== nextState.isVisible) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     const { classes, children, innerRef } = this.props;
     return (
-      <Grid item ref={innerRef}>
-        <div className={classes.root}>
-          {this.state.isVisible ? children : <div className={classes.placeholder} /> }
-        </div>
-      </Grid>
+      // <Grid item ref={innerRef}>
+      <div className={classes.root}>
+        {this.state.isVisible ? children : <div className={classes.placeholder} /> }
+      </div>
+      // </Grid>
     );
   }
 }

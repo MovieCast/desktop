@@ -8,14 +8,14 @@ import {
   Chip,
   LinearProgress,
   Input,
-  InputLabel,
   FormControl,
-  FormHelperText,
   Select
 } from 'material-ui';
+import MenuItem from 'material-ui/Menu/MenuItem';
 import { PlayArrow as PlayIcon } from 'material-ui-icons';
 import { withStyles } from 'material-ui/styles';
 import prettierBytes from 'prettier-bytes';
+
 
 import DynamicImg from '../Util/DynamicImg';
 import Rating from '../Util/Rating';
@@ -23,7 +23,7 @@ import Rating from '../Util/Rating';
 import { withView, View } from '../View';
 
 import { capitalize } from '../../utils/stringUtil';
-import MenuItem from 'material-ui/Menu/MenuItem';
+
 
 const styleSheet = theme => ({
   wrapper: {
@@ -130,7 +130,6 @@ const styleSheet = theme => ({
 
 class Detail extends Component {
   state = {
-    loading: true,
     preparing: false,
     downloading: false,
     torrent: null,
@@ -152,15 +151,16 @@ class Detail extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.loading && !nextProps.loading) {
-      this.setState({ loading: nextProps.loading });
-    }
 
     if (nextProps.item && nextProps.item.torrents) {
       console.log(nextProps.item);
       const highestQuality = Object.keys(nextProps.item.torrents)[0];
       this.setState({ torrent: nextProps.item.torrents[highestQuality] });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.onUnload();
   }
 
   // shouldComponentUpdate(nextProps, nextState) {
@@ -276,13 +276,13 @@ class Detail extends Component {
 
   render() {
     console.log('render');
-    const { item, classes } = this.props;
+    const { loading, item, classes } = this.props;
 
     const wrapperClassName = classNames(classes.wrapper, {
       [classes.downloading]: this.state.downloading
     });
 
-    if (!this.state.loading) {
+    if (!loading) {
       return (
         <div className={wrapperClassName}>
           <div className={classes.header}>
