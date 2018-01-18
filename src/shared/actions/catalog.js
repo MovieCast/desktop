@@ -1,6 +1,3 @@
-import { createAliasedAction } from 'electron-redux';
-import { getMovies, getMovie } from '../../main/api/movies';
-import movieNormalizer from '../normalizers/movie';
 import { fetchMovies } from './entities';
 // import { setupPlayer } from './player';
 

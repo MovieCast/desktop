@@ -1,6 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
 
-import { app, ipcMain } from 'electron';
+import { app } from 'electron';
 import parallel from 'run-parallel';
 import { DELAYED_INIT } from '../config';
 import ipc from './ipc';

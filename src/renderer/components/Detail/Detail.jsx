@@ -151,7 +151,6 @@ class Detail extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     if (nextProps.item && nextProps.item.torrents) {
       console.log(nextProps.item);
       const highestQuality = Object.keys(nextProps.item.torrents)[0];

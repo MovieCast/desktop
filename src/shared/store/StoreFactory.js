@@ -64,10 +64,10 @@ export default class StoreFactory {
 
   getMiddleware() {
     const initialMiddleware = [
-      api,
       createWaiterMiddleware(),
       thunk,
-      promise
+      promise,
+      api,
     ];
 
     switch (this.scope) {

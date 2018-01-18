@@ -19,6 +19,38 @@ const styleSheet = theme => ({
       lineHeight: '1.2',
       overflow: 'hidden',
       WebkitFontSmoothing: 'antialiased', // Antialiasing.
+    },
+    '::-webkit-scrollbar': {
+      width: 13,
+      height: 13
+    },
+    '::-webkit-scrollbar-button': {
+      width: 0,
+      height: 0
+    },
+    '::-webkit-scrollbar-thumb': {
+      background: '#1e1e1e',
+      border: '0px none #ffffff'
+    },
+    '::-webkit-scrollbar-thumb:hover': {
+      background: '#262626'
+    },
+    '::-webkit-scrollbar-thumb:active': {
+      background: '#141414'
+    },
+    '::-webkit-scrollbar-track': {
+      background: '#666666',
+      border: '0px none #ffffff',
+      borderRadius: 0
+    },
+    '::-webkit-scrollbar-track:hover': {
+      background: '#666666'
+    },
+    '::-webkit-scrollbar-track:active': {
+      background: '#333333'
+    },
+    '::-webkit-scrollbar-corner': {
+      background: 'transparent'
     }
   },
   appFrame: {
