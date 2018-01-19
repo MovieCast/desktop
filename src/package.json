@@ -14,8 +14,8 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/moviecast/moviecast-desktop/issues"
+    "url": "https://github.com/moviecast/desktop/issues"
   },
-  "homepage": "https://github.com/moviecast/moviecast-desktop#readme",
+  "homepage": "https://github.com/moviecast/desktop#readme",
   "dependencies": {}
 }

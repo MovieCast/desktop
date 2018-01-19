@@ -66,7 +66,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moviecast/moviecast-desktop.git"
+    "url": "git+https://github.com/moviecast/desktop.git"
   },
   "author": {
     "name": "Dizzy",
@@ -75,10 +75,10 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/moviecast/moviecast-desktop/issues"
+    "url": "https://github.com/moviecast/desktop/issues"
   },
   "keywords": [],
-  "homepage": "https://github.com/moviecast/moviecast-desktop#readme",
+  "homepage": "https://github.com/moviecast/desktop#readme",
   "devDependencies": {
     "@alienfast/i18next-loader": "^1.0.13",
     "add-asset-html-webpack-plugin": "^2.1.1",
