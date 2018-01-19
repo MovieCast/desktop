@@ -47,7 +47,6 @@ export default merge.smart(baseConfig, {
     ],
     torrentEngine: [
       `webpack-dev-server/client?http://localhost:${port}/`,
-      'webpack/hot/only-dev-server',
       path.join(__dirname, 'src/renderer/torrentEngine.js'),
     ]
   },
@@ -76,6 +75,10 @@ export default merge.smart(baseConfig, {
             ],
           }
         }
+      },
+      {
+        test: /locales/,
+        loader: '@alienfast/i18next-loader'
       },
       {
         test: /\.global\.css$/,
@@ -246,14 +249,14 @@ export default merge.smart(baseConfig, {
     }),
 
     new HtmlWebpackPlugin({
-      template: 'src/renderer/app.html',
+      template: 'static/app.html',
       chunks: ['renderer'],
       filename: 'app.html',
       inject: 'body'
     }),
 
     new HtmlWebpackPlugin({
-      template: 'src/renderer/torrentEngine.html',
+      template: 'static/torrentEngine.html',
       chunks: ['torrentEngine'],
       filename: 'torrentEngine.html',
       inject: 'body'
@@ -287,15 +290,15 @@ export default merge.smart(baseConfig, {
       verbose: true,
       disableDotRule: false,
     },
-    setup() {
+    before() {
       if (process.env.START_HOT) {
         spawn(
           'npm',
           ['run', 'dev:main'],
           { shell: true, env: process.env, stdio: 'inherit' }
         )
-        .on('close', code => process.exit(code))
-        .on('error', spawnError => console.error(spawnError));
+          .on('close', code => process.exit(code))
+          .on('error', spawnError => console.error(spawnError));
       }
     }
   },

@@ -1,36 +1,56 @@
-/* eslint-disable import/prefer-default-export */
-/*
- * NOTE: We are moving away from using classes, for things like this
- * it is a lot easier to just use plain functions.
- */
-import { ipcMain as ipc } from 'electron';
+import { app, ipcMain as ipc } from 'electron';
+
+import * as windows from './windows';
+import * as logger from './logger';
+import { installUpdate } from './updater';
+
+module.exports = {
+  init
+};
+
+function init() {
+  ipc.once('ipcReady', () => {
+    app.ipcReady = true;
+
+    ipcBridge();
+
+    app.emit('ipcReady');
+  });
+
+  ipc.on('installUpdate', () => {
+    installUpdate();
+  });
+}
 
 /**
- * Setup IPC and the IPC bridge between renderer and torrent engine
- */
-export function patch(mainWindow, torrentWindow) {
-  console.log('Patched IPC');
+* Setup IPC and the IPC bridge between renderer and torrent engine
+*/
+function ipcBridge() {
+  logger.info('ipc: Baking IPC bridge...');
+
   /**
-   * IPC Bridge
-   * Inspired by WebTorrent Desktop
-   *
-   * We actually just extend the default ipc.emit function
-   */
+  * IPC Bridge
+  * Inspired by WebTorrent Desktop
+  *
+  * We actually just extend the default ipc.emit function
+  */
   const defaultEmit = ipc.emit;
   ipc.emit = (name, e, ...args) => {
     if (name.startsWith('te-')) {
-      if (e.sender.browserWindowOptions.title === 'moviecast-torrent-engine') {
+      if (e.sender.browserWindowOptions.title === 'MovieCast Torrent Engine') {
         // Send message to main window
-        mainWindow.send(name, ...args);
-        console.log(`ipcBridge: torrentWindow -> mainWindow: ${name}`);
+        windows.app.send(name, ...args);
+        logger.debug(`ipc: ipcBridge: torrentWindow -> mainWindow: ${name}`);
       } else {
         // Send message to webtorrent window
-        torrentWindow.send(name, ...args);
-        console.log(`ipcBridge: mainWindow -> torrentWindow: ${name}`);
+        windows.engine.send(name, ...args);
+        logger.debug(`ipc: ipcBridge: mainWindow -> torrentWindow: ${name}`);
       }
     }
 
     // Emit all other events normally
     defaultEmit.call(ipc, name, e, ...args);
   };
+
+  logger.info('ipc: IPC bridge baked.');
 }

@@ -1,0 +1,33 @@
+{
+  "views": {
+    "catalog": {
+      "trending": "Trending",
+      "year": "Year",
+      "az": "A-Z"
+    },
+
+    "details": {
+      "play": "Play"
+    },
+
+    "settings": {
+      "categories": {
+        "ui": "User Interface",
+        "subtitles": "Subtitles",
+        "quality": "Quality"
+      },
+      "language": "Default Language",
+      "palette": "Palette",
+      "startScreen": "Start Screen",
+      "size": "Size",
+      "showQuality": "Show quality on list"
+    },
+
+    "player": {
+      "playing": "Playing: {{value}}",
+      "subtitles": "Subtitles",
+      "fullscreen": "Fullscreen",
+      "exitFullscreen": "Exit Fullscreen"
+    }
+  }
+}

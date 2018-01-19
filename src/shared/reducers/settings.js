@@ -1,14 +1,15 @@
 import { createReducer } from '../util';
 import { CHANGE_SETTINGS, RESET_SETTINGS } from '../actions/settings';
+import { STORAGE_LOAD } from '../actions/storage';
 
 const initialState = {
   ui: {
-    language: 'English',
-    palette: 'Dark',
-    startScreen: 'Movies',
+    language: 'en',
+    palette: 'dark',
+    startScreen: 'movies',
   },
   subtitles: {
-    language: 'English',
+    language: 'en',
     size: '24px'
   },
   quality: {
@@ -36,5 +37,10 @@ export default createReducer(initialState, {
   [RESET_SETTINGS]: (state) => ({
     ...state,
     ...initialState
+  }),
+
+  [STORAGE_LOAD]: (state, action) => ({
+    ...state,
+    ...action.payload.settings
   })
 });

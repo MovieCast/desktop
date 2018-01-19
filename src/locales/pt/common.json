@@ -1,0 +1,38 @@
+{
+  "common": {
+    "movies": "Filmes",
+    "shows": "Séries",
+    "settings": "Definições",
+    "player": "Player",
+
+    "accept": "Aceitar",
+    "cancel": "Cancelar",
+    "install": "Instalar",
+    "details": "Detalhes",
+    "changelog": "Changelog",
+    "search": "Pesquisar",
+
+    "languages": {
+      "en": "Inglês",
+      "ar": "Árabe",
+      "zh": "Chinês",
+      "hr": "Croata",
+      "nl": "Holandês",
+      "fr": "Francês",
+      "de": "Alemão",
+      "nb": "Norueguês",
+      "pt": "Português",
+      "es": "Espanhol"
+    },
+
+    "updater": {
+      "checkingForUpdate": "À procura de atualizações....",
+      "updateAvailable": "Existe uma atualização disponível.",
+      "updateNotAvailable": "MovieCast está atualizado.",
+      "updateDownloading": "A transferir atualização ... {{value}}",
+      "updateDownloaded": "Atualização transferida com sucesso, MovieCast irá reiniciar em 5 segundos.",
+      "updateError": "Ocorreu um erro durante a transferência da atualização."
+    }
+  }
+
+}

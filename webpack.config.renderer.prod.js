@@ -5,14 +5,15 @@
 import path from 'path';
 import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import merge from 'webpack-merge';
 import BabiliPlugin from 'babili-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
 export default merge.smart(baseConfig, {
-  devtool: 'source-map',
+  // devtool: 'source-map',
+  devtool: 'none',
 
   target: 'electron-renderer',
 
@@ -29,6 +30,10 @@ export default merge.smart(baseConfig, {
 
   module: {
     rules: [
+      {
+        test: /locales/,
+        loader: '@alienfast/i18next-loader'
+      },
       // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,
@@ -165,22 +170,22 @@ export default merge.smart(baseConfig, {
     new ExtractTextPlugin('style.css'),
 
     new HtmlWebpackPlugin({
-      template: 'src/renderer/app.html',
+      template: 'static/app.html',
       chunks: ['renderer'],
       filename: 'app.html',
       inject: 'body'
     }),
 
     new HtmlWebpackPlugin({
-      template: 'src/renderer/torrentEngine.html',
+      template: 'static/torrentEngine.html',
       chunks: ['torrentEngine'],
       filename: 'torrentEngine.html',
       inject: 'body'
     }),
 
-    new BundleAnalyzerPlugin({
-      analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
-      openAnalyzer: process.env.OPEN_ANALYZER === 'true'
-    }),
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
+    //   openAnalyzer: process.env.OPEN_ANALYZER === 'true'
+    // }),
   ],
 });

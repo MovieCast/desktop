@@ -33,8 +33,6 @@ app/node_modules
 
 # App packaged
 release
-app/main/main.prod.js
-app/main/main.prod.js.map
 dist
 dll
 

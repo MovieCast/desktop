@@ -1,14 +1,37 @@
+import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import Detail from '../components/Detail/Detail';
-import { fetchMovie } from '../../shared/actions/catalog';
-import { configureAppBar } from '../../shared/actions/application';
+import { fetchMovie } from '../../shared/actions/entities';
+import { playTorrent } from '../../shared/actions/player';
 
-function mapStateToProps({ catalog }, ownProps) {
-  return { item: catalog.entities.movies[ownProps.match.params.id] };
+import { DETAIL_VIEW_UNLOADED } from '../../shared/actions/detail';
+
+// This logic should be placed elsewere at some point
+// Select entities from state
+const getResult = (state) => state.result;
+const getMovies = (state) => state.movies;
+
+// Select movie result list
+const getMovieResult = createSelector(
+  [getResult, getMovies],
+  (result, movies) => {
+    if (!result) return null;
+    return movies[result];
+  }
+);
+
+function mapStateToProps({ entities, torrent, detail: { loading } }, ownProps) {
+  return {
+    item: getMovieResult({ movies: entities.movies, result: ownProps.match.params.id }),
+    torrent,
+    loading
+  };
 }
 
-export default withRouter(connect(mapStateToProps, {
-  fetchItem: fetchMovie,
-  configureAppBar
-})(Detail));
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ fetchItem: fetchMovie, playTorrent }, dispatch),
+  onUnload: () => dispatch({ type: DETAIL_VIEW_UNLOADED }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);

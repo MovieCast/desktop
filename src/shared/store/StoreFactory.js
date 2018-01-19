@@ -15,14 +15,16 @@ import {
 } from 'electron-redux';
 
 import api from '../middleware/api';
+import createWaiterMiddleware from '../middleware/waiter';
 
 import rootReducer from '../reducers';
-import * as applicationActions from '../actions/application';
 import * as settingsActions from '../actions/settings';
 import * as updaterActions from '../actions/updater';
 import * as catalogActions from '../actions/catalog';
 import * as playerActions from '../actions/player';
 import * as torrentActions from '../actions/torrent';
+
+import * as entitiesActions from '../actions/entities';
 
 export default class StoreFactory {
   static SCOPE_MAIN = 'SCOPE_MAIN';
@@ -62,9 +64,10 @@ export default class StoreFactory {
 
   getMiddleware() {
     const initialMiddleware = [
+      createWaiterMiddleware(),
       thunk,
       promise,
-      api
+      api,
     ];
 
     switch (this.scope) {
@@ -95,13 +98,14 @@ export default class StoreFactory {
     ];
 
     const actionCreators = {
-      ...applicationActions,
       ...settingsActions,
       ...updaterActions,
       ...catalogActions,
       ...playerActions,
       ...torrentActions,
       ...routerActions,
+
+      ...entitiesActions
     };
 
     // TODO: Include all action creators.

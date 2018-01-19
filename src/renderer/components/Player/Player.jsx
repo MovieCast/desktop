@@ -8,10 +8,16 @@ import Engine from './Engine';
 import Overlay from './Overlay';
 import ControlBar from './ControlBar';
 
+import { withView, View } from '../View';
+import SubtitleDialog from './SubtitleDialog';
+
 const styleSheet = {
   root: {
-    position: 'relative',
-    height: '100%'
+    position: 'fixed',
+    top: 0,
+    height: '100vh',
+    width: '100%'
+    // marginTop: -64 - 29
   },
   hideCursor: {
     cursor: 'none'
@@ -19,42 +25,59 @@ const styleSheet = {
 };
 
 class Player extends Component {
+  state = {
+    showSubtitleDialog: false
+  }
 
   componentWillMount() {
     // Make the AppBar transparent and add a back button
-    this.props.configureAppBar({
-      secondary: `Playing: ${this.props.player.title}`,
+    this.context.setStatusBarConfig({
+      transparent: true
+    });
+    this.context.setAppBarConfig({
+      // title: `Playing: ${this.props.player.title}`,
+      title: 'playing',
       transparent: true,
-      hidden: !this.props.player.showUi,
-      back: true
+      back: true,
+      visible: true
     });
   }
 
   componentDidMount() {
     this.handleHover();
     // Let's auto start :D
-    // this.props.togglePlay(true);
+    this.props.togglePlay(true);
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.player.fullscreen !== this.props.player.fullscreen) {
+      this.context.setStatusBarConfig({
+        visible: !nextProps.player.fullscreen
+      });
+    }
+
     if (nextProps.player.showUi !== this.props.player.showUi) {
-      this.props.configureAppBar({
-        hidden: !nextProps.player.showUi,
+      // this.context.setBarVisibility(!this.props.player.showUi);
+
+      this.context.setAppBarConfig({
+        visible: !this.props.player.showUi
       });
     }
 
     // TODO: Handle this directly in the application reducer
-    if (nextProps.player.title !== this.props.player.title) {
-      this.props.configureAppBar({
-        secondary: `Playing: ${this.props.player.title}`,
-      });
-    }
+    // if (nextProps.player.title !== this.props.player.title) {
+    //   // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
+    //   this.context.setAppBarConfig({
+    //     title: `Playing: ${this.props.player.title}`,
+    //   });
+    // }
   }
 
   shouldComponentUpdate(nextProps) {
     if (nextProps.player === this.props.player) {
       return false;
     }
+
     return true;
   }
 
@@ -65,10 +88,17 @@ class Player extends Component {
     if (this.props.player.fullscreen) {
       this.toggleFullscreen();
     }
+
+    this.props.onUnload();
   }
 
   handleReady = () => {
+    this.props.setBuffering(false);
     this.props.updateDuration(this.player.getDuration());
+  }
+
+  handleWaiting = () => {
+    this.props.setBuffering(true);
   }
 
   handleEnded = () => {
@@ -83,8 +113,17 @@ class Player extends Component {
     this.props.togglePlay();
   }
 
+  handleToggleSubtitles = () => {
+    this.setState({ showSubtitleDialog: !this.state.showSubtitleDialog });
+  }
+
   toggleFullscreen = () => {
     this.props.toggleFullscreen();
+  }
+
+  handleSeek = (event, value) => {
+    console.log(value);
+    this.player.seek(value);
   }
 
   handleHover = debounce(() => {
@@ -120,6 +159,7 @@ class Player extends Component {
           onEnded={this.handleEnded}
           onLoadedMetadata={(event, data) => { console.log(event, data); }}
           onReady={this.handleReady}
+          onWaiting={this.handleWaiting}
           onTimeUpdate={this.handleTimeUpdate}
         >
           <Overlay
@@ -129,10 +169,13 @@ class Player extends Component {
           <ControlBar
             player={player}
             onTogglePlay={this.handleTogglePlay}
+            onToggleSubtitles={this.handleToggleSubtitles}
             onToggleFullscreen={this.toggleFullscreen}
+            onSeek={this.handleSeek}
           />
         </Engine>
 
+        <SubtitleDialog open={this.state.showSubtitleDialog} onClose={this.handleToggleSubtitles} />
       </div>
     );
   }
@@ -141,11 +184,11 @@ class Player extends Component {
 /* eslint-disable react/forbid-prop-types */
 Player.propTypes = {
   classes: PropTypes.object.isRequired,
-  configureAppBar: PropTypes.func.isRequired,
   // Player state
   player: PropTypes.object.isRequired,
   // Player actions
   togglePlay: PropTypes.func.isRequired,
+  setBuffering: PropTypes.func.isRequired,
   // setUrl: PropTypes.func.isRequired,
   // updateVolume: PropTypes.func.isRequired,
   // updatePlaybackRate: PropTypes.func.isRequired,
@@ -153,9 +196,15 @@ Player.propTypes = {
   updateCurrentTime: PropTypes.func.isRequired,
   // updateTracks: PropTypes.func.isRequired,
   toggleFullscreen: PropTypes.func.isRequired,
-  toggleUi: PropTypes.func.isRequired
+  toggleUi: PropTypes.func.isRequired,
+
+  onUnload: PropTypes.func.isRequired
 
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(styleSheet)(Player);
+Player.contextTypes = {
+  ...View.childContextTypes
+};
+
+export default withView(withStyles(styleSheet)(Player));

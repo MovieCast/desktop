@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import AppRouter from './AppRouter';
+import withRoot from './withRoot';
 
 class App extends Component {
   render() {
     const { store, history } = this.props;
+
     return (
-      <Provider store={store}>
-        <AppRouter history={history} />
-      </Provider>
+      // <Provider store={store}>
+      <AppRouter history={history} />
+      // </Provider>
     );
   }
 }
@@ -22,4 +24,4 @@ App.propTypes = {
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default App;
+export default withRoot(App);

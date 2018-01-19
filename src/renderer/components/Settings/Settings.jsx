@@ -14,14 +14,18 @@ import {
   HighQuality as HighQualityIcon
 } from 'material-ui-icons';
 
+import { translate } from 'react-i18next';
+
+import { withView, View } from '../View';
+
 import SettingsCategoryList from './SettingsCategoryList';
 import SettingsCategoryListItem from './SettingsCategoryListItem';
 
 const styleSheet = {
   root: {
     width: '100%',
-    height: 'calc(100% - 64px - 29px)',
-    marginTop: 'calc(64px + 29px)'
+    height: 'calc(100% - 64px)',
+    overflowY: 'auto'
   },
 };
 
@@ -34,8 +38,12 @@ class Settings extends Component {
   };
 
   componentWillMount() {
-    this.props.configureAppBar({
-      title: 'Settings',
+    // this.context.setBarTitle('Settings');
+    // this.context.setBarShadow(true);
+    // this.context.setBarBack(true);
+
+    this.context.setAppBarConfig({
+      title: 'settings',
       shadow: true,
       back: true
     });
@@ -66,55 +74,62 @@ class Settings extends Component {
   };
 
   render() {
-    const { classes, settings, changeSettings } = this.props;
+    const { t, classes, settings, changeSettings } = this.props;
 
     return (
       <div className={classes.root}>
-        <SettingsCategoryList header="User Interface">
+        <SettingsCategoryList header={t('views:settings.categories.ui')}>
           <SettingsCategoryListItem
             icon={<LanguageIcon />}
-            text="Default Language"
+            text={t('views:settings.language')}
             value={settings.ui.language}
-            options={['English', 'Dutch']}
-            onOptionsClick={(event, index, value) => changeSettings({ ui: { language: value } })}
+            options={Object.keys(this.props.i18n.store.data).map(language => t(`languages.${language}`))}
+            values={Object.keys(this.props.i18n.store.data)}
+            onOptionsClick={(event, index, value) => {
+              changeSettings({ ui: { language: value } });
+              this.props.i18n.changeLanguage(value);
+            }}
           />
           <SettingsCategoryListItem
             icon={<PaletteIcon />}
-            text="Palette"
+            text={t('views:settings.palette')}
             value={settings.ui.palette}
             options={['Dark', 'Light']}
-            onOptionsClick={(event, index, value) => changeSettings({ ui: { palette: value } })}
+            values={['dark', 'light']}
+            onOptionsClick={(event, index, value) => changeSettings({ ui: { palette: value.toLowerCase() } })}
           />
           <SettingsCategoryListItem
             icon={<StartScreenIcon />}
-            text="Start Screen"
+            text={t('views:settings.startScreen')}
             value={settings.ui.startScreen}
-            options={['Movies', 'Shows']}
+            options={[t('movies'), t('shows')]}
+            values={['movies', 'shows']}
             onOptionsClick={(event, index, value) => changeSettings({ ui: { startScreen: value } })}
           />
         </SettingsCategoryList>
         <Divider />
-        <SettingsCategoryList header="Subtitles">
+        <SettingsCategoryList header={t('views:settings.categories.subtitles')}>
           <SettingsCategoryListItem
             icon={<SubtitlesIcon />}
-            text="Default Language"
+            text={t('views:settings.language')}
             value={settings.subtitles.language}
-            options={['English']}
+            options={[t('languages.en')]}
+            values={['en']}
             onOptionsClick={(event, index, value) => changeSettings({ subtitles: { language: value } })}
           />
           <SettingsCategoryListItem
             icon={<FormatSizeIcon />}
-            text="Size"
+            text={t('views:settings.size')}
             value={settings.subtitles.size}
             options={['24px', '32px']}
             onOptionsClick={(event, index, value) => changeSettings({ subtitles: { size: value } })}
           />
         </SettingsCategoryList>
         <Divider />
-        <SettingsCategoryList header="Quality">
+        <SettingsCategoryList header={t('views:settings.categories.quality')}>
           <SettingsCategoryListItem
             icon={<HighQualityIcon />}
-            text="Show quality on list"
+            text={t('views:settings.showQuality')}
             action={
               <Switch
                 onClick={() => changeSettings({ quality: { showOnList: !settings.quality.showOnList } })}
@@ -130,12 +145,17 @@ class Settings extends Component {
 
 /* eslint-disable react/forbid-prop-types */
 Settings.propTypes = {
+  t: PropTypes.func.isRequired,
+  i18n: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   settings: PropTypes.object.isRequired,
-  configureAppBar: PropTypes.func.isRequired,
   changeSettings: PropTypes.func.isRequired,
   // resetSettings: PropTypes.func.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 
-export default withStyles(styleSheet)(Settings);
+Settings.contextTypes = {
+  ...View.childContextTypes
+};
+
+export default translate()(withView(withStyles(styleSheet)(Settings)));

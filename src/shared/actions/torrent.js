@@ -7,6 +7,7 @@ export const TORRENT_WARNING = 'TORRENT_WARNING';
 export const TORRENT_ERROR = 'TORRENT_ERROR';
 export const TORRENT_ADD = 'TORRENT_ADD';
 export const TORRENT_UPDATE = 'TORRENT_UPDATE';
+export const TORRENT_READY = 'TORRENT_READY';
 export const TORRENT_REMOVE = 'TORRENT_REMOVE';
 
 export const STREAM_SERVER_START = 'STREAM_SERVER_START';
@@ -61,6 +62,20 @@ export function torrentMetaData(torrentKey, torrentInfo) {
   };
 }
 
+export function torrentReady(torrentKey, torrentInfo) {
+  return (dispatch, getState) => {
+    const torrentSummary = getTorrentSummary(getState(), torrentKey);
+
+    dispatch({
+      type: TORRENT_READY,
+      payload: {
+        ...torrentSummary,
+        ...torrentInfo
+      }
+    });
+  };
+}
+
 export function torrentProgress(torrentKey, torrentInfo) {
   return (dispatch, getState) => {
     const torrentSummary = getTorrentSummary(getState(), torrentKey);
@@ -105,21 +120,22 @@ export function streamServerStarted(info) {
 }
 
 export function startStreamServer(torrentKey) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const torrentSummary = getTorrentSummary(getState(), torrentKey);
     // global.torrentEngine.startStreamServer(torrentSummary.infoHash);
 
     ipc.send('te-startStreamServer', torrentSummary.infoHash);
 
-    return {
+    return dispatch({
       type: STREAM_SERVER_START,
+      waitAction: STREAM_SERVER_STARTED,
       payload: ServerStatus.STARTING
-    };
+    });
   };
 }
 
 export function stopStreamServer() {
-    // global.torrentEngine.stopStreamServer();
+  // global.torrentEngine.stopStreamServer();
 
   ipc.send('te-stopStreamServer');
 
@@ -130,7 +146,7 @@ export function stopStreamServer() {
 }
 
 export function addTorrent(torrentID) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { torrent } = getState();
     const torrentKey = torrent.nextKey;
     const path = null; // TODO: Make a helper to calculate the path
@@ -139,8 +155,9 @@ export function addTorrent(torrentID) {
     // global.torrentEngine.startTorrenting(torrentKey, torrentID, path);
     ipc.send('te-addTorrent', torrentKey, torrentID, path);
 
-    dispatch({
-      type: TORRENT_ADD
+    return dispatch({
+      type: TORRENT_ADD,
+      waitAction: TORRENT_READY
     });
   };
 }

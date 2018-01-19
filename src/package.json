@@ -1,17 +1,21 @@
 {
   "name": "moviecast-desktop",
   "productName": "MovieCast",
-  "version": "0.0.1-alpha.2",
+  "version": "0.1.2",
   "description": "Watch movies like never before.",
   "main": "./dist/main/main.prod.js",
   "author": {
-    "name": "Dizzy",
-    "email": "itsdizzy40@gmail.com",
-    "url": "https://github.com/itsdizzy40"
+    "name": "MovieCast",
+    "email": "hello@moviecast.xyz",
+    "url": "https://moviecast.xyz"
   },
   "scripts": {
     "postinstall": "npm rebuild --runtime=electron --target=1.6.6 --disturl=https://atom.io/download/atom-shell --build-from-source"
   },
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moviecast/desktop/issues"
+  },
+  "homepage": "https://github.com/moviecast/desktop#readme",
   "dependencies": {}
 }

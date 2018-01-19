@@ -9,11 +9,14 @@ import {
   UPDATE_CURRENT_TIME,
   UPDATE_TRACKS,
   TOGGLE_FULLSCREEN,
-  TOGGLE_UI
+  TOGGLE_UI,
+  SET_BUFFERING,
+  PLAYER_VIEW_UNLOADED
 } from '../actions/player';
 
 const initialState = {
   playing: false,
+  buffering: true,
   src: 'http://vjs.zencdn.net/v/oceans.mp4',
   title: 'No Title',
   volume: 0.8,
@@ -29,6 +32,10 @@ const initialState = {
 };
 
 export default createReducer(initialState, {
+  [PLAYER_VIEW_UNLOADED]: () => ({
+    ...initialState
+  }),
+
   [SET_URL]: (state, action) => ({
     ...state,
     src: action.payload
@@ -36,6 +43,10 @@ export default createReducer(initialState, {
   [SET_TITLE]: (state, action) => ({
     ...state,
     title: action.payload
+  }),
+  [SET_BUFFERING]: (state, action) => ({
+    ...state,
+    buffering: action.payload
   }),
 
   [UPDATE_VOLUME]: (state, action) => ({

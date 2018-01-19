@@ -3,6 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { getInitialStateRenderer } from 'electron-redux';
+
+import { I18nextProvider } from 'react-i18next';
+
 import StoreFactory, { SCOPE_RENDERER } from '../shared/store/StoreFactory';
 import './app.global.css';
 
@@ -12,9 +15,13 @@ import App from './components/App/App';
 import {
   torrentInfoHash,
   torrentMetaData,
+  torrentReady,
   torrentProgress,
-  torrentDone
+  torrentDone,
+  streamServerStarted
 } from '../shared/actions/torrent';
+
+import i18n from './i18n';
 
 console.time('init');
 
@@ -23,33 +30,61 @@ const store = storeFactory.configureStore(getInitialStateRenderer());
 const history = storeFactory.history;
 const dispatch = store.dispatch;
 
+i18n.changeLanguage(store.getState().settings.ui.language);
+
 init();
 
 function init() {
-  ipc.on('te-warning', (event, err) => {
-    console.warn(`torrentEngine: ${err.message}`);
+  ipc.on('info', (event, ...args) => {
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`[%cIPC/INFO%c] ${args[0]}`, 'color: blue;', 'color: black;');
+    console.info(...params);
   });
 
-  ipc.on('te-error', (event, err) => {
-    console.error(`torrentEngine: ${err.message}`);
+  ipc.on('debug', (event, ...args) => {
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`%c[%cIPC/DEBUG%c] %c${args[0]}`, 'color: black;', 'color: green;', 'color: black;', 'color: blue;');
+    console.debug(...params);
   });
 
-  ipc.on('te-infohash', (event, torrentKey, infoHash) => {
-    dispatch(torrentInfoHash(torrentKey, infoHash));
+  ipc.on('warn', (event, ...args) => {
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`[%cIPC/WARNING%c] ${args[0]}`, 'color: orange;', 'color: black;');
+    console.warn(...params);
   });
 
-  ipc.on('te-metadata', (event, torrentKey, info) => {
-    dispatch(torrentMetaData(torrentKey, info));
+  ipc.on('error', (event, ...args) => {
+    const params = Array.prototype.slice.call(args, 1);
+    params.unshift(`%c[%cIPC/ERROR%c] ${args[0]}`, 'color: black;', 'color: red;', 'color: black;');
+    console.error(...params);
   });
 
-  ipc.on('te-progress', (event, torrentKey, info) => {
-    console.log(torrentKey, info);
-    dispatch(torrentProgress(torrentKey, info));
+  ipc.on('te-infohash', (event, key, infoHash) => {
+    dispatch(torrentInfoHash(key, infoHash));
   });
 
-  ipc.on('te-done', (event, torrentKey, info) => {
-    dispatch(torrentDone(torrentKey, info));
+  ipc.on('te-metadata', (event, key, info) => {
+    dispatch(torrentMetaData(key, info));
   });
+
+  ipc.on('te-ready', (event, key, info) => {
+    console.log('ready');
+    dispatch(torrentReady(key, info));
+  });
+
+  ipc.on('te-progress', (event, key, info) => {
+    dispatch(torrentProgress(key, info));
+  });
+
+  ipc.on('te-done', (event, key, info) => {
+    dispatch(torrentDone(key, info));
+  });
+
+  ipc.on('te-stream-server-started', (event, info) => {
+    dispatch(streamServerStarted(info));
+  });
+
+  ipc.send('ipcReady');
 
   render(App);
 
@@ -64,12 +99,15 @@ function render(Component) {
         throw error;
       }}
     >
-      <Component store={store} history={history} />
+      <I18nextProvider i18n={i18n}>
+        <Component store={store} history={history} />
+      </I18nextProvider>
     </AppContainer>,
-  document.getElementById('root')
+    document.getElementById('root')
   );
 }
 
+// Ples fix this part...
 if (module.hot) {
   module.hot.accept('./components/App/App', () => {
     const NextApp = require('./components/App/App'); // eslint-disable-line global-require

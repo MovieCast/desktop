@@ -12,7 +12,7 @@
  * move to it's own window (doing that right now...)
  */
 
-import { ipcRenderer as ipc } from 'electron';
+import { ipcRenderer as ipc, dialog } from 'electron';
 // import TorrentEngine from '../main/TorrentEngine';
 import crypto from 'crypto';
 // import { EventEmitter } from 'events';
@@ -21,6 +21,7 @@ import WebTorrent from 'webtorrent';
 import zeroFill from 'zero-fill';
 import networkAddress from 'network-address';
 import pkg from '../package.json';
+import { DEFAULT_DOWNLOAD_PATH } from '../config';
 
 console.time('init');
 
@@ -46,9 +47,9 @@ const VERSION = pkg.version;
  *   '-MC0000-'...
  */
 const VERSION_STR = VERSION.match(/([0-9]+)/g)
-    .slice(0, 2)
-    .map((v) => zeroFill(2, v))
-    .join('');
+  .slice(0, 2)
+  .map((v) => zeroFill(2, v))
+  .join('');
 /**
  * Version prefix string (used in peer ID). MovieCast uses the Azureus-style
  * encoding: '-', two characters for client id ('MC'), four ascii digits for version
@@ -66,7 +67,7 @@ const PEER_ID = Buffer.from(VERSION_PREFIX + crypto.randomBytes(9).toString('bas
 // Connect to the WebTorrent and BitTorrent networks.
 // MovieCast is just like WebTorrent Desktop a hybrid
 // client, as explained here: https://webtorrent.io/faq
-const client = new WebTorrent({ peerId: PEER_ID });
+let client = new WebTorrent({ peerId: PEER_ID });
 
 // WebTorrent-to-HTTP streaming sever
 let server = null;
@@ -74,6 +75,8 @@ let server = null;
 init();
 
 function init() {
+  console.info('Initializing Torrent Engine...');
+
   listenToClientEvents();
 
   ipc.on('te-addTorrent', (event, torrentKey, torrentID, path, fileModtimes, selections) => {
@@ -100,10 +103,14 @@ function init() {
 function listenToClientEvents() {
   client.on('warning', (err) => ipc.send('te-warning', err));
   client.on('error', (err) => ipc.send('te-error', err));
+
+  console.info('Listening to engine events.');
 }
 
 function addTorrent(torrentKey, torrentID, path, fileModtimes, selections) {
   console.log(`Starting torrent ${torrentID}`);
+
+  path = DEFAULT_DOWNLOAD_PATH;
 
   const torrent = client.add(torrentID, {
     path,
@@ -156,8 +163,9 @@ function addTorrentEvents(torrent) {
   function onReady() {
     console.log(`Torrent#${torrent.key}: ready`);
     onProgress();
-    // const info = getTorrentInfo(torrent);
+    const info = getTorrentInfo(torrent);
     // dispatch(torrentReady(torrent.key, info));
+    ipc.send('te-ready', torrent.key, info);
   }
 
   function onDone() {
@@ -179,7 +187,8 @@ function addTorrentEvents(torrent) {
         startPiece: file._startPiece,
         endPiece: file._endPiece,
         numPieces,
-        numPiecesPresent
+        numPiecesPresent,
+        name: file.name
       };
     });
     const info = {
@@ -236,15 +245,15 @@ be sure this torrent was started already!
       `);
   }
 
-    // Selections not specified?
-    // Load all files. We still need to replace the default whole-torrent
-    // selection with individual selections for each file, so we can
-    // select/deselect files later on
+  // Selections not specified?
+  // Load all files. We still need to replace the default whole-torrent
+  // selection with individual selections for each file, so we can
+  // select/deselect files later on
   if (!selections) {
     selections = torrent.files.map(() => true);
   }
 
-    // Selections specified incorrectly?
+  // Selections specified incorrectly?
   if (selections.length !== torrent.files.length) {
     throw new Error(`
 [TorrentEngine]: selectFiles: got ${selections.length} file selections, 
@@ -252,10 +261,10 @@ but the torrent contains ${torrent.files.length} files
       `);
   }
 
-    // Remove default selection (whole torrent)
+  // Remove default selection (whole torrent)
   torrent.deselect(0, torrent.pieces.length - 1, false);
 
-    // Add selections (individual files)
+  // Add selections (individual files)
   for (let i = 0; i < selections.length; i++) {
     const file = torrent.files[i];
     if (selections[i]) {
@@ -297,3 +306,18 @@ function getTorrentFileInfo(file) {
     path: file.path
   };
 }
+
+window.testOfflineMode = () => {
+  console.log('Test, going OFFLINE');
+  client = window.client = new WebTorrent({
+    peerId: PEER_ID,
+    tracker: false,
+    dht: false,
+    webSeeds: false
+  });
+  listenToClientEvents();
+};
+
+process.on('uncaughtException', (err) => {
+  dialog.showErrorBox('Torrent Engine Crash Report', err.stack);
+});

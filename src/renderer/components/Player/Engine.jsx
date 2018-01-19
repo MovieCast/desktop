@@ -5,8 +5,8 @@ import { withStyles } from 'material-ui/styles';
 
 const styleSheet = {
   root: {
-    position: 'absolute',
-    top: 0,
+    // position: 'absolute',
+    // top: 0,
     width: '100%',
     height: '100vh',
     background: '#000'
@@ -14,7 +14,6 @@ const styleSheet = {
 };
 
 class Engine extends Component {
-
   componentDidMount() {
     const { player } = this.props;
 
@@ -72,6 +71,10 @@ class Engine extends Component {
     this.player.removeAttribute('src');
   }
 
+  seek(value) {
+    this.player.currentTime = value;
+  }
+
   setVolume(volume) {
     this.player.volume = volume;
   }
@@ -103,7 +106,8 @@ class Engine extends Component {
       onStalled,
       onError,
       onTimeUpdate,
-      onProgress
+      onProgress,
+      onWaiting
     } = this.props;
 
     return (
@@ -123,6 +127,7 @@ class Engine extends Component {
           onError={onError}
           onTimeUpdate={onTimeUpdate}
           onProgress={onProgress}
+          onWaiting={onWaiting}
         />
         {children}
       </div>
@@ -145,7 +150,8 @@ Engine.propTypes = {
   onStalled: PropTypes.func,
   onError: PropTypes.func,
   onTimeUpdate: PropTypes.func,
-  onProgress: PropTypes.func
+  onProgress: PropTypes.func,
+  onWaiting: PropTypes.func,
 };
 
 Engine.defaultProps = {
@@ -160,7 +166,8 @@ Engine.defaultProps = {
   onStalled: () => {},
   onError: () => {},
   onTimeUpdate: () => {},
-  onProgress: () => {}
+  onProgress: () => {},
+  onWaiting: () => {}
 };
 
 export default withStyles(styleSheet)(Engine);

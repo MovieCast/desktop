@@ -13,8 +13,8 @@ import Close from './Icons/Close';
 const styles = theme => ({
   root: {
     WebkitAppRegion: 'drag',
-    position: 'absolute',
-    top: 0,
+    // position: 'absolute',
+    // top: 0,
     height: 29,
     left: 0,
     width: '100%',

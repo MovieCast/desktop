@@ -10,12 +10,13 @@ import handleViewport from '../../../internal/handleViewport';
 const styles = theme => ({
   root: {
     width: 230,
-    height: 345
+    height: 345,
   },
   placeholder: {
     display: 'flex',
     height: '100%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.15,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column'
@@ -23,7 +24,6 @@ const styles = theme => ({
 });
 
 class BaseItem extends Component {
-
   state = {
     isVisible: false
   };
@@ -45,19 +45,29 @@ class BaseItem extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.isVisible !== nextState.isVisible) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     const { classes, children, innerRef } = this.props;
     return (
-      <Grid item ref={innerRef} className={classes.root}>
+      // <Grid item ref={innerRef}>
+      <div className={classes.root}>
         {this.state.isVisible ? children : <div className={classes.placeholder} /> }
-      </Grid>
+      </div>
+      // </Grid>
     );
   }
 }
 
 BaseItem.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.object,
 
   once: PropTypes.bool,
   onVisible: PropTypes.func,
@@ -69,6 +79,8 @@ BaseItem.propTypes = {
 BaseItem.defaultProps = {
   innerRef: () => {},
   onVisible: () => {},
+
+  children: null,
 
   once: false
 };

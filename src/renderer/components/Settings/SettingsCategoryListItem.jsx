@@ -24,8 +24,28 @@ class SettingsCategoryListItem extends Component {
     this.props.onOptionsClick(event, index, value);
   };
 
+  getValues() {
+    const { values, options } = this.props;
+    if (options && !values) {
+      return options.map(option => option.toLowerCase());
+    }
+    return values;
+  }
+
+  getSelectedItem() {
+    const { options, value } = this.props;
+
+    const values = this.getValues();
+    if (values) {
+      return options[values.indexOf(value)] || 'Unknown';
+    }
+    return value;
+  }
+
   render() {
     const { icon, text, value, action, options, onClick } = this.props;
+
+    const values = this.getValues();
 
     return (
       <div>
@@ -40,7 +60,7 @@ class SettingsCategoryListItem extends Component {
           </ListItemAvatar>
           <ListItemText
             primary={text}
-            secondary={value}
+            secondary={this.getSelectedItem()}
           />
           {action &&
           <ListItemSecondaryAction>
@@ -57,8 +77,8 @@ class SettingsCategoryListItem extends Component {
           {options.map((option, index) =>
             (<MenuItem
               key={option}
-              selected={option === value}
-              onClick={event => this.handleMenuItemClick(event, index, option)}
+              selected={values[index] === value}
+              onClick={event => this.handleMenuItemClick(event, index, values[index] || option)}
             >
               {option}
             </MenuItem>),
@@ -76,6 +96,7 @@ SettingsCategoryListItem.propTypes = {
   value: PropTypes.string,
   action: PropTypes.element,
   options: PropTypes.array,
+  values: PropTypes.array,
   onClick: PropTypes.func,
   onOptionsClick: PropTypes.func
 };
@@ -86,6 +107,7 @@ SettingsCategoryListItem.defaultProps = {
   action: null,
   value: null,
   options: null,
+  values: null,
   onClick: undefined,
   onOptionsClick: undefined
 };

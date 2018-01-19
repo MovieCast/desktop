@@ -1,0 +1,17 @@
+[main]
+host = https://www.transifex.com
+
+[moviecast-desktop.common]
+file_filter = src/locales/<lang>/common.json
+minimum_perc = 80
+source_file = src/locales/en/common.json
+source_lang = en
+type = KEYVALUEJSON
+
+[moviecast-desktop.views]
+file_filter = src/locales/<lang>/views.json
+minimum_perc = 80
+source_file = src/locales/en/views.json
+source_lang = en
+type = KEYVALUEJSON
+

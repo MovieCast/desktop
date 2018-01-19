@@ -11,6 +11,10 @@ import {
   Fullscreen as FullscreenIcon,
   FullscreenExit as FullscreenExitIcon,
 } from 'material-ui-icons';
+
+// import PlaybackBar from './ControlBar/PlaybackBar';
+import Slider from './ControlBar/Slider';
+
 import formatTime from '../../helpers/formatTime';
 
 const styleSheet = theme => ({
@@ -37,7 +41,6 @@ const styleSheet = theme => ({
 });
 
 class ControlBar extends Component {
-
   getFractionPlayed() {
     const { player } = this.props;
     return player.currentTime / player.duration;
@@ -48,6 +51,7 @@ class ControlBar extends Component {
       classes,
       player,
       onTogglePlay,
+      onToggleSubtitles,
       onToggleFullscreen
     } = this.props;
 
@@ -76,16 +80,25 @@ class ControlBar extends Component {
             </Typography>
           </div>
 
-          <LinearProgress
+          {/* <LinearProgress
             className={classes.progress}
             mode="determinate"
             value={this.getFractionPlayed() * 100}
-          />
+          /> */}
+
+          {/* <PlaybackBar
+            fractionPlayed={this.getFractionPlayed() * 100}
+            onClick={() => console.log('onClick')}
+            onDragStart={() => console.log('onDragStart')}
+            onDrag={() => console.log('onDrag')}
+          /> */}
+
+          <Slider max={player.duration} value={player.currentTime} onChange={this.props.onSeek} />
 
           <IconButton color="contrast">
             <VolumeUpIcon />
           </IconButton>
-          <IconButton color="contrast">
+          <IconButton color="contrast" onClick={onToggleSubtitles}>
             <SubtitlesIcon />
           </IconButton>
           <IconButton color="contrast" onClick={onToggleFullscreen}>
@@ -102,6 +115,7 @@ ControlBar.propTypes = {
   classes: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
   onTogglePlay: PropTypes.func,
+  onToggleSubtitles: PropTypes.func,
   onToggleFullscreen: PropTypes.func
 };
 /* eslint-enable react/forbid-prop-types */
@@ -110,6 +124,7 @@ ControlBar.defaultProps = {
   hidden: false,
   fullscreen: false,
   onTogglePlay: () => {},
+  onToggleSubtitles: () => {},
   onToggleFullscreen: () => {}
 };
 

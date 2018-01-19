@@ -1,0 +1,33 @@
+{
+  "views": {
+    "catalog": {
+      "trending": "Populært",
+      "year": "År",
+      "az": "A-Z"
+    },
+
+    "details": {
+      "play": "Spill av"
+    },
+
+    "settings": {
+      "categories": {
+        "ui": "Brukergrensesnitt",
+        "subtitles": "Undertekster",
+        "quality": "Kvalitet"
+      },
+      "language": "Standard språk",
+      "palette": "Palett",
+      "startScreen": "Startskjerm",
+      "size": "Størrelse",
+      "showQuality": "Vis aktuell kvalitet i søkeresultater"
+    },
+
+    "player": {
+      "playing": "Spiller: {{value}}",
+      "subtitles": "Undertekster",
+      "fullscreen": "Fullskjermmodus",
+      "exitFullscreen": "Gå ut av fullskjermmodus"
+    }
+  }
+}

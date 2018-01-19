@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import { Menu as MenuIcon, ArrowBack as BackIcon, FileDownload as DownloadIcon } from 'material-ui-icons';
-import AppDrawer from './AppDrawer';
-import AppSearch from './AppSearch';
-import AutoUpdater from '../AutoUpdater/AutoUpdater';
-
-import AppTitleBar from '../../containers/AppTitleBar';
-import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
+import AutoUpdater from '../../containers/AutoUpdater';
 
 const styleSheet = theme => ({
   '@global': {
@@ -28,145 +17,50 @@ const styleSheet = theme => ({
       background: theme.palette.background.default,
       color: theme.palette.text.primary,
       lineHeight: '1.2',
-      overflowX: 'hidden',
+      overflow: 'hidden',
       WebkitFontSmoothing: 'antialiased', // Antialiasing.
+    },
+    '::-webkit-scrollbar': {
+      width: 13,
+      height: 13
+    },
+    '::-webkit-scrollbar-button': {
+      width: 0,
+      height: 0
+    },
+    '::-webkit-scrollbar-thumb': {
+      background: '#1e1e1e',
+      border: '0px none #ffffff'
+    },
+    '::-webkit-scrollbar-thumb:hover': {
+      background: '#262626'
+    },
+    '::-webkit-scrollbar-thumb:active': {
+      background: '#141414'
+    },
+    '::-webkit-scrollbar-corner': {
+      background: 'transparent'
     }
   },
   appFrame: {
-    display: 'flex',
-    alignItems: 'stretch',
-    minHeight: '100vh',
+    height: '100vh',
     width: '100%',
-  },
-  grow: {
-    flex: '1 1 auto',
-  },
-  title: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    marginLeft: 24,
-    flex: '0 1 auto',
-  },
-  appBar: {
-    transition: theme.transitions.create(['box-shadow', 'opacity']),
-  },
-  appBarTransparent: {
-    backgroundColor: 'transparent'
-  },
-  appBarNoShadow: {
-    boxShadow: 'none',
-  },
-  appBarTitleSecondary: {
-    color: 'rgba(255, 255, 255, 0.7)'
-  },
-  appBarHidden: {
-    opacity: 0
-  },
-  wrapper: {
-    position: 'relative',
-    top: 29,
-    width: '100%',
-    height: 'calc(100vh - 29px)' // This no wurks!
-    // height: '100vh'
-  },
+  }
 });
 
 class AppFrame extends Component {
-  state = {
-    drawerOpen: false,
-    torrentEngineInfo: false
-  }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log(nextProps, this.props);
-  //   if (nextState !== this.state) {
-  //     return true;
-  //   }
-
-  //   if (nextProps.children !== this.props.children) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
-
-  handleDrawerClose = () => {
-    this.setState({ drawerOpen: false });
-  };
-
-  handleTorrentEngineInfo = () => {
-    this.setState({ torrentEngineInfo: true });
-  };
-
-  // TODO: Dont use goBack, since it breaks on refresh
-  handleBackAndDrawerButton = () => {
-    const { application: { appBar }, history } = this.props;
-    if (appBar.back) {
-      history.goBack();
-    } else {
-      this.setState({ drawerOpen: !this.state.drawerOpen });
-    }
-  };
-
   render() {
-    const { children, classes, updater, application: { appBar } } = this.props;
-
-    // TODO: Move AppBar to it's own 'smart' component,
-    // so AppFrame doesn't have to update when AppBar is updated
-    const appBarClassName = classNames(classes.appBar, {
-      [classes.appBarTransparent]: appBar.transparent,
-      [classes.appBarNoShadow]: !appBar.shadow,
-      [classes.appBarHidden]: appBar.hidden
-    });
+    const { children, classes } = this.props;
 
     return (
       <div className={classes.appFrame}>
-        <AppTitleBar />
-        <div className={classes.wrapper}>
-          <AppBar className={appBarClassName} position="absolute">
-            <Toolbar>
-              {/* Preparation for Icon to Icon transition */}
-              <IconButton
-                color="contrast"
-                onClick={this.handleBackAndDrawerButton}
-              >
-                {appBar.back ? <BackIcon /> : <MenuIcon />}
-              </IconButton>
-              <div className={classes.title}>
-                <Typography type="title" color="inherit" noWrap gutterBottom={!!appBar.secondary}>
-                  {appBar.title}
-                </Typography>
-                {appBar.secondary &&
-                  <Typography type="caption" color="secondary" className={classes.appBarTitleSecondary}>
-                    {appBar.secondary}
-                  </Typography>}
-              </div>
-              <div className={classes.grow} />
-              {/* TODO: Find a better way to communicate with the search bar */}
-              {appBar.search && <AppSearch onSearch={appBar.onSearch} />}
-              <IconButton
-                color="contrast"
-                onClick={this.handleTorrentEngineInfo}
-                title="TorrentEngine Info"
-              >
-                <DownloadIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <AppDrawer
-            className={classes.drawer}
-            onRequestClose={this.handleDrawerClose}
-            open={this.state.drawerOpen}
-          />
-          <AutoUpdater updater={updater} />
-          {children}
+        <AutoUpdater />
+        {children}
 
-          <TorrentEngineDialog
-            open={this.state.torrentEngineInfo}
-            onRequestClose={() => this.setState({ torrentEngineInfo: false })}
-          />
-        </div>
+        {/* <TorrentEngineDialog
+          open={this.state.torrentEngineInfo}
+          onRequestClose={() => this.setState({ torrentEngineInfo: false })}
+        /> */}
       </div>
     );
   }
@@ -176,10 +70,6 @@ class AppFrame extends Component {
 AppFrame.propTypes = {
   children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired,
-  // settings: PropTypes.object.isRequired,
-  application: PropTypes.object.isRequired,
-  updater: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

@@ -1,41 +1,53 @@
 import _ from 'lodash';
-import merge from 'deepmerge';
 import { createReducer } from '../util';
-// import { fromJS } from 'immutable';
-import { FETCH_MOVIE, FETCH_MOVIES_SUCCESS, SET_FILTER } from '../actions/catalog';
+import { SET_FILTER, CATALOG_VIEW_UNLOADED } from '../actions/catalog';
+import { FETCH_MOVIES_SUCCESS, FETCH_MOVIES_FAILURE } from '../actions/entities';
 
 
 const initialState = {
+  loading: true,
   filter: {
     page: 1,
     genre: 'all',
     sort: 'trending',
     keywords: ''
   },
-  entities: {
-    movies: []
-  },
+  moreAvailable: false,
   result: []
 };
 
 export default createReducer(initialState, {
-  [FETCH_MOVIES_SUCCESS]: (state, action) => ({
+  [CATALOG_VIEW_UNLOADED]: (state) => ({
     ...state,
-    entities: merge(state.entities, action.payload.entities),
-
-    // de-dupe existing result, this does sometimes happen...
-    result: _.union(state.result, action.payload.result)
+    loading: true
   }),
 
+  [FETCH_MOVIES_SUCCESS]: (state, { payload }) => {
+    const newState = {
+      ...state,
+      loading: false,
+      moreAvailable: payload.result.length > 0
+    };
 
-  [FETCH_MOVIE]: (state) => {
-    console.warn('FETCH_MOVIE: This action is not working yet');
-    return state;
+    if (state.filter.page === 1) {
+      newState.result = payload.result;
+    } else {
+      newState.result = _.union(state.result, payload.result);
+    }
+
+    return newState;
   },
+
+  [FETCH_MOVIES_FAILURE]: (state) => ({
+    ...state,
+    loading: false,
+    moreAvailable: false
+  }),
 
   // Temp fix
   RESET_RESULT: (state) => ({
     ...state,
+    moreAvailable: false,
     result: []
   }),
 

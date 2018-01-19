@@ -6,10 +6,15 @@ import {
   UPDATE_DOWNLOADED,
   UPDATE_ERROR,
   UPDATE_NOT_AVAILABLE,
- } from '../actions/updater';
+} from '../actions/updater';
 
 const initialState = {
   checkingForUpdate: false,
+  updateInfo: {
+    version: '0.0.0',
+    releaseName: 'failed_to_load',
+    releaseNotes: 'failed_to_load'
+  },
   updateAvailable: false,
   updateDownloading: 0,
   updateDownloaded: false,
@@ -24,9 +29,10 @@ export default createReducer(initialState, {
     checkingForUpdate: true
   }),
 
-  [UPDATE_AVAILABLE]: (state) => ({
+  [UPDATE_AVAILABLE]: (state, action) => ({
     ...state,
     ...initialState,
+    updateInfo: action.payload,
     updateAvailable: true
   }),
 
@@ -48,9 +54,10 @@ export default createReducer(initialState, {
     updateError: action.payload
   }),
 
-  [UPDATE_NOT_AVAILABLE]: (state) => ({
+  [UPDATE_NOT_AVAILABLE]: (state, action) => ({
     ...state,
     ...initialState,
+    updateInfo: action.payload,
     updateNotAvailable: true
   })
 });

@@ -1,0 +1,33 @@
+{
+  "views": {
+    "catalog": {
+      "trending": "Populair",
+      "year": "Jaar",
+      "az": "A-Z"
+    },
+
+    "details": {
+      "play": "Spelen"
+    },
+
+    "settings": {
+      "categories": {
+        "ui": "Gebruikersomgeving",
+        "subtitles": "Ondertiteling",
+        "quality": "Kwaliteit"
+      },
+      "language": "Standaard Taal",
+      "palette": "Palet",
+      "startScreen": "Start Scherm",
+      "size": "Grootte",
+      "showQuality": "Laat kwaliteit zien"
+    },
+
+    "player": {
+      "playing": "aan het afspelen: {{value}}",
+      "subtitles": "Ondertiteling",
+      "fullscreen": "Volledigscherm",
+      "exitFullscreen": "Sluit Volledigscherm"
+    }
+  }
+}

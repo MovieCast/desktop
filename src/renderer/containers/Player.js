@@ -1,16 +1,31 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import Player from '../components/Player/Player';
-import { configureAppBar } from '../../shared/actions/application';
-import * as playerActions from '../../shared/actions/player';
+
+import {
+  togglePlay,
+  setBuffering,
+  updateDuration,
+  updateCurrentTime,
+  toggleFullscreen,
+  toggleUi,
+  PLAYER_VIEW_UNLOADED
+} from '../../shared/actions/player';
 
 function mapStateToProps({ player }) {
   return { player };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ ...playerActions, configureAppBar }, dispatch);
-}
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators({
+    togglePlay,
+    setBuffering,
+    updateDuration,
+    updateCurrentTime,
+    toggleFullscreen,
+    toggleUi
+  }, dispatch),
+  onUnload: () => dispatch({ type: PLAYER_VIEW_UNLOADED })
+});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Player));
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
