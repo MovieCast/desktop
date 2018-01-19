@@ -40,6 +40,7 @@ const styles = theme => ({
     height: '100%',
     backgroundColor: theme.palette.primary[100],
     marginRight: 1,
+    transition: theme.transitions.create(['width'])
   },
   handle: {
     directionInverant: true,
@@ -57,7 +58,8 @@ const styles = theme => ({
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
     overflow: 'visible',
-    outline: 'none'
+    outline: 'none',
+    transition: theme.transitions.create(['background', 'border-color', 'width', 'height', 'left'])
   },
   handleWhenDisabled: {
     boxSizing: 'content-box',
