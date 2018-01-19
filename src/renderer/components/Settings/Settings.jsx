@@ -24,6 +24,8 @@ import SettingsCategoryListItem from './SettingsCategoryListItem';
 const styleSheet = {
   root: {
     width: '100%',
+    height: 'calc(100% - 64px)',
+    overflowY: 'auto'
   },
 };
 

@@ -1,14 +1,10 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { bindActionCreators } from 'redux';
+
 import Catalog from '../components/Catalog/Catalog';
-import { setFilter } from '../../shared/actions/catalog';
 import { fetchMovies } from '../../shared/actions/entities';
-// import { getMoviesResult } from '../../shared/selectors/catalog';
-
-
-// function mapStateToProps({ catalog }) {
-//   return { catalog };
-// }
+import { setFilter, CATALOG_VIEW_UNLOADED } from '../../shared/actions/catalog';
 
 const getResult = (state) => state.catalog.result;
 const getMovies = (state) => state.entities.movies;
@@ -22,17 +18,16 @@ const getMoviesResult = createSelector(
   }
 );
 
+const mapStateToProps = (state) => ({
+  filter: state.catalog.filter,
+  result: getMoviesResult(state),
+  loading: state.catalog.loading,
+  moreAvailable: state.catalog.moreAvailable
+});
 
-function mapStateToProps(state) {
-  return {
-    result: getMoviesResult(state),
-    filter: state.catalog.filter,
-    moreAvailable: state.catalog.moreAvailable
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ fetchItems: fetchMovies, setFilter }, dispatch),
+  onUnload: () => dispatch({ type: CATALOG_VIEW_UNLOADED }),
+});
 
-
-export default connect(mapStateToProps, {
-  fetchItems: fetchMovies,
-  setFilter
-})(Catalog);
+export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

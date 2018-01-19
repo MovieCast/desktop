@@ -77,6 +77,7 @@ class Player extends Component {
     if (nextProps.player === this.props.player) {
       return false;
     }
+
     return true;
   }
 
@@ -87,6 +88,8 @@ class Player extends Component {
     if (this.props.player.fullscreen) {
       this.toggleFullscreen();
     }
+
+    this.props.onUnload();
   }
 
   handleReady = () => {
@@ -181,7 +184,6 @@ class Player extends Component {
 /* eslint-disable react/forbid-prop-types */
 Player.propTypes = {
   classes: PropTypes.object.isRequired,
-  configureAppBar: PropTypes.func.isRequired,
   // Player state
   player: PropTypes.object.isRequired,
   // Player actions
@@ -194,7 +196,9 @@ Player.propTypes = {
   updateCurrentTime: PropTypes.func.isRequired,
   // updateTracks: PropTypes.func.isRequired,
   toggleFullscreen: PropTypes.func.isRequired,
-  toggleUi: PropTypes.func.isRequired
+  toggleUi: PropTypes.func.isRequired,
+
+  onUnload: PropTypes.func.isRequired
 
 };
 /* eslint-enable react/forbid-prop-types */

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -34,7 +33,17 @@ const styleSheet = theme => ({
     position: 'relative',
     width: '100vw',
     height: '40vh',
-    transition: theme.transitions.create('height', { duration: 1300 })
+    transition: theme.transitions.create('height', { duration: 1300 }),
+    '&:after': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      background: 'rgba(0, 0, 0, 0.2)'
+    }
   },
   background: {
     position: 'absolute',
@@ -152,7 +161,6 @@ class Detail extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.item && nextProps.item.torrents) {
-      console.log(nextProps.item);
       const highestQuality = Object.keys(nextProps.item.torrents)[0];
       this.setState({ torrent: nextProps.item.torrents[highestQuality] });
     }
@@ -192,8 +200,7 @@ class Detail extends Component {
 
   // TODO: Move to TorrentHelper
   getTorrent() {
-    // return _.find(this.props.torrent.torrents, torrent => torrent.magnetURI === this.state.torrent.uri);
-    return this.props.torrent.torrents[0];
+    return this.props.torrent.torrents[this.props.torrent.nextKey - 1];
   }
 
   playItem() {
@@ -256,8 +263,6 @@ class Detail extends Component {
 
     const torrent = this.getTorrent();
 
-    console.log(torrent);
-
     return (
       <div className={classes.middleWrapper}>
         <div style={{ width: '100%' }}>
@@ -274,7 +279,6 @@ class Detail extends Component {
   }
 
   render() {
-    console.log('render');
     const { loading, item, classes } = this.props;
 
     const wrapperClassName = classNames(classes.wrapper, {
@@ -285,7 +289,11 @@ class Detail extends Component {
       return (
         <div className={wrapperClassName}>
           <div className={classes.header}>
-            <DynamicImg className={classes.background} src={item.images.background} alt={item.title} />
+            <DynamicImg
+              className={classes.background}
+              src={item.images.background}
+              alt={item.title}
+            />
 
             {this.state.downloading && this.renderProgress()}
 
@@ -310,6 +318,8 @@ Detail.propTypes = {
   fetchItem: PropTypes.func.isRequired,
   playTorrent: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+
+  onUnload: PropTypes.func.isRequired
 };
 /* eslint-enable react/forbid-prop-types */
 

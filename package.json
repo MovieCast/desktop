@@ -1,7 +1,7 @@
 {
   "name": "moviecast-desktop",
   "productName": "MovieCast",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Watch movies like never before.",
   "scripts": {
     "lint": "eslint --cache --format=node_modules/eslint-formatter-pretty .",
@@ -21,7 +21,7 @@
     "package": "npm run build && build --publish never",
     "package:all": "npm run build && build -mwl",
     "package:linux": "npm run build && build --linux",
-    "package:win": "npm run build && build --win --x64",
+    "package:win": "npm run build && build --win --x64 --ia32",
     "package:publish": "npm run build && build --publish onTagOrDraft"
   },
   "browserslist": "electron 1.7",

@@ -21,6 +21,7 @@ import WebTorrent from 'webtorrent';
 import zeroFill from 'zero-fill';
 import networkAddress from 'network-address';
 import pkg from '../package.json';
+import { DEFAULT_DOWNLOAD_PATH } from '../config';
 
 console.time('init');
 
@@ -108,6 +109,8 @@ function listenToClientEvents() {
 
 function addTorrent(torrentKey, torrentID, path, fileModtimes, selections) {
   console.log(`Starting torrent ${torrentID}`);
+
+  path = DEFAULT_DOWNLOAD_PATH;
 
   const torrent = client.add(torrentID, {
     path,

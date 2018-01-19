@@ -38,17 +38,6 @@ const styleSheet = theme => ({
     '::-webkit-scrollbar-thumb:active': {
       background: '#141414'
     },
-    '::-webkit-scrollbar-track': {
-      background: '#666666',
-      border: '0px none #ffffff',
-      borderRadius: 0
-    },
-    '::-webkit-scrollbar-track:hover': {
-      background: '#666666'
-    },
-    '::-webkit-scrollbar-track:active': {
-      background: '#333333'
-    },
     '::-webkit-scrollbar-corner': {
       background: 'transparent'
     }

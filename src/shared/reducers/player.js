@@ -10,7 +10,8 @@ import {
   UPDATE_TRACKS,
   TOGGLE_FULLSCREEN,
   TOGGLE_UI,
-  SET_BUFFERING
+  SET_BUFFERING,
+  PLAYER_VIEW_UNLOADED
 } from '../actions/player';
 
 const initialState = {
@@ -31,6 +32,10 @@ const initialState = {
 };
 
 export default createReducer(initialState, {
+  [PLAYER_VIEW_UNLOADED]: () => ({
+    ...initialState
+  }),
+
   [SET_URL]: (state, action) => ({
     ...state,
     src: action.payload

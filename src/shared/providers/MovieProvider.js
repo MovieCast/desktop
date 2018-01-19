@@ -8,7 +8,6 @@ class MovieProvider {
   }
 
   getMovies({ page = 1, genre = 'all', sort = 'trending', keywords = null } = {}) {
-    console.log(page, genre, sort, keywords);
     return this.api.get(`/movies/${page}`, {
       params: {
         genre,
