@@ -1,8 +1,9 @@
 /* eslint-disable max-len */
+import { remote } from 'electron';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Switch from 'material-ui/Switch';
+import TextField from 'material-ui/TextField/TextField';
 import Divider from 'material-ui/Divider';
 
 import {
@@ -11,7 +12,7 @@ import {
   ViewCompact as StartScreenIcon,
   Subtitles as SubtitlesIcon,
   FormatSize as FormatSizeIcon,
-  HighQuality as HighQualityIcon
+  FolderOpen as FolderOpenIcon
 } from 'material-ui-icons';
 
 import { translate } from 'react-i18next';
@@ -27,6 +28,9 @@ const styleSheet = {
     height: 'calc(100% - 64px)',
     overflowY: 'auto'
   },
+  textField: {
+    width: 400
+  }
 };
 
 class Settings extends Component {
@@ -47,6 +51,19 @@ class Settings extends Component {
       shadow: true,
       back: true
     });
+  }
+
+  handleDownloadLocation = () => {
+    const { settings, changeSettings } = this.props;
+
+    const directory = remote.dialog.showOpenDialog({
+      title: 'Select download folder',
+      defaultPath: settings.downloadLocation,
+      properties: ['openDirectory'] })[0];
+
+    if (directory) {
+      changeSettings({ downloadLocation: directory });
+    }
   }
 
   handleToggle = (event, category, value) => {
@@ -126,14 +143,16 @@ class Settings extends Component {
           />
         </SettingsCategoryList>
         <Divider />
-        <SettingsCategoryList header={t('views:settings.categories.quality')}>
+        <SettingsCategoryList header={t('views:settings.categories.locations')}>
           <SettingsCategoryListItem
-            icon={<HighQualityIcon />}
-            text={t('views:settings.showQuality')}
+            icon={<FolderOpenIcon />}
+            text={t('views:settings.downloadLocation')}
             action={
-              <Switch
-                onClick={() => changeSettings({ quality: { showOnList: !settings.quality.showOnList } })}
-                checked={settings.quality.showOnList}
+              <TextField
+                value={settings.downloadLocation}
+                onClick={this.handleDownloadLocation}
+                disabled
+                className={classes.textField}
               />
             }
           />
