@@ -6,6 +6,7 @@ import catalog from './catalog';
 import detail from './detail';
 import entities from './entities';
 import player from './player';
+import streamer from './streamer';
 import torrent from './torrent';
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   detail,
   entities,
   player,
+  streamer,
   torrent,
   router,
 });

@@ -9,7 +9,7 @@ import { FileDownload as DownloadIcon } from 'material-ui-icons';
 import Search from './Search';
 import { withView, View } from '../View';
 import ItemContainer from './ItemContainer';
-import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
+import StreamerDialog from '../../containers/StreamerDialog';
 
 const styles = {
   root: {
@@ -21,7 +21,7 @@ const styles = {
 class Catalog extends Component {
   state = {
     sort: 0,
-    torrentEngineInfo: false
+    showStreamerInfo: false
   }
 
   componentWillMount() {
@@ -38,7 +38,7 @@ class Catalog extends Component {
         <IconButton
           key="torrentInfo"
           color="contrast"
-          onClick={this.handleTorrentEngineInfo}
+          onClick={this.handleStreamerInfo}
           title="TorrentEngine Info"
         >
           <DownloadIcon />
@@ -56,8 +56,8 @@ class Catalog extends Component {
     this.props.onUnload();
   }
 
-  handleTorrentEngineInfo = () => {
-    this.setState({ torrentEngineInfo: true });
+  handleStreamerInfo = () => {
+    this.setState({ showStreamerInfo: true });
   }
 
   loadMore = () => {
@@ -118,9 +118,9 @@ class Catalog extends Component {
     return (
       <div className={classes.root}>
 
-        <TorrentEngineDialog
-          open={this.state.torrentEngineInfo}
-          onRequestClose={() => this.setState({ torrentEngineInfo: false })}
+        <StreamerDialog
+          open={this.state.showStreamerInfo}
+          onClose={() => this.setState({ showStreamerInfo: false })}
         />
 
         <AppBar position="static">

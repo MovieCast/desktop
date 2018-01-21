@@ -10,6 +10,7 @@ import * as extensions from './extensions';
 import * as Store from './store';
 import windows from './windows';
 import * as updater from './updater';
+import Streamer from './streamer';
 
 console.time('main:init');
 
@@ -46,9 +47,12 @@ function init() {
     windows.engine.init();
     menu.init();
 
+    app.streamer = new Streamer(results.store);
+
     // To keep app startup fast, some code is delayed.
     setTimeout(delayedInit.bind(this, results), DELAYED_INIT);
   }
+
 
   ipc.init();
 
@@ -61,6 +65,9 @@ function init() {
     e.preventDefault();
 
     app.isQuitting = true;
+
+    // Force quit streamer
+    app.streamer.stop();
 
     // windows.app.dispatch('stateSaveImmediate'); // try to save state on exit
     // ipcMain.once('stateSaved', () => app.quit());
