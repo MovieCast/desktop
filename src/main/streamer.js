@@ -1,11 +1,15 @@
+/* eslint-disable class-methods-use-this */
+
+import path from 'path';
 import crypto from 'crypto';
 import { announceList } from 'create-torrent';
 import WebTorrent from 'webtorrent';
+import networkAddress from 'network-address';
 import zeroFill from 'zero-fill';
 
 import * as logger from './logger';
 import pkg from '../package.json';
-import { STREAMER_STOPPED, STREAMER_STARTED } from '../shared/reducers/streamer';
+import { STREAMER_STOPPED, STREAMER_STARTED, STREAMER_SET_FILE, STREAMER_TORRENT_UPDATE, STREAMER_STARTING } from '../shared/reducers/streamer';
 
 export default class Streamer {
   /**
@@ -43,36 +47,220 @@ export default class Streamer {
     this.store = store;
 
     this.client = null;
+    this.torrent = null;
+    this.server = null;
   }
 
-  async start(torrentInfo) {
+  start(torrentInfo) {
     // We will currently only support one torrent at a time.
     if (this.client) {
       this.stop();
     }
 
-    const torrent = await this.resolveTorrent(torrentInfo);
-    console.log(torrent);
+    this.store.dispatch({ type: STREAMER_STARTING });
 
-    this.store.dispatch({ type: STREAMER_STARTED });
-    logger.info('Streamer started');
+    this.resolveTorrent(torrentInfo).then(torrent => {
+      this.torrent = torrent;
+      this.addTorrentEvents();
+
+      this.torrent.once('metadata', () => this.selectFile());
+      this.torrent.once('ready', async () => {
+        await this.createServer();
+        logger.info('Streamer started');
+      });
+
+      return torrent;
+    }).catch(err => {
+      logger.error('A fatal error occured', err);
+      this.stop();
+    });
   }
 
-  stop() {
+  async stop() {
+    if (this.server) {
+      this.server.destroy();
+    }
+
+    if (this.torrent) {
+      clearInterval(this.torrent.progressInterval);
+      this.torrent.destroy();
+    }
+
     if (this.client) {
       this.client.destroy();
     }
 
-    // TODO: Reset player meta here
-    // store.dispatch({type: PLAYER_RESET });
-
+    // Cleanup
     this.client = null;
     this.torrent = null;
-    this.state = null;
-    this.streamInfo = null;
+    this.server = null;
 
     this.store.dispatch({ type: STREAMER_STOPPED });
     logger.info('Streamer stopped');
+  }
+
+  selectFile(index) {
+    // Remove default selection (whole torrent)
+    this.torrent.deselect(0, this.torrent.pieces.length - 1, false);
+    logger.debug('Deselected all files of torrent');
+
+    let fileSize = 0;
+    let fileIndex = index;
+
+    // Ugh noone told us the fileIndex yet,
+    // let's find the biggest supported file.
+    if (!fileIndex) {
+      logger.debug('Ugh noone told us the fileIndex yet, calculating...');
+      for (let i = 0; i < this.torrent.files.length; i += 1) {
+        if (fileSize < this.torrent.files[i].length) {
+          fileSize = this.torrent.files[i].length;
+          fileIndex = i;
+        }
+      }
+    } else {
+      fileSize = this.torrent.files[fileIndex].length;
+    }
+    logger.debug('Got fileSize and fileIndex', fileSize, fileIndex);
+
+    // Add selections (individual files)
+    for (let y = 0; y < this.torrent.files.length; y += 1) {
+      const file = this.torrent.files[y];
+      if (y === fileIndex) {
+        logger.debug('Selected wanted file: ', file);
+        file.select();
+      }
+      // Yea this part isn't needed now...
+      // } else {
+      //   logger.debug('Yow boi, deselected a file', file);
+      //   file.deselect();
+      // }
+    }
+
+    const selectedFile = this.torrent.files[fileIndex];
+
+    this.store.dispatch({
+      type: STREAMER_SET_FILE,
+      payload: {
+        index: fileIndex,
+        name: path.basename(selectedFile.path),
+        path: path.join(this.torrent.path, selectedFile.path),
+        size: fileSize
+      }
+    });
+  }
+
+  addTorrentEvents() {
+    this.torrent.once('infoHash', () => {
+      logger.debug(`Torrent#${this.torrent.infoHash}: onInfoHash`);
+      this.store.dispatch({
+        type: STREAMER_TORRENT_UPDATE,
+        payload: {
+          status: 'NEW',
+          ready: this.torrent.ready,
+          infoHash: this.torrent.infoHash
+        }
+      });
+    });
+
+    this.torrent.once('metadata', () => {
+      logger.debug(`Torrent#${this.torrent.infoHash}: onMetadata`);
+      this.store.dispatch({
+        type: STREAMER_TORRENT_UPDATE,
+        payload: {
+          status: 'DOWNLOADING',
+          name: this.torrent.name,
+          path: this.torrent.path,
+          bytesReceived: this.torrent.received
+        }
+      });
+    });
+
+    this.torrent.once('ready', () => {
+      logger.debug(`Torrent#${this.torrent.infoHash}: onReady`);
+      this.store.dispatch({
+        type: STREAMER_TORRENT_UPDATE,
+        payload: {
+          ready: this.torrent.ready
+        }
+      });
+    });
+
+    this.torrent.once('done', () => {
+      logger.debug(`Torrent#${this.torrent.infoHash}: onDone`);
+      this.store.dispatch({
+        type: STREAMER_TORRENT_UPDATE,
+        payload: {
+          status: 'SEEDING'
+        }
+      });
+    });
+
+    this.torrent.progressInterval = setInterval(updateProgress.bind(this), 1000);
+
+    function updateProgress() {
+      const { streamer: { file } } = this.store.getState();
+
+      // Gotta fix srr
+      if (file) {
+        const downloaded = this.torrent.files[file.index].downloaded;
+        let progress = (downloaded / file.size) * 100;
+        if (progress > 100) {
+          progress = 100;
+        }
+
+        let eta = Math.round((file.size - downloaded) / this.torrent.downloadSpeed);
+        if (eta < 0) {
+          eta = 0;
+        }
+
+        this.store.dispatch({
+          type: STREAMER_TORRENT_UPDATE,
+          payload: {
+            peers: this.torrent.numPeers,
+            progress,
+            downloaded,
+            eta,
+            downloadSpeed: this.torrent.downloadSpeed,
+            uploadSpeed: this.torrent.uploadSpeed
+          }
+        });
+      }
+    }
+  }
+
+  /**
+   * Creates a stream server for the given torrent
+   * @param {Object} torrent - The torrent
+   * @param {number} port - The stream port
+   */
+  createServer(port) {
+    return new Promise((resolve, reject) => {
+      const { settings, streamer } = this.store.getState();
+
+      const serverPort = parseInt((port || settings.streamPort || 0), 10);
+
+      try {
+        const server = this.torrent.createServer();
+        server.listen(serverPort, () => {
+          const suffix = `:${server.address().port}/${streamer.file.index}`;
+
+          this.store.dispatch({
+            type: STREAMER_STARTED,
+            payload: {
+              location: {
+                local: `http://localhost${suffix}`,
+                network: `https://${networkAddress()}${suffix}`
+              }
+            }
+          });
+
+          logger.debug(`Server server running at http://localhost:${server.address().port}`);
+          resolve(server);
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   /**
@@ -83,23 +271,22 @@ export default class Streamer {
    * @param {string|Object} torrentInfo - The torrent info
    */
   async resolveTorrent(torrentInfo) {
+    // return new Promise((resolve, reject) => {
     // This will always make sure we are using the last client
     const client = this.getInstance();
     const state = this.store.getState();
 
     const uri = torrentInfo.magnet || torrentInfo.hash || torrentInfo;
 
-    const torrent = client.add(uri, {
-      path: state.settings.downloadLocation
-    });
-
-    client.on('error', (err) => {
+    client.once('error', (err) => {
       logger.error('Streamer error: ', err);
       this.stop();
       throw err;
     });
 
-    return torrent.on('metadata', () => torrent);
+    return client.add(uri, {
+      path: state.settings.downloadLocation
+    });
   }
 
   /**

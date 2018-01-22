@@ -12,14 +12,14 @@ import './app.global.css';
 import App from './components/App/App';
 
 // Action Creators
-import {
-  torrentInfoHash,
-  torrentMetaData,
-  torrentReady,
-  torrentProgress,
-  torrentDone,
-  streamServerStarted
-} from '../shared/actions/torrent';
+// import {
+//   torrentInfoHash,
+//   torrentMetaData,
+//   torrentReady,
+//   torrentProgress,
+//   torrentDone,
+//   streamServerStarted
+// } from '../shared/actions/torrent';
 
 import i18n from './i18n';
 
@@ -28,7 +28,7 @@ console.time('init');
 const storeFactory = new StoreFactory(SCOPE_RENDERER);
 const store = storeFactory.configureStore(getInitialStateRenderer());
 const history = storeFactory.history;
-const dispatch = store.dispatch;
+// const dispatch = store.dispatch;
 
 i18n.changeLanguage(store.getState().settings.ui.language);
 
@@ -59,30 +59,30 @@ function init() {
     console.error(...params);
   });
 
-  ipc.on('te-infohash', (event, key, infoHash) => {
-    dispatch(torrentInfoHash(key, infoHash));
-  });
+  // ipc.on('te-infohash', (event, key, infoHash) => {
+  //   dispatch(torrentInfoHash(key, infoHash));
+  // });
 
-  ipc.on('te-metadata', (event, key, info) => {
-    dispatch(torrentMetaData(key, info));
-  });
+  // ipc.on('te-metadata', (event, key, info) => {
+  //   dispatch(torrentMetaData(key, info));
+  // });
 
-  ipc.on('te-ready', (event, key, info) => {
-    console.log('ready');
-    dispatch(torrentReady(key, info));
-  });
+  // ipc.on('te-ready', (event, key, info) => {
+  //   console.log('ready');
+  //   dispatch(torrentReady(key, info));
+  // });
 
-  ipc.on('te-progress', (event, key, info) => {
-    dispatch(torrentProgress(key, info));
-  });
+  // ipc.on('te-progress', (event, key, info) => {
+  //   dispatch(torrentProgress(key, info));
+  // });
 
-  ipc.on('te-done', (event, key, info) => {
-    dispatch(torrentDone(key, info));
-  });
+  // ipc.on('te-done', (event, key, info) => {
+  //   dispatch(torrentDone(key, info));
+  // });
 
-  ipc.on('te-stream-server-started', (event, info) => {
-    dispatch(streamServerStarted(info));
-  });
+  // ipc.on('te-stream-server-started', (event, info) => {
+  //   dispatch(streamServerStarted(info));
+  // });
 
   ipc.send('ipcReady');
 

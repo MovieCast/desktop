@@ -44,7 +44,7 @@ function init() {
 
     // windows.app.init(results.store); // Restore the window to the last state we saved it in
     windows.app.init();
-    windows.engine.init();
+    // windows.engine.init(); // Not getting used anymore <3
     menu.init();
 
     app.streamer = new Streamer(results.store);

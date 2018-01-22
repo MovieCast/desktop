@@ -7,7 +7,7 @@ import detail from './detail';
 import entities from './entities';
 import player from './player';
 import streamer from './streamer';
-import torrent from './torrent';
+// import torrent from './torrent';
 
 const rootReducer = combineReducers({
   settings,
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   entities,
   player,
   streamer,
-  torrent,
+  // torrent,
   router,
 });
 
