@@ -5,16 +5,17 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 // import AppWrapper from './AppWrapper';
 import AppFrame from './AppFrame';
 import MoviesCatalog from '../../containers/MoviesCatalog';
-import MovieDetail from '../../containers/MovieDetail';
+// import MovieDetail from '../../containers/MovieDetail';
 import SettingsPage from '../../containers/SettingsPage';
 import Player from '../../containers/Player';
+import MovieMedia from '../../containers/MovieMedia';
 
 export default function AppRouter({ history }) {
   return (
     <Router history={history}>
       <AppFrame>
         <Switch>
-          <Route path="/movie/:id" component={MovieDetail} state={{ title: 'Test' }} />
+          <Route path="/movie/:id" component={MovieMedia} />
           <Route path="/movies" component={MoviesCatalog} />
           <Route path="/settings" component={SettingsPage} />
           <Route path="/player" component={Player} />

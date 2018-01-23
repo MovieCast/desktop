@@ -13,6 +13,7 @@ import {
   SET_BUFFERING,
   PLAYER_VIEW_UNLOADED
 } from '../actions/player';
+import { STREAMER_STARTED } from './streamer';
 
 const initialState = {
   playing: false,
@@ -34,6 +35,11 @@ const initialState = {
 export default createReducer(initialState, {
   [PLAYER_VIEW_UNLOADED]: () => ({
     ...initialState
+  }),
+
+  [STREAMER_STARTED]: (state, action) => ({
+    ...state,
+    src: action.payload.location.local
   }),
 
   [SET_URL]: (state, action) => ({

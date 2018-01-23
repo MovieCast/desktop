@@ -78,12 +78,12 @@ export default class Streamer {
 
   async stop() {
     if (this.server) {
-      this.server.destroy();
+      // this.server.destroy();
     }
 
     if (this.torrent) {
       clearInterval(this.torrent.progressInterval);
-      this.torrent.destroy();
+      // this.torrent.destroy();
     }
 
     if (this.client) {

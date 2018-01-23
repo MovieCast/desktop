@@ -96,7 +96,7 @@ class ItemContainer extends Component {
             key={item._id}
             id={item._id}
             title={item.title}
-            poster={item.images.poster}
+            poster={item.images ? item.images.poster : null}
             year={item.year}
             rating={item.rating.percentage / 10}
           />

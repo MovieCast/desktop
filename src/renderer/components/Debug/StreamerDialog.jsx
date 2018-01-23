@@ -64,7 +64,7 @@ export default class StreamerDialog extends Component {
                 </ListItemSecondaryAction>
               )}
             </ListItem>
-            {streamer.status === 'STARTED' && (
+            {streamer.status !== 'STOPPED' && (
               <ListItem>
                 <ListItemText
                   primary="Location"
