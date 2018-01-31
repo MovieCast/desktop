@@ -1,3 +1,5 @@
+/* eslint-disable react/forbid-prop-types */
+
 import _ from 'lodash';
 
 import React, { Component } from 'react';
