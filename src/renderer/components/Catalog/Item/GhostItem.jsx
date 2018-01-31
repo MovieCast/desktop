@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 
-import BaseItem from './BaseItem';
-
 class GhostItem extends Component {
   render() {
     return (
-      <BaseItem />
+      <div style={{ width: 230, height: 345, }} />
     );
   }
 }

@@ -3,6 +3,8 @@
 import { ipcRenderer as ipc } from 'electron';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import { CircularProgress } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 
 import MediaDetail from './MediaDetail';
@@ -17,6 +19,14 @@ const styles = {
   root: {
     position: 'relative',
     marginTop: -64 - 29
+  },
+  loadingContainer: {
+    marginTop: -64,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
   },
   background: {
     position: 'absolute',
@@ -102,7 +112,11 @@ class Media extends Component {
   render() {
     const { classes, loading, item, streamer } = this.props;
 
-    if (loading) return null;
+    if (loading) {
+      return (<div className={classes.loadingContainer}>
+        <CircularProgress className={classes.progress} size={60} />
+      </div>);
+    }
 
     return (
       <div className={classes.root}>
@@ -123,7 +137,7 @@ class Media extends Component {
             <MediaProgress torrent={streamer.torrent} />
           )}
 
-          {streamer.status === 'STARTED' && (
+          {streamer.torrent && streamer.torrent.ready && (
             <Player />
           )}
         </div>

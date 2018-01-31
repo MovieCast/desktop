@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
-import { AppBar, Tabs, Tab, IconButton } from 'material-ui';
+import { AppBar, Tabs, Tab, IconButton, CircularProgress } from 'material-ui';
 import { FileDownload as DownloadIcon } from 'material-ui-icons';
 
 import Search from './Search';
@@ -15,6 +15,13 @@ const styles = {
   root: {
     height: 'calc(100% - 64px)',
     width: '100%'
+  },
+  loadingContainer: {
+    width: '100%',
+    height: 'calc(100% - 48px)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
   }
 };
 
@@ -130,11 +137,17 @@ class Catalog extends Component {
             <Tab label={t('views:catalog.az')} />
           </Tabs>
         </AppBar>
-        {!loading && <ItemContainer
-          items={result}
-          moreAvailable={moreAvailable}
-          onMore={this.loadMore}
-        />}
+        {!loading ? (
+          <ItemContainer
+            items={result}
+            moreAvailable={moreAvailable}
+            onMore={this.loadMore}
+          />
+        ) : (
+          <div className={classes.loadingContainer}>
+            <CircularProgress className={classes.progress} size={60} />
+          </div>
+        )}
       </div>
     );
   }

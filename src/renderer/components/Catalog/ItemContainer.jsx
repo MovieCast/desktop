@@ -1,6 +1,5 @@
 /* eslint-disable react/forbid-prop-types, no-underscore-dangle */
 
-import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Dimensions from 'react-dimensions';

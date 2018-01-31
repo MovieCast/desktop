@@ -7,7 +7,7 @@ module.exports = {
 };
 
 function init(force = false) {
-  devtron.install();
+  // devtron.install();
 
   const forceDownload = force || !!process.env.UPGRADE_EXTENSIONS;
   const extensions = [
