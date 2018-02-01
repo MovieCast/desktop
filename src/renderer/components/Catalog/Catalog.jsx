@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
-import { AppBar, Tabs, Tab, IconButton, CircularProgress } from 'material-ui';
-import { FileDownload as DownloadIcon } from 'material-ui-icons';
+import { AppBar, Tabs, Tab, IconButton, CircularProgress, Typography, Button } from 'material-ui';
+import { FileDownload as DownloadIcon, ErrorOutline as ErrorIcon } from 'material-ui-icons';
 
 import Search from './Search';
 import { withView, View } from '../View';
 import ItemContainer from './ItemContainer';
 import StreamerDialog from '../../containers/StreamerDialog';
+import { ErrorDialog } from '../Util';
 
 const styles = {
   root: {
@@ -22,13 +23,19 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     display: 'flex',
+    flexDirection: 'column'
+  },
+  errorMessage: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 
 class Catalog extends Component {
   state = {
     sort: 0,
-    showStreamerInfo: false
+    showStreamerInfo: false,
+    showError: false
   }
 
   componentWillMount() {
@@ -119,8 +126,14 @@ class Catalog extends Component {
     });
   }
 
+  handleRetry = () => {
+    this.props.onUnload();
+
+    this.props.fetchItems();
+  }
+
   render() {
-    const { t, classes, loading, result, moreAvailable } = this.props;
+    const { t, classes, loading, error, result, moreAvailable } = this.props;
 
     return (
       <div className={classes.root}>
@@ -130,6 +143,14 @@ class Catalog extends Component {
           onClose={() => this.setState({ showStreamerInfo: false })}
         />
 
+        <ErrorDialog
+          open={this.state.showError}
+          onClose={() => this.setState({ showError: false })}
+          title="An error occured"
+          message={'An error occured while fetching content from https://content.moviecast.xyz. A detailed error is shown below and send to the developers.'}
+          error={error && error.stack}
+        />
+
         <AppBar position="static">
           <Tabs value={this.state.sort} onChange={this.handleChange.bind(this)}>
             <Tab label={t('views:catalog.trending')} />
@@ -137,6 +158,17 @@ class Catalog extends Component {
             <Tab label={t('views:catalog.az')} />
           </Tabs>
         </AppBar>
+        {error && <div className={classes.loadingContainer}>
+          <div className={classes.errorMessage}>
+            <ErrorIcon style={{ width: 32, height: 32, marginRight: 5 }} />
+            <Typography type="title">Wups! It seems an error occured while fetching movies.</Typography>
+          </div>
+          <div className={classes.errorActions}>
+            <Button onClick={this.handleRetry}>Retry</Button>
+            <Button onClick={() => this.setState({ showError: true })}>Details</Button>
+          </div>
+        </div>}
+
         {!loading ? (
           <ItemContainer
             items={result}

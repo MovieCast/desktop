@@ -48,7 +48,7 @@ export default function APIMiddleware({ dispatch, getState }) {
       error =>
         dispatch(
           Object.assign({}, payload, {
-            payload: error,
+            payload: { message: error.message, stack: error.stack, error },
             type: failureType
           })
         )

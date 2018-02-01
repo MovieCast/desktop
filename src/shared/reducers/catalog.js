@@ -6,6 +6,7 @@ import { FETCH_MOVIES_SUCCESS, FETCH_MOVIES_FAILURE } from '../actions/entities'
 
 const initialState = {
   loading: true,
+  error: false,
   filter: {
     page: 1,
     genre: 'all',
@@ -19,13 +20,15 @@ const initialState = {
 export default createReducer(initialState, {
   [CATALOG_VIEW_UNLOADED]: (state) => ({
     ...state,
-    loading: true
+    loading: true,
+    error: false
   }),
 
   [FETCH_MOVIES_SUCCESS]: (state, { payload }) => {
     const newState = {
       ...state,
       loading: false,
+      error: false,
       moreAvailable: payload.result.length > 0
     };
 
@@ -38,9 +41,10 @@ export default createReducer(initialState, {
     return newState;
   },
 
-  [FETCH_MOVIES_FAILURE]: (state) => ({
+  [FETCH_MOVIES_FAILURE]: (state, action) => ({
     ...state,
     loading: false,
+    error: action.payload,
     moreAvailable: false
   }),
 
