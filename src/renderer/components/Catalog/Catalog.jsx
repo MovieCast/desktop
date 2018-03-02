@@ -93,7 +93,7 @@ class Catalog extends Component {
         sort = 'year';
         break;
       case 2: // Title
-        sort = 'title';
+        sort = 'name';
         break;
       default:
         sort = 'year';

@@ -94,10 +94,18 @@ const styleSheet = theme => ({
 class MediaDetail extends Component {
   static propTypes = {
     visible: PropTypes.bool,
-    selectedQuality: PropTypes.string,
+    selectedTorrent: PropTypes.shape({
+      hash: PropTypes.string,
+      seeds: PropTypes.number,
+      peers: PropTypes.number,
+      size: PropTypes.number,
+      quality: PropTypes.string,
+      fileSize: PropTypes.string,
+      provider: PropTypes.string
+    }),
 
     onPlay: PropTypes.func,
-    onQualityChange: PropTypes.func,
+    onTorrentChange: PropTypes.func,
 
     classes: PropTypes.object.isRequired,
     item: PropTypes.object.isRequired
@@ -105,22 +113,23 @@ class MediaDetail extends Component {
 
   static defaultProps = {
     visible: true,
-    selectedQuality: '720p',
+    selectedTorrent: {},
     onPlay: () => {},
-    onQualityChange: () => {}
+    onQualityChange: () => {},
+    onTorrentChange: () => {}
   }
 
   state = {
     anchorEl: null
   }
 
-  handleQualityChoose = (event, quality) => {
+  handleTorrentChoose = (event, torrent) => {
     this.setState({ anchorEl: null });
-    this.props.onQualityChange(quality);
-  };
+    this.props.onTorrentChange(torrent);
+  }
 
   render() {
-    const { classes, item, visible, selectedQuality, onPlay } = this.props;
+    const { classes, item, visible, selectedTorrent, onPlay } = this.props;
 
     const contentClassName = classNames(classes.content, {
       [classes.downloading]: !visible
@@ -154,7 +163,7 @@ class MediaDetail extends Component {
           className={classes.qualityButton}
           onClick={(event) => this.setState({ anchorEl: event.currentTarget })}
         >
-          {selectedQuality}
+          {selectedTorrent && selectedTorrent.quality}
         </Button>
 
         <Menu
@@ -162,18 +171,18 @@ class MediaDetail extends Component {
           open={Boolean(this.state.anchorEl)}
           onRequestClose={() => this.setState({ anchorEl: null })}
         >
-          {Object.keys(item.torrents).map((quality) => (
+          {item.torrents.map((torrent) => (
             <MenuItem
-              key={quality}
-              selected={quality === selectedQuality}
-              onClick={event => this.handleQualityChoose(event, quality)}
+              key={torrent.hash}
+              selected={selectedTorrent && torrent.quality === selectedTorrent.quality}
+              onClick={event => this.handleTorrentChoose(event, torrent)}
             >
-              {quality}
+              {torrent.quality}
             </MenuItem>
           ))}
         </Menu>
 
-        <Button fab color="primary" className={classes.playButton} onClick={onPlay}>
+        <Button fab color="primary" className={classes.playButton} disabled={!selectedTorrent} onClick={onPlay}>
           <PlayIcon />
         </Button>
         <Typography type="headline">{item.title}</Typography>
