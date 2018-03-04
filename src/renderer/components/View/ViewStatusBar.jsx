@@ -58,7 +58,8 @@ const styles = theme => ({
 
 class ViewStatusBar extends Component {
   state = {
-    isMaximized: false
+    isMaximized: false,
+    isFullScreen: false
   }
 
   componentWillMount() {
@@ -75,7 +76,8 @@ class ViewStatusBar extends Component {
 
   updateState = () => {
     this.setState({
-      isMaximized: remote.getCurrentWindow().isMaximized()
+      isMaximized: remote.getCurrentWindow().isMaximized(),
+      isFullScreen: remote.getCurrentWindow().isFullScreen()
     });
   }
 
@@ -118,12 +120,16 @@ class ViewStatusBar extends Component {
                 <Typography>{APP_NAME}</Typography>
               </div>
               <div className={classes.controls}>
-                <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
-                  <Minimize />
-                </div>
-                <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
-                  <Maximize isMaximized={this.state.isMaximized} />
-                </div>
+                {!this.state.isFullScreen && (
+                  <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
+                    <Minimize />
+                  </div>
+                )}
+                {!this.state.isFullScreen && (
+                  <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
+                    <Maximize isMaximized={this.state.isMaximized} />
+                  </div>
+                )}
                 <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
                   <Close />
                 </div>

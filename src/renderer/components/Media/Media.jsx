@@ -4,8 +4,9 @@ import { ipcRenderer as ipc } from 'electron';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { CircularProgress } from 'material-ui';
+import { CircularProgress, IconButton } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
+import { FileDownload as DownloadIcon } from 'material-ui-icons';
 
 import MediaDetail from './MediaDetail';
 import MediaProgress from './MediaProgress';
@@ -14,6 +15,7 @@ import Player from '../../containers/Player';
 
 import DynamicImg from '../Util/DynamicImg';
 import { withView, View } from '../View';
+import StreamerDialog from '../../containers/StreamerDialog';
 
 const styles = {
   root: {
@@ -76,7 +78,9 @@ class Media extends Component {
   }
 
   state = {
-    selectedQuality: '720p'
+    selectedQuality: '720p',
+    selectedTorrent: null,
+    showStreamerInfo: false
   }
 
   componentWillMount() {
@@ -89,8 +93,23 @@ class Media extends Component {
     this.context.setAppBarConfig({
       title: this.props.item.title,
       transparent: true,
-      back: true
+      back: true,
+      rightComponents: [
+        <IconButton
+          key="torrentInfo"
+          color="contrast"
+          onClick={this.handleStreamerInfo}
+          title="TorrentEngine Info"
+        >
+          <DownloadIcon />
+        </IconButton>]
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.selectedTorrent && nextProps.item.torrents) {
+      this.setState({ selectedTorrent: nextProps.item.torrents[0] });
+    }
   }
 
   componentWillUnmount() {
@@ -100,13 +119,21 @@ class Media extends Component {
   }
 
   handlePlay = () => {
-    const torrent = this.props.item.torrents[this.state.selectedQuality];
-
-    ipc.send('stream:start', torrent.hash);
+    if (this.state.selectedTorrent) {
+      ipc.send('stream:start', this.state.selectedTorrent.hash);
+    }
   }
 
   handleQualityChange = (quality) => {
     this.setState({ selectedQuality: quality });
+  }
+
+  handleTorrentChange = (torrent) => {
+    this.setState({ selectedTorrent: torrent });
+  }
+
+  handleStreamerInfo = () => {
+    this.setState({ showStreamerInfo: true });
   }
 
   render() {
@@ -120,6 +147,11 @@ class Media extends Component {
 
     return (
       <div className={classes.root}>
+        <StreamerDialog
+          open={this.state.showStreamerInfo}
+          onClose={() => this.setState({ showStreamerInfo: false })}
+        />
+
         <DynamicImg
           className={classes.background}
           src={item.images ? item.images.background : null}
@@ -130,7 +162,9 @@ class Media extends Component {
             item={item}
             visible={streamer.status === 'STOPPED'}
             selectedQuality={this.state.selectedQuality}
+            selectedTorrent={this.state.selectedTorrent}
             onQualityChange={this.handleQualityChange}
+            onTorrentChange={this.handleTorrentChange}
             onPlay={this.handlePlay}
           />
           {streamer.status === 'STARTING' && (
