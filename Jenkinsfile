@@ -6,11 +6,20 @@ pipeline {
 
   }
   stages {
+    stage('Setup') {
+      steps {
+        sh 'apk add --no-cache alpine-sdk python'
+        sh 'npm install'
+      }
+    }
+    stage('Test') {
+      steps {
+        sh 'npm run lint'
+      }
+    }
     stage('Build') {
       steps {
-        sh 'npm install'
-        sh 'npm run lint'
-        sh 'npm package'
+        sh 'npm run package'
       }
     }
   }
