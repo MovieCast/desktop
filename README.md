@@ -10,6 +10,8 @@
   <a href="https://david-dm.org/MovieCast/desktop?type=dev"><img src="https://img.shields.io/david/dev/MovieCast/desktop.svg" alt="devDependency Status"></a>
 </p>
 
+>NOTICE: MovieCast Desktop is currently in the middle of a total rewrite. Which means MovieCast Desktop will be very unstable for a while, we recommend you use v0.1.2-3 for the time being. A todo list will be added soon to this README, so you can see our total progress.
+
 ## Install
 
 Download the latest beta of MovieCast from the
