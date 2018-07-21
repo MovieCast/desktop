@@ -40,10 +40,10 @@ function init() {
     isReady = true;
 
     // Install dev extensions
-    if(process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development') {
       extensions.init();
     } else {
-      logger.info('extensions: Skipping development extensions')
+      logger.info('extensions: Skipping development extensions');
     }
 
     // windows.app.init(results.store); // Restore the window to the last state we saved it in

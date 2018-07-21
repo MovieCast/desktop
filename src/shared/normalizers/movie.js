@@ -29,29 +29,27 @@ const movieModel = {
 export const movie = new schema.Entity('movies', {}, {
   idAttribute: '_id',
   processStrategy: (value) => {
-    const movie = {
+    const processMovie = {
       ...movieModel,
       ...value,
-    }
+    };
 
-    if(movie.torrents.length > 0) {
+    if (processMovie.torrents.length > 0) {
       // #QUICKFIX 1: Remove 3D
-      const foundIndex = movie.torrents.findIndex(torrent => torrent.quality === '3D');
-      if(foundIndex > -1) {
-        movie.torrents.splice(foundIndex, 1);
+      const foundIndex = processMovie.torrents.findIndex(torrent => torrent.quality === '3D');
+      if (foundIndex > -1) {
+        processMovie.torrents.splice(foundIndex, 1);
       }
 
       // #QUICKFIX 2: Sort quality by...length yea...
-      movie.torrents.sort((a, b) => {
-        if (a.quality.length < b.quality.length)
-          return 1;
-        if (a.quality.length > b.quality.length)
-          return -1;
+      processMovie.torrents.sort((a, b) => {
+        if (a.quality.length < b.quality.length) { return 1; }
+        if (a.quality.length > b.quality.length) { return -1; }
         return 0;
       });
     }
 
-    return movie;
+    return processMovie;
   }
 });
 export const movieList = [movie];
