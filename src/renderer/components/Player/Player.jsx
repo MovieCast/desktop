@@ -31,14 +31,17 @@ class Player extends Component {
 
   componentWillMount() {
     // Make the AppBar transparent and add a back button
-    this.context.setStatusBarConfig({
-      transparent: true
-    });
+    // this.context.setStatusBarConfig({
+    //   transparent: true
+    // });
+    // this.context.setAppBarConfig({
+    //   // title: `Playing: ${this.props.player.title}`,
+    //   title: 'playing',
+    //   transparent: true,
+    //   back: true,
+    //   visible: true
+    // });
     this.context.setAppBarConfig({
-      // title: `Playing: ${this.props.player.title}`,
-      title: 'playing',
-      transparent: true,
-      back: true,
       visible: true
     });
   }
@@ -50,11 +53,11 @@ class Player extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.player.fullscreen !== this.props.player.fullscreen) {
-      this.context.setStatusBarConfig({
-        visible: !nextProps.player.fullscreen
-      });
-    }
+  //   if (nextProps.player.fullscreen !== this.props.player.fullscreen) {
+  //     this.context.setStatusBarConfig({
+  //       visible: !nextProps.player.fullscreen
+  //     });
+  //   }
 
     if (nextProps.player.showUi !== this.props.player.showUi) {
       // this.context.setBarVisibility(!this.props.player.showUi);
@@ -62,15 +65,18 @@ class Player extends Component {
       this.context.setAppBarConfig({
         visible: !this.props.player.showUi
       });
+      this.context.setStatusBarConfig({
+        visible: !this.props.player.showUi
+      });
     }
 
-    // TODO: Handle this directly in the application reducer
-    // if (nextProps.player.title !== this.props.player.title) {
-    //   // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
-    //   this.context.setAppBarConfig({
-    //     title: `Playing: ${this.props.player.title}`,
-    //   });
-    // }
+  //   // TODO: Handle this directly in the application reducer
+  //   // if (nextProps.player.title !== this.props.player.title) {
+  //   //   // this.context.setBarTitle(`Playing: ${this.props.player.title}`);
+  //   //   this.context.setAppBarConfig({
+  //   //     title: `Playing: ${this.props.player.title}`,
+  //   //   });
+  //   // }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -207,4 +213,5 @@ Player.contextTypes = {
   ...View.childContextTypes
 };
 
-export default withView(withStyles(styleSheet)(Player));
+// export default withView(withStyles(styleSheet)(Player));
+export default withStyles(styleSheet)(Player);

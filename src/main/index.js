@@ -10,6 +10,7 @@ import * as extensions from './extensions';
 import * as Store from './store';
 import windows from './windows';
 import * as updater from './updater';
+import Streamer from './streamer';
 
 console.time('main:init');
 
@@ -39,16 +40,23 @@ function init() {
     isReady = true;
 
     // Install dev extensions
-    extensions.init();
+    if (process.env.NODE_ENV === 'development') {
+      extensions.init();
+    } else {
+      logger.info('extensions: Skipping development extensions');
+    }
 
     // windows.app.init(results.store); // Restore the window to the last state we saved it in
     windows.app.init();
-    windows.engine.init();
+    // windows.engine.init(); // Not getting used anymore <3
     menu.init();
+
+    app.streamer = new Streamer(results.store);
 
     // To keep app startup fast, some code is delayed.
     setTimeout(delayedInit.bind(this, results), DELAYED_INIT);
   }
+
 
   ipc.init();
 
@@ -61,6 +69,9 @@ function init() {
     e.preventDefault();
 
     app.isQuitting = true;
+
+    // Force quit streamer
+    app.streamer.stop();
 
     // windows.app.dispatch('stateSaveImmediate'); // try to save state on exit
     // ipcMain.once('stateSaved', () => app.quit());

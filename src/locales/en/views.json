@@ -14,13 +14,13 @@
       "categories": {
         "ui": "User Interface",
         "subtitles": "Subtitles",
-        "quality": "Quality"
+        "locations": "Locations"
       },
       "language": "Default Language",
       "palette": "Palette",
       "startScreen": "Start Screen",
       "size": "Size",
-      "showQuality": "Show quality on list"
+      "downloadLocation": "Download Location"
     },
 
     "player": {

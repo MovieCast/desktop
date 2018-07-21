@@ -22,6 +22,7 @@ const mapStateToProps = (state) => ({
   filter: state.catalog.filter,
   result: getMoviesResult(state),
   loading: state.catalog.loading,
+  error: state.catalog.error,
   moreAvailable: state.catalog.moreAvailable
 });
 

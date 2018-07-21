@@ -3,7 +3,7 @@ import axios from 'axios';
 class MovieProvider {
   constructor() {
     this.api = axios.create({
-      baseURL: 'http://content.moviecast.xyz'
+      baseURL: 'https://content.moviecast.io'
     });
   }
 

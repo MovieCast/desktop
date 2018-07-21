@@ -14,6 +14,13 @@ function init() {
 
     ipcBridge();
 
+    // Streamer communication
+    ipc.on('stream:start', (event, torrentInfo) => {
+      app.streamer.start(torrentInfo);
+    });
+
+    ipc.on('stream:stop', app.streamer.stop.bind(app.streamer));
+
     app.emit('ipcReady');
   });
 

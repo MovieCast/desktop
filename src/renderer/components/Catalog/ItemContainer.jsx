@@ -1,6 +1,5 @@
 /* eslint-disable react/forbid-prop-types, no-underscore-dangle */
 
-import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Dimensions from 'react-dimensions';
@@ -96,7 +95,7 @@ class ItemContainer extends Component {
             key={item._id}
             id={item._id}
             title={item.title}
-            poster={item.images.poster}
+            poster={item.images ? item.images.poster : null}
             year={item.year}
             rating={item.rating.percentage / 10}
           />

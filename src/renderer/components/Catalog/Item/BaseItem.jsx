@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { withStyles } from 'material-ui/styles';
-import { Grid } from 'material-ui';
 
 import handleViewport from '../../../internal/handleViewport';
 
@@ -54,13 +53,11 @@ class BaseItem extends Component {
   }
 
   render() {
-    const { classes, children, innerRef } = this.props;
+    const { classes, children } = this.props;
     return (
-      // <Grid item ref={innerRef}>
       <div className={classes.root}>
         {this.state.isVisible ? children : <div className={classes.placeholder} /> }
       </div>
-      // </Grid>
     );
   }
 }
@@ -73,7 +70,6 @@ BaseItem.propTypes = {
   onVisible: PropTypes.func,
 
   inViewport: PropTypes.bool.isRequired,
-  innerRef: PropTypes.func
 };
 
 BaseItem.defaultProps = {

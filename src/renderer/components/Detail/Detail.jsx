@@ -1,3 +1,4 @@
+import { ipcRenderer as ipc } from 'electron';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -168,17 +169,8 @@ class Detail extends Component {
 
   componentWillUnmount() {
     this.props.onUnload();
+    ipc.send('stream:stop');
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextProps.item !== this.props.item) {
-  //     return true;
-  //   }
-
-  //   if(nextState.)
-
-  //   return false;
-  // }
 
   handleQualityChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -198,14 +190,10 @@ class Detail extends Component {
   //   }
   // }
 
-  // TODO: Move to TorrentHelper
-  getTorrent() {
-    return this.props.torrent.torrents[this.props.torrent.nextKey - 1];
-  }
-
   playItem() {
-    this.props.playTorrent(this.state.torrent.hash);
+    // this.props.playTorrent(this.state.torrent.hash);
     this.setState({ downloading: true });
+    ipc.send('stream:start', this.state.torrent.hash);
   }
 
   renderMeta() {
@@ -259,9 +247,7 @@ class Detail extends Component {
   }
 
   renderProgress() {
-    const { classes } = this.props;
-
-    const torrent = this.getTorrent();
+    const { classes, streamer: { torrent } } = this.props;
 
     return (
       <div className={classes.middleWrapper}>
@@ -269,9 +255,9 @@ class Detail extends Component {
           <LinearProgress style={{ width: '100%' }} />
           {torrent && (
             <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: 5 }}>
-              <span>Download Speed: {prettierBytes(torrent.downloadSpeed ? torrent.downloadSpeed : 0)}</span>
-              <span>Upload Speed: {prettierBytes(torrent.uploadSpeed ? torrent.uploadSpeed : 0)}</span>
-              <span>Peers: {torrent.numPeers}</span>
+              <span>Download Speed: {prettierBytes(torrent.downloadSpeed || 0)}</span>
+              <span>Upload Speed: {prettierBytes(torrent.uploadSpeed || 0)}</span>
+              <span>Peers: {torrent.peers || 0}</span>
             </div>)}
         </div>
       </div>
@@ -313,10 +299,10 @@ class Detail extends Component {
 Detail.propTypes = {
   loading: PropTypes.bool,
   item: PropTypes.object,
-  torrent: PropTypes.object,
+  streamer: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   fetchItem: PropTypes.func.isRequired,
-  playTorrent: PropTypes.func.isRequired,
+  // playTorrent: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 
   onUnload: PropTypes.func.isRequired
@@ -325,8 +311,7 @@ Detail.propTypes = {
 
 Detail.defaultProps = {
   loading: true,
-  item: {},
-  torrent: {}
+  item: {}
 };
 
 Detail.contextTypes = {

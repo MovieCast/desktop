@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Detail from '../components/Detail/Detail';
+import Media from '../components/Media/Media';
 import { fetchMovie } from '../../shared/actions/entities';
 
 import { DETAIL_VIEW_UNLOADED } from '../../shared/actions/detail';
@@ -29,8 +29,8 @@ function mapStateToProps({ entities, streamer, detail: { loading } }, ownProps) 
 }
 
 const mapDispatchToProps = dispatch => ({
-  ...bindActionCreators({ fetchItem: fetchMovie }, dispatch),
+  ...bindActionCreators({ onLoad: fetchMovie }, dispatch),
   onUnload: () => dispatch({ type: DETAIL_VIEW_UNLOADED }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Detail);
+export default connect(mapStateToProps, mapDispatchToProps)(Media);

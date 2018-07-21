@@ -1,6 +1,7 @@
 import { createReducer } from '../util';
 import { CHANGE_SETTINGS, RESET_SETTINGS } from '../actions/settings';
 import { STORAGE_LOAD } from '../actions/storage';
+import { DEFAULT_DOWNLOAD_PATH } from '../../config';
 
 const initialState = {
   ui: {
@@ -14,7 +15,8 @@ const initialState = {
   },
   quality: {
     showOnList: true
-  }
+  },
+  downloadLocation: DEFAULT_DOWNLOAD_PATH
 };
 
 export default createReducer(initialState, {
@@ -31,7 +33,8 @@ export default createReducer(initialState, {
     quality: {
       ...state.quality,
       ...action.payload.quality
-    }
+    },
+    downloadLocation: action.payload.downloadLocation
   }),
 
   [RESET_SETTINGS]: (state) => ({

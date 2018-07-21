@@ -3,25 +3,39 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { withStyles } from 'material-ui/styles';
-import { AppBar, Tabs, Tab, IconButton } from 'material-ui';
-import { FileDownload as DownloadIcon } from 'material-ui-icons';
+import { AppBar, Tabs, Tab, IconButton, CircularProgress, Typography, Button } from 'material-ui';
+import { FileDownload as DownloadIcon, ErrorOutline as ErrorIcon } from 'material-ui-icons';
 
 import Search from './Search';
 import { withView, View } from '../View';
 import ItemContainer from './ItemContainer';
-import TorrentEngineDialog from '../../containers/TorrentEngineDialog';
+import StreamerDialog from '../../containers/StreamerDialog';
+import { ErrorDialog } from '../Util';
 
 const styles = {
   root: {
     height: 'calc(100% - 64px)',
     width: '100%'
+  },
+  loadingContainer: {
+    width: '100%',
+    height: 'calc(100% - 48px)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  errorMessage: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 
 class Catalog extends Component {
   state = {
     sort: 0,
-    torrentEngineInfo: false
+    showStreamerInfo: false,
+    showError: false
   }
 
   componentWillMount() {
@@ -38,7 +52,7 @@ class Catalog extends Component {
         <IconButton
           key="torrentInfo"
           color="contrast"
-          onClick={this.handleTorrentEngineInfo}
+          onClick={this.handleStreamerInfo}
           title="TorrentEngine Info"
         >
           <DownloadIcon />
@@ -56,8 +70,8 @@ class Catalog extends Component {
     this.props.onUnload();
   }
 
-  handleTorrentEngineInfo = () => {
-    this.setState({ torrentEngineInfo: true });
+  handleStreamerInfo = () => {
+    this.setState({ showStreamerInfo: true });
   }
 
   loadMore = () => {
@@ -86,7 +100,7 @@ class Catalog extends Component {
         sort = 'year';
         break;
       case 2: // Title
-        sort = 'title';
+        sort = 'name';
         break;
       default:
         sort = 'year';
@@ -112,15 +126,29 @@ class Catalog extends Component {
     });
   }
 
+  handleRetry = () => {
+    this.props.onUnload();
+
+    this.props.fetchItems();
+  }
+
   render() {
-    const { t, classes, loading, result, moreAvailable } = this.props;
+    const { t, classes, loading, error, result, moreAvailable } = this.props;
 
     return (
       <div className={classes.root}>
 
-        <TorrentEngineDialog
-          open={this.state.torrentEngineInfo}
-          onRequestClose={() => this.setState({ torrentEngineInfo: false })}
+        <StreamerDialog
+          open={this.state.showStreamerInfo}
+          onClose={() => this.setState({ showStreamerInfo: false })}
+        />
+
+        <ErrorDialog
+          open={this.state.showError}
+          onClose={() => this.setState({ showError: false })}
+          title="An error occured"
+          message={'An error occured while fetching content from https://content.moviecast.xyz. A detailed error is shown below and send to the developers.'}
+          error={error && error.stack}
         />
 
         <AppBar position="static">
@@ -130,11 +158,28 @@ class Catalog extends Component {
             <Tab label={t('views:catalog.az')} />
           </Tabs>
         </AppBar>
-        {!loading && <ItemContainer
-          items={result}
-          moreAvailable={moreAvailable}
-          onMore={this.loadMore}
-        />}
+        {error && <div className={classes.loadingContainer}>
+          <div className={classes.errorMessage}>
+            <ErrorIcon style={{ width: 32, height: 32, marginRight: 5 }} />
+            <Typography type="title">Wups! It seems an error occured while fetching movies.</Typography>
+          </div>
+          <div className={classes.errorActions}>
+            <Button onClick={this.handleRetry}>Retry</Button>
+            <Button onClick={() => this.setState({ showError: true })}>Details</Button>
+          </div>
+        </div>}
+
+        {!loading ? (
+          <ItemContainer
+            items={result}
+            moreAvailable={moreAvailable}
+            onMore={this.loadMore}
+          />
+        ) : (
+          <div className={classes.loadingContainer}>
+            <CircularProgress className={classes.progress} size={60} />
+          </div>
+        )}
       </div>
     );
   }

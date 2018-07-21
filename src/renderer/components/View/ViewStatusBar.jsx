@@ -19,10 +19,14 @@ const styles = theme => ({
     width: '100%',
     backgroundColor: theme.palette.primary[700],
     zIndex: 1400,
-    position: 'relative'
+    position: 'relative',
+    transition: theme.transitions.create(['opacity']),
   },
   rootTransparent: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)' // Hihi, I lied, it's not 100% transparent :P
+  },
+  rootHidden: {
+    opacity: 0
   },
   resizeBar: {
     WebkitAppRegion: 'no-drag',
@@ -58,7 +62,8 @@ const styles = theme => ({
 
 class ViewStatusBar extends Component {
   state = {
-    isMaximized: false
+    isMaximized: false,
+    isFullScreen: false
   }
 
   componentWillMount() {
@@ -75,7 +80,8 @@ class ViewStatusBar extends Component {
 
   updateState = () => {
     this.setState({
-      isMaximized: remote.getCurrentWindow().isMaximized()
+      isMaximized: remote.getCurrentWindow().isMaximized(),
+      isFullScreen: remote.getCurrentWindow().isFullScreen()
     });
   }
 
@@ -105,10 +111,11 @@ class ViewStatusBar extends Component {
     const { classes, transparent, visible } = this.props;
 
     const rootClassName = classNames(classes.root, {
-      [classes.rootTransparent]: transparent
+      [classes.rootTransparent]: transparent,
+      [classes.rootHidden]: !visible
     });
 
-    if (visible) {
+    //if (visible) {
       return (
         <div className={rootClassName}>
           <div className={classes.resizeBar} />
@@ -118,12 +125,16 @@ class ViewStatusBar extends Component {
                 <Typography>{APP_NAME}</Typography>
               </div>
               <div className={classes.controls}>
-                <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
-                  <Minimize />
-                </div>
-                <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
-                  <Maximize isMaximized={this.state.isMaximized} />
-                </div>
+                {!this.state.isFullScreen && (
+                  <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
+                    <Minimize />
+                  </div>
+                )}
+                {!this.state.isFullScreen && (
+                  <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
+                    <Maximize isMaximized={this.state.isMaximized} />
+                  </div>
+                )}
                 <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
                   <Close />
                 </div>
@@ -132,9 +143,9 @@ class ViewStatusBar extends Component {
           )}
         </div>
       );
-    }
+    //}
 
-    return null;
+    //return null;
   }
 }
 
