@@ -12,7 +12,7 @@ const movieModel = {
   released: null,
   trailer: null,
   certification: null,
-  torrents: {},
+  torrents: [],
   rating: {
     percentage: null,
     watching: null,
@@ -28,10 +28,31 @@ const movieModel = {
 // TODO: add torrents to schema
 export const movie = new schema.Entity('movies', {}, {
   idAttribute: '_id',
-  processStrategy: (value) => ({
-    ...movieModel,
-    ...value
-  })
+  processStrategy: (value) => {
+    const movie = {
+      ...movieModel,
+      ...value,
+    }
+
+    if(movie.torrents.length > 0) {
+      // #QUICKFIX 1: Remove 3D
+      const foundIndex = movie.torrents.findIndex(torrent => torrent.quality === '3D');
+      if(foundIndex > -1) {
+        movie.torrents.splice(foundIndex, 1);
+      }
+
+      // #QUICKFIX 2: Sort quality by...length yea...
+      movie.torrents.sort((a, b) => {
+        if (a.quality.length < b.quality.length)
+          return 1;
+        if (a.quality.length > b.quality.length)
+          return -1;
+        return 0;
+      });
+    }
+
+    return movie;
+  }
 });
 export const movieList = [movie];
 

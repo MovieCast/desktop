@@ -107,8 +107,8 @@ class Media extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.selectedTorrent && nextProps.item.torrents) {
-      this.setState({ selectedTorrent: nextProps.item.torrents[0] });
+    if (!this.state.selectedTorrent && nextProps.item.torrents.length > 0) {
+      this.setState({ selectedTorrent: nextProps.item.torrents.filter(torrent => torrent.quality === '1080p' || torrent.quality === '720p')[0] });
     }
   }
 

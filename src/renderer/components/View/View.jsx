@@ -45,23 +45,25 @@ export default class View extends Component {
         to: '/movies',
         text: 'movies',
         icon: <MovieIcon />
-      }, {
-        to: '/shows',
-        text: 'shows',
-        icon: <ShowIcon />
-      }, {
+      },
+      // }, {
+      //   to: '/shows',
+      //   text: 'shows',
+      //   icon: <ShowIcon />
+      // }, {
+      {
         to: '/settings',
         text: 'settings',
         icon: <SettingsIcon />
       }],
-      categories: [{
-        title: 'Demos',
-        items: [{
-          to: '/player',
-          text: 'player',
-          icon: <VideoIcon />
-        }]
-      }]
+      // categories: [{
+      //   title: 'Demos',
+      //   items: [{
+      //     to: '/player',
+      //     text: 'player',
+      //     icon: <VideoIcon />
+      //   }]
+      // }]
     }
   }
 
