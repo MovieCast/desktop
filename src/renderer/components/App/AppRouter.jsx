@@ -18,7 +18,7 @@ export default function AppRouter({ history }) {
           <Route path="/movie/:id" component={MovieMedia} />
           <Route path="/movies" component={MoviesCatalog} />
           <Route path="/settings" component={SettingsPage} />
-          <Route path="/player" component={Player} />
+          {/* <Route path="/player" component={Player} /> */}
 
           <Route
             path="/"

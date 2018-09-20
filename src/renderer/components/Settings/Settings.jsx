@@ -12,7 +12,8 @@ import {
   ViewCompact as StartScreenIcon,
   Subtitles as SubtitlesIcon,
   FormatSize as FormatSizeIcon,
-  FolderOpen as FolderOpenIcon
+  FolderOpen as FolderOpenIcon,
+  DeleteForever as DeleteOnExitIcon
 } from 'material-ui-icons';
 
 import { translate } from 'react-i18next';
@@ -62,7 +63,7 @@ class Settings extends Component {
       properties: ['openDirectory'] })[0];
 
     if (directory) {
-      changeSettings({ downloadLocation: directory });
+      changeSettings({ download: { location: directory } });
     }
   }
 
@@ -143,13 +144,20 @@ class Settings extends Component {
           />
         </SettingsCategoryList>
         <Divider />
-        <SettingsCategoryList header={t('views:settings.categories.locations')}>
+        <SettingsCategoryList header={t('views:settings.categories.download')}>
+          <SettingsCategoryListItem
+            icon={<DeleteOnExitIcon />}
+            text={t('views:settings.autoDelete')}
+            value={settings.download.deleteOnExit}
+            options={['Yes', 'No']}
+            onOptionsClick={(event, index, value) => changeSettings({ download: { deleteOnExit: value } })}
+          />
           <SettingsCategoryListItem
             icon={<FolderOpenIcon />}
             text={t('views:settings.downloadLocation')}
             action={
               <TextField
-                value={settings.downloadLocation}
+                value={settings.download.location}
                 onClick={this.handleDownloadLocation}
                 disabled
                 className={classes.textField}

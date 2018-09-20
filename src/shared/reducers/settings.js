@@ -16,7 +16,10 @@ const initialState = {
   quality: {
     showOnList: true
   },
-  downloadLocation: DEFAULT_DOWNLOAD_PATH
+  download: {
+    location: DEFAULT_DOWNLOAD_PATH,
+    deleteOnExit: 'yes'
+  }
 };
 
 export default createReducer(initialState, {
@@ -34,7 +37,10 @@ export default createReducer(initialState, {
       ...state.quality,
       ...action.payload.quality
     },
-    downloadLocation: action.payload.downloadLocation
+    download: {
+      ...state.download,
+      ...action.payload.download
+    }
   }),
 
   [RESET_SETTINGS]: (state) => ({

@@ -14,13 +14,15 @@
       "categories": {
         "ui": "User Interface",
         "subtitles": "Subtitles",
-        "locations": "Locations"
+        "locations": "Locations",
+        "download": "Download"
       },
       "language": "Default Language",
       "palette": "Palette",
       "startScreen": "Start Screen",
       "size": "Size",
-      "downloadLocation": "Download Location"
+      "downloadLocation": "Download Location",
+      "autoDelete": "Automatically Delete Movies"
     },
 
     "player": {

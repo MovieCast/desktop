@@ -41,6 +41,9 @@ class Player extends Component {
     //   back: true,
     //   visible: true
     // });
+    this.context.setAppBarConfig({
+      visible: true
+    });
   }
 
   componentDidMount() {
@@ -49,20 +52,23 @@ class Player extends Component {
     this.props.togglePlay(true);
   }
 
-  // componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
   //   if (nextProps.player.fullscreen !== this.props.player.fullscreen) {
   //     this.context.setStatusBarConfig({
   //       visible: !nextProps.player.fullscreen
   //     });
   //   }
 
-  //   if (nextProps.player.showUi !== this.props.player.showUi) {
-  //     // this.context.setBarVisibility(!this.props.player.showUi);
+    if (nextProps.player.showUi !== this.props.player.showUi) {
+      // this.context.setBarVisibility(!this.props.player.showUi);
 
-  //     this.context.setAppBarConfig({
-  //       visible: !this.props.player.showUi
-  //     });
-  //   }
+      this.context.setAppBarConfig({
+        visible: !this.props.player.showUi
+      });
+      this.context.setStatusBarConfig({
+        visible: !this.props.player.showUi
+      });
+    }
 
   //   // TODO: Handle this directly in the application reducer
   //   // if (nextProps.player.title !== this.props.player.title) {
@@ -71,7 +77,7 @@ class Player extends Component {
   //   //     title: `Playing: ${this.props.player.title}`,
   //   //   });
   //   // }
-  // }
+  }
 
   shouldComponentUpdate(nextProps) {
     if (nextProps.player === this.props.player) {

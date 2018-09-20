@@ -6,10 +6,10 @@ import pkg from './package.json';
 const appConfig = require('application-config')('MovieCast');
 
 // Url constants
-export const HOME_PAGE_URL = 'https://moviecast.xyz';
-export const ANNOUNCEMENT_URL = 'https://api.moviecast.xyz/announcement';
-export const AUTO_UPDATE_URL = 'https://api.moviecast.xyz/update';
-export const CRASH_REPORT_URL = 'https://api.moviecast.xyz/crash-report';
+export const HOME_PAGE_URL = 'https://moviecast.io';
+export const ANNOUNCEMENT_URL = 'https://api.moviecast.io/announcement';
+export const AUTO_UPDATE_URL = 'https://api.moviecast.io/update';
+export const CRASH_REPORT_URL = 'https://api.moviecast.io/crash-report';
 export const GITHUB_URL = pkg.homepage;
 export const GITHUB_URL_ISSUES = pkg.bugs.url;
 

@@ -4,7 +4,7 @@ import * as logger from '../logger';
 const api = axios.create({
   // Using popcorn-api for now, until we finished our own scraper
   // baseURL: 'http://tv-v2.api-fetch.website'
-  baseURL: 'http://content.moviecast.xyz'
+  baseURL: 'http://content.moviecast.io'
 });
 
 export function getMovies({ page = 1, genre = 'all', sort = 'trending', keywords = '' } = {}) {

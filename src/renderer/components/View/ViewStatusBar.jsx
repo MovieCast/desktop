@@ -19,10 +19,14 @@ const styles = theme => ({
     width: '100%',
     backgroundColor: theme.palette.primary[700],
     zIndex: 1400,
-    position: 'relative'
+    position: 'relative',
+    transition: theme.transitions.create(['opacity']),
   },
   rootTransparent: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)' // Hihi, I lied, it's not 100% transparent :P
+  },
+  rootHidden: {
+    opacity: 0
   },
   resizeBar: {
     WebkitAppRegion: 'no-drag',
@@ -107,10 +111,11 @@ class ViewStatusBar extends Component {
     const { classes, transparent, visible } = this.props;
 
     const rootClassName = classNames(classes.root, {
-      [classes.rootTransparent]: transparent
+      [classes.rootTransparent]: transparent,
+      [classes.rootHidden]: !visible
     });
 
-    if (visible) {
+    //if (visible) {
       return (
         <div className={rootClassName}>
           <div className={classes.resizeBar} />
@@ -138,9 +143,9 @@ class ViewStatusBar extends Component {
           )}
         </div>
       );
-    }
+    //}
 
-    return null;
+    //return null;
   }
 }
 

@@ -6,6 +6,7 @@ import { announceList } from 'create-torrent';
 import WebTorrent from 'webtorrent';
 import networkAddress from 'network-address';
 import zeroFill from 'zero-fill';
+import rimraf from 'rimraf';
 
 import * as logger from './logger';
 import pkg from '../package.json';
@@ -84,6 +85,21 @@ export default class Streamer {
     if (this.torrent) {
       clearInterval(this.torrent.progressInterval);
       // this.torrent.destroy();
+
+      const { settings: { download: { deleteOnExit } } } = this.store.getState();
+
+      const shouldDelete = deleteOnExit === 'yes';
+
+      logger.debug('Removing remaining files?', shouldDelete);
+      logger.debug('Torrent: ', this.torrent);
+
+      rimraf(path.join(this.torrent.path, this.torrent.name), (err) => {
+        if (err) {
+          logger.error('An error occured while removing the files');
+          return;
+        }
+        logger.debug('Removed torrent files');
+      });
     }
 
     if (this.client) {
@@ -285,7 +301,7 @@ export default class Streamer {
     });
 
     return client.add(uri, {
-      path: state.settings.downloadLocation
+      path: state.settings.download.location
     });
   }
 
