@@ -27,7 +27,7 @@ class SettingsCategoryListItem extends Component {
   getValues() {
     const { values, options } = this.props;
     if (options && !values) {
-      return options.map(option => option.toLowerCase());
+      return options.map(option => (typeof option === 'string' ? option.toLowerCase() : option));
     }
     return values;
   }
@@ -36,6 +36,7 @@ class SettingsCategoryListItem extends Component {
     const { options, value } = this.props;
 
     const values = this.getValues();
+
     if (values) {
       return options[values.indexOf(value)] || 'Unknown';
     }
