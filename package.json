@@ -22,7 +22,8 @@
     "package:all": "npm run build && build -mwl",
     "package:linux": "npm run build && build --linux",
     "package:win": "npm run build && build --win --x64 --ia32",
-    "package:publish": "npm run build && build --publish onTagOrDraft"
+    "package:publish": "npm run build && build --publish onTagOrDraft",
+    "package:nightly": "npm run build && build --win --x64 --ia32 --linux --publish never"
   },
   "browserslist": "electron 1.7",
   "build": {
