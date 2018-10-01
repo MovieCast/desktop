@@ -24,7 +24,7 @@ app/node_modules
 .DS_Store
 
 # App packaged
-release
+releases
 dist
 dll
 

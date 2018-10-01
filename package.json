@@ -3,11 +3,6 @@
   "version": "0.2.0",
   "description": "The future of streaming movies and tv shows",
   "main": "dist/main/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup --config",
-    "electron": "electron ."
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MovieCast/desktop.git"
@@ -18,19 +13,22 @@
     "url": "https://github.com/MovieCast/desktop/issues"
   },
   "homepage": "https://github.com/MovieCast/desktop#readme",
-  "dependencies": {
-    "@babel/cli": "^7.1.2"
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir",
+    "dist:nightly": "yarn dist -mlw"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/plugin-proposal-decorators": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
     "electron": "^3.0.2",
     "electron-builder": "^20.28.4",
+    "electron-webpack": "^2.3.1",
     "eslint": "^5.6.1",
-    "rollup": "^0.66.2",
-    "rollup-plugin-babel": "^4.0.3"
+    "webpack": "^4.20.2"
   },
   "engines": {
     "node": ">=10.11.0"

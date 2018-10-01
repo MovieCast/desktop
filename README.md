@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://discord.gg/bcSzx7M"><img src="https://img.shields.io/discord/183209512809922561.svg" alt="Discord"></a>
-  <a href="https://travis-ci.org/MovieCast/desktop"><img src="https://img.shields.io/travis/MovieCast/desktop/master.svg" alt="TravisCI"></a>
+  <a href="https://ci.moviecast.io/job/moviecast-desktop"><img src="https://ci.moviecast.io/job/moviecast-desktop/badge/icon" alt="Build status"></a>
   <a href="https://github.com/MovieCast/desktop/releases"><img src="https://img.shields.io/github/release/MovieCast/desktop.svg" alt="Github Releases"></a>
   <a href="https://david-dm.org/MovieCast/desktop"><img src="https://img.shields.io/david/MovieCast/desktop.svg" alt="Dependency Status"></a>
   <a href="https://david-dm.org/MovieCast/desktop?type=dev"><img src="https://img.shields.io/david/dev/MovieCast/desktop.svg" alt="devDependency Status"></a>
@@ -13,7 +13,7 @@
 ## Install
 
 Download the latest beta of MovieCast from the
-[GitHub releases](https://github.com/webtorrent/webtorrent-desktop/releases) page.
+[GitHub releases](https://github.com/moviecast/moviecast-desktop/releases) page.
 
 MovieCast is currently in beta and is activly being developed. You can try out the unstable development version of MovieCast by cloning the Git repo. Check out the ["How to Contribute"](#how-to-contribute) section for instructions on how to build MovieCast.
 
@@ -26,7 +26,7 @@ In the examples below we used yarn as package manager, npm should work just fine
 ```
 $ git clone https://github.com/MovieCast/desktop.git moviecast-desktop
 $ cd moviecast-desktop
-$ yarn or npm install
+$ yarn
 ```
 
 ### Run MovieCast

@@ -1,0 +1,22 @@
+productName: MovieCast
+appId: io.moviecast.desktop
+artifactName: "${productName}-${os}-${arch}-${version}.${ext}"
+asar: true
+compression: maximum
+copyright: "Copyright © 2018 MovieCast"
+directories:
+  buildResources: assets
+  output: releases
+# files:
+#   - "app/"
+#   - "node_modules/"
+#   - "package.json"
+forceCodeSigning: false
+mac:
+  category: public.app-category.productivity
+  minimumSystemVersion: "10.12"
+  target: tar.xz
+linux:
+  target: AppImage tar.xz
+nodeGypRebuild: false
+npmRebuild: true
