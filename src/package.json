@@ -12,7 +12,6 @@
   "private": true,
   "dependencies": {
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "source-map-support": "^0.5.9"
+    "react-dom": "^16.5.2"
   }
 }

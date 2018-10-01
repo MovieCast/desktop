@@ -7,10 +7,6 @@ copyright: "Copyright © 2018 MovieCast"
 directories:
   buildResources: assets
   output: releases
-# files:
-#   - "app/"
-#   - "node_modules/"
-#   - "package.json"
 forceCodeSigning: false
 mac:
   category: public.app-category.productivity
