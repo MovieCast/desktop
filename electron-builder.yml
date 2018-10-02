@@ -5,6 +5,7 @@ asar: true
 compression: maximum
 copyright: "Copyright © 2018 MovieCast"
 directories:
+  app: src
   buildResources: assets
   output: releases
 forceCodeSigning: false
