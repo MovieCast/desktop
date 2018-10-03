@@ -18,7 +18,7 @@
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir",
-    "dist:nightly": "yarn dist -mlw"
+    "dist:nightly": "yarn dist -mlw -p never"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.1.0",
