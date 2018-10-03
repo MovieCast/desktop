@@ -1,3 +1,4 @@
+extends: "@moviecast/electron-webpack/electron-builder.yml"
 productName: MovieCast
 appId: io.moviecast.desktop
 artifactName: "${productName}-${os}-${arch}-${version}.${ext}"
