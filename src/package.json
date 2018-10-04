@@ -2,7 +2,7 @@
   "name": "moviecast-desktop",
   "version": "0.2.0",
   "description": "The future of streaming movies and tv shows",
-  "main": "dist/main/index.js",
+  "main": "main.js",
   "author": "MovieCast <hello@moviecast.io> (moviecast.io)",
   "bugs": {
     "url": "https://github.com/moviecast/desktop/issues"
@@ -15,7 +15,11 @@
     "@material-ui/icons": "^3.0.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+<<<<<<< HEAD
     "react-jss": "^8.6.1",
     "typeface-roboto": "0.0.54"
+=======
+    "source-map-support": "^0.5.9"
+>>>>>>> 40ff4c193be078e800cc7f5bd45c3a383f7ec578
   }
 }

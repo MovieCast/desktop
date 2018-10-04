@@ -1,3 +1,4 @@
+extends: "@moviecast/electron-webpack/electron-builder.yml"
 productName: MovieCast
 appId: io.moviecast.desktop
 artifactName: "${productName}-${os}-${arch}-${version}.${ext}"
@@ -5,6 +6,7 @@ asar: true
 compression: maximum
 copyright: "Copyright © 2018 MovieCast"
 directories:
+  app: src
   buildResources: assets
   output: releases
 forceCodeSigning: false
@@ -13,6 +15,8 @@ mac:
   minimumSystemVersion: "10.12"
   target: tar.xz
 linux:
-  target: AppImage tar.xz
+  target:
+    - AppImage
+    - tar.xz
 nodeGypRebuild: false
 npmRebuild: true

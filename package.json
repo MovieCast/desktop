@@ -2,7 +2,6 @@
   "name": "moviecast-desktop",
   "version": "0.2.0",
   "description": "The future of streaming movies and tv shows",
-  "main": "dist/main/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MovieCast/desktop.git"
@@ -19,14 +18,13 @@
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir",
-    "dist:nightly": "yarn dist -mlw"
+    "dist:nightly": "yarn dist -mlw -p never"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "electron": "^3.0.2",
     "electron-builder": "^20.28.4",
-    "electron-webpack": "^2.3.1",
     "eslint": "^5.6.1",
     "webpack": "^4.20.2"
   },
@@ -34,8 +32,12 @@
     "node": ">=10.11.0"
   },
   "dependencies": {
+<<<<<<< HEAD
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+=======
+    "@moviecast/electron-webpack": "2.3.3",
+>>>>>>> 40ff4c193be078e800cc7f5bd45c3a383f7ec578
     "source-map-support": "^0.5.9"
   }
 }
