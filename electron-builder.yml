@@ -13,7 +13,7 @@ forceCodeSigning: false
 mac:
   category: public.app-category.productivity
   minimumSystemVersion: "10.12"
-  target: tar.xz
+  target: zip
 linux:
   target:
     - AppImage

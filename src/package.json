@@ -15,11 +15,8 @@
     "@material-ui/icons": "^3.0.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-<<<<<<< HEAD
     "react-jss": "^8.6.1",
-    "typeface-roboto": "0.0.54"
-=======
+    "typeface-roboto": "0.0.54",
     "source-map-support": "^0.5.9"
->>>>>>> 40ff4c193be078e800cc7f5bd45c3a383f7ec578
   }
 }
