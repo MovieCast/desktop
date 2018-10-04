@@ -1,4 +1,3 @@
-extends: "@moviecast/electron-webpack/electron-builder.yml"
 productName: MovieCast
 appId: io.moviecast.desktop
 artifactName: "${productName}-${os}-${arch}-${version}.${ext}"
@@ -20,3 +19,27 @@ linux:
     - tar.xz
 nodeGypRebuild: false
 npmRebuild: true
+
+# Fixes build errors
+files:
+  - "package.json"
+  - "!node_modules${/*}"
+  -
+    from: "dist/main"
+  -
+    from: "dist/renderer"
+  -
+    from: "dist/renderer-dll"
+extraResources:
+  -
+    from: static
+    to: static
+
+# Temp till electron-webpack is fixed
+  -
+    from: node_modules
+    to: node_modules
+    filter:
+      - buffer-from/**/*
+      - source-map-support/**/*
+      - source-map/**/*
