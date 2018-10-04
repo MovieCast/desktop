@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import TestComponent from "./components/TestComponent";
+import App from "./components/App/App";
+
+import 'typeface-roboto';
 
 ReactDOM.render(
-  <TestComponent />,
+  <App/>,
   document.querySelector('#app')
 );

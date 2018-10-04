@@ -36,6 +36,7 @@ function createWindow() {
     backgroundColor: "#fcfcfc",
     center: true,
     show: false,
+    frame: false,
     title: "MovieCast",
     vibrancy: "appearance-based"
   });
