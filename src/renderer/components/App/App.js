@@ -7,6 +7,7 @@ import JssProvider from 'react-jss/lib/JssProvider';
 
 import { CssBaseline, withStyles } from '@material-ui/core';
 import FrameContainer from '../../containers/FrameContainer';
+import withRoot from './withRoot';
 
 const styles = {
   html: {
@@ -16,40 +17,9 @@ const styles = {
 };
 
 class App extends Component {
-  componentWillMount() {
-    this.styleContext = createContext();
-    this.styleContext.theme = getTheme({palette: 'dark'});
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // if (nextProps.ui.palette !== this.props.ui.palette) {
-    //   this.styleContext.theme = getTheme(nextProps.ui);
-    // }
-
-    this.styleContext.theme = getTheme('dark');
-  }
-
-
   render() {
-    return (
-    <div>
-      <CssBaseline />
-      <JssProvider
-        registry={this.styleContext.sheetsRegistry}
-        jss={this.styleContext.jss}
-        generateClassName={this.styleContext.generateClassName}
-      >
-        <MuiThemeProvider
-          theme={this.styleContext.theme}
-          sheetsManager={this.styleContext.sheetsManager}
-        >
-          <FrameContainer />
-        </MuiThemeProvider>
-      </JssProvider>
-    </div>
-    
-    );
+    return <FrameContainer />
   }
 }
 
-export default withStyles(styles)(App);
+export default withRoot(withStyles(styles)(App));

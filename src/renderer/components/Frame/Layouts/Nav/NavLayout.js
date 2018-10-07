@@ -32,8 +32,7 @@ const styles = theme => ({
     display: 'none',
   },
   drawerPaper: {
-    top: 23,
-    position: 'fixed',
+    position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -60,13 +59,20 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    paddingLeft: 72,
+    //paddingLeft: 72,
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
   },
   noPadding: {
-    padding: 0
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    overflowX: 'hidden'
   },
+  settings: {
+    marginTop: 'auto'
+  }
 });
 
 class NavLayout extends React.Component {
@@ -115,7 +121,7 @@ class NavLayout extends React.Component {
 
                 <Divider/>
 
-                <NavListItem text="Settings"><SettingsIcon/></NavListItem>
+                <NavListItem text="Settings" className={classes.settings}><SettingsIcon/></NavListItem>
             </List>
         </Drawer>
         <main className={classes.content}>

@@ -23,7 +23,7 @@ class NavListItem extends React.Component {
     const { props } = this;
 
     return (
-      <ListItem button onClick={props.onClick}>
+      <ListItem button className={props.className} onClick={props.onClick}>
           <ListItemIcon>
               { props.children }
           </ListItemIcon>
@@ -35,6 +35,7 @@ class NavListItem extends React.Component {
 
 NavListItem.propTypes = {
   text: PropTypes.string.isRequired,
+  className: PropTypes.string
 };
 
 export default NavListItem;

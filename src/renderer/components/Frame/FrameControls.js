@@ -9,37 +9,24 @@ import Typography from '@material-ui/core/Typography';
 import Minimize from './Controls/Minimize';
 import Maximize from './Controls/Maximize';
 import Close from './Controls/Close';
-import ElectronStore from '../../stores/ElectronStore';
-
 
 const styles = theme => ({
   root: {
     WebkitAppRegion: 'drag',
-    height: process.platform !== 'darwin' ? 23 : 22, // Sorry for this hack will be fixed later
+    height: 23,
     width: '100%',
-    backgroundColor: /*theme.palette.primary[700]*/ '#002f6c',
-    zIndex: 1400,
-    position: 'relative',
-    transition: theme.transitions.create(['opacity']),
-  },
-  rootTransparent: {
-    // backgroundColor: 'rgba(0, 0, 0, 0.2)' // Hihi, I lied, it's not 100% transparent :P (I lied as well, transparency isn't implemented yet! <3)
-    backgroundColor: '#223b63', //I'm just too lazy to comment out logic atm
-  },
-  rootHidden: {
-    opacity: 0
+    //backgroundColor: theme.palette.primary[900],
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: 10
   },
   resizeBar: {
     WebkitAppRegion: 'no-drag',
     position: 'absolute',
     height: 3,
-    width: '100%'
-  },
-  wrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
-    paddingLeft: 10,
+    width: '100%',
+    top: 0,
+    left: 0
   },
   title: {
     flexGrow: 1,
@@ -56,7 +43,7 @@ const styles = theme => ({
       display: 'block'
     },
     '&:hover': {
-      backgroundColor: '#28477a'
+      backgroundColor: 'rgba(255,255,255, 0.1)'
     },
     '&:last-of-type': {
       '&:hover': {
@@ -67,80 +54,25 @@ const styles = theme => ({
 });
 
 class FrameControls extends Component {
-  // componentWillMount() {
-  //   this.updateState();
-  // }
-
-  // componentDidMount() {
-  //   window.addEventListener('resize', this.updateState);
-  // }
-
-  // componentWillUnmount() {
-  //   window.removeEventListener('resize', this.updateState);
-  // }
-
-  // updateState = () => {
-  //   this.setState({
-  //     isMaximized: remote.getCurrentWindow().isMaximized(),
-  //     isFullScreen: remote.getCurrentWindow().isFullScreen()
-  //   });
-  // }
-
-  // handleMaximize = () => {
-  //   const window = remote.getCurrentWindow();
-
-  //   if (this.state.isMaximized) {
-  //     window.unmaximize();
-  //   } else {
-  //     window.maximize();
-  //   }
-
-  //   this.setState({
-  //     isMaximized: window.isMaximized()
-  //   });
-  // }
-
-  // handleMinimize = () => {
-  //   remote.getCurrentWindow().minimize();
-  // }
-
-  // handleClose = () => {
-  //   remote.getCurrentWindow().close();
-  // }
-
   render() {
-    const { classes, transparent, visible, electron, minimize, maximize, close } = this.props;
-
-    const rootClassName = classNames(classes.root, {
-      [classes.rootTransparent]: transparent,
-      [classes.rootHidden]: !visible
-    });
-
-    //if (visible) {
-      return (
-        <div className={rootClassName}>
-          <div className={classes.resizeBar} />
-            <div className={classes.wrapper}>
-              <div className={classes.title}>
-                <Typography>{this.props.title}</Typography>
-              </div>
-              <div className={classes.controls}>
-                <div role="presentation" onClick={minimize} className={classes.controlButton}>
-                  <Minimize />
-                </div>
-                <div role="presentation" onClick={maximize} className={classes.controlButton}>
-                  <Maximize isMaximized={electron.get('maximized')} />
-                </div>
-                <div role="presentation" onClick={close} className={classes.controlButton}>
-                  <Close />
-                </div>
-              </div>
+    const { classes, electron, minimize, maximize, close } = this.props;
+    return (
+      <div className={classes.root}>
+        <div className={classes.resizeBar} />
+          <Typography className={classes.title}>{this.props.title}</Typography>
+          <div className={classes.controls}>
+            <div role="presentation" onClick={minimize} className={classes.controlButton}>
+              <Minimize />
             </div>
-        </div>
-      );
-    //}
-
-    //return null;
+            <div role="presentation" onClick={maximize} className={classes.controlButton}>
+              <Maximize isMaximized={electron.get('maximized')} />
+            </div>
+            <div role="presentation" onClick={close} className={classes.controlButton}>
+              <Close />
+            </div>
+          </div>
+      </div>
+    );
   }
 }
 

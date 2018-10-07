@@ -6,9 +6,9 @@ import NavLayout from './Layouts/Nav/NavLayout';
 
 const styles = theme => ({
     root: {
-        position: 'absolute',
-        top: 23,
-        bottom: 0,
+        //position: 'absolute',
+        //top: 23,
+        //bottom: 0,
         width: "100%",
     },
 
