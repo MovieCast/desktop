@@ -32,5 +32,6 @@
   },
   "engines": {
     "node": ">=10.11.0"
-  }
+  },
+  "dependencies": {}
 }
