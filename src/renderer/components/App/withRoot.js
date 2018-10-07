@@ -8,6 +8,7 @@ const theme = createMuiTheme({
   palette: {
     primary: indigo,
     secondary: orange,
+    divider: "rgba(255, 255, 255, 0.06)",
     type: 'dark'
   },
 });

@@ -1,5 +1,4 @@
 import { ReduceStore } from 'flux/utils';
-import Immutable from 'immutable';
 import { remote } from 'electron';
 import AppDispatcher from '../dispatchers/AppDispatcher';
 import { ElectronActionTypes } from '../actions/ElectronActions';
@@ -14,10 +13,14 @@ class ElectronStore extends ReduceStore {
   }
 
   getInitialState() {
-    return new Immutable.fromJS({
+    return {
       maximized: window.isMaximized(),
       minimized: window.isMinimized(),
-    });
+    };
+    // return new Immutable.fromJS({
+    //   maximized: window.isMaximized(),
+    //   minimized: window.isMinimized(),
+    // });
   }
 
   registerListeners() {
@@ -41,7 +44,7 @@ class ElectronStore extends ReduceStore {
   }
 
   handleMaximize(state) {
-    if(state.get('maximized')) {
+    if(state.maximized) {
       window.unmaximize();
     } else {
       window.maximize();
@@ -50,7 +53,7 @@ class ElectronStore extends ReduceStore {
   }
 
   handleMinimize(state) {
-    if(!state.get('minimized')) {
+    if(!state.minimized) {
       window.minimize();
     }
     return state;
@@ -74,10 +77,17 @@ class ElectronStore extends ReduceStore {
         return this.handleClose(state);
 
       case ElectronActionTypes.MAXIMIZED:
-        return state.set('maximized', action.payload);
+        return {
+          ...state,
+          maximized: action.payload
+        };//state.set('maximized', action.payload);
 
       case ElectronActionTypes.MINIMIZED:
-        return state.set('minimized', action.payload);
+        return {
+          ...state,
+          minimized: action.payload
+        };
+        //return state.set('minimized', action.payload);
 
       default:
         return state;

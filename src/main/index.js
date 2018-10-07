@@ -6,9 +6,11 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 let mainWindow;
 
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = false;
+
 app.on('ready', (e) => {
   const splashWindow = createSplashScreen();
-  setTimeout(() => createWindow(splashWindow), 1000);   //Just adding a VERY small delay so this actually shows: Smooth loading is better than fast loading.
+  setTimeout(() => createWindow(splashWindow), 3000);   //Just adding a VERY small delay so this actually shows: Smooth loading is better than fast loading.
   
 
   app.on("activate", () => {
@@ -72,8 +74,7 @@ function createSplashScreen() {
     center: true,
     show: false,
     frame: false,
-    width: 500, height: 500,
-    minWidth: 500, minHeight: 500,
+    width: 400, height: 400,
     transparent: true,
   };
 

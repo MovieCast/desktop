@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core';
 
 import FrameControls from './FrameControls';
-import FrameContent from './FrameContent';
-import { withStyles } from '@material-ui/core';
+import FrameLayouts from './FrameLayouts';
 
 const styles = {
   root: {
@@ -22,9 +22,9 @@ class Frame extends Component {
 
     return (
         <div className={classes.root}>
-            {/* add title to Redux */}
-            <FrameControls electron={electron} minimize={minimize} maximize={maximize} close={close} title="MovieCast"/>
-            <FrameContent/>
+          {/* add title to Redux */}
+          <FrameControls electron={electron} minimize={minimize} maximize={maximize} close={close} title="MovieCast"/>
+          <FrameLayouts/>
         </div>
     );
   }

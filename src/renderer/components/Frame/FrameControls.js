@@ -65,7 +65,7 @@ class FrameControls extends Component {
               <Minimize />
             </div>
             <div role="presentation" onClick={maximize} className={classes.controlButton}>
-              <Maximize isMaximized={electron.get('maximized')} />
+              <Maximize isMaximized={electron.maximized} />
             </div>
             <div role="presentation" onClick={close} className={classes.controlButton}>
               <Close />

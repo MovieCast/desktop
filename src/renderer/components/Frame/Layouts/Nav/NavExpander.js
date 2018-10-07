@@ -15,7 +15,7 @@ export default class NavExpander extends Component {
           <ListItemIcon>
             {this.props.open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </ListItemIcon>
-          <ListItemText primary="Moviecast" />
+          <ListItemText primary="MovieCast" />
         </ListItem>
     );
   }

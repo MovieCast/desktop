@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import Frame from '../Frame/Frame';
 import createContext, { getTheme } from '../../styles/createContext';
@@ -18,7 +18,29 @@ const styles = {
 
 class App extends Component {
   render() {
-    return <FrameContainer />
+    return (
+      <FrameContainer>
+          <>
+            <>
+              <>
+                <>
+                  <>
+                    <>
+                      <React.Fragment>
+                        <Fragment>
+                          <div>
+                            {/* Add logic here */}
+                          </div>
+                        </Fragment>
+                      </React.Fragment>
+                    </>
+                  </>
+                </>
+              </>
+            </>
+          </>
+      </FrameContainer>
+    );
   }
 }
 

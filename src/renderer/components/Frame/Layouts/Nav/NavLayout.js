@@ -22,7 +22,6 @@ const drawerWidth = 240;
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: "100%",
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
@@ -32,9 +31,10 @@ const styles = theme => ({
     display: 'none',
   },
   drawerPaper: {
-    position: 'relative',
+    position: 'absolute',
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    border: 'none',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -59,7 +59,6 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    //paddingLeft: 72,
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
   },
