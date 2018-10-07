@@ -3,23 +3,19 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import NavListItem from './NavListItem';
+
+
 import MovieIcon from '@material-ui/icons/Movie';
 import SettingsIcon from '@material-ui/icons/Settings';
 import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
-import IconButton from '@material-ui/core/IconButton';
+import BrushIcon from '@material-ui/icons/Brush';
+import NavExpander from './NavExpander';
 
 const drawerWidth = 240;
 
@@ -86,6 +82,10 @@ class NavLayout extends React.Component {
     this.setState({ open: false });
   };
 
+  clicked = () => {
+    console.log("clicked");
+  };
+
   render() {
     const { classes, theme } = this.props;
 
@@ -100,44 +100,22 @@ class NavLayout extends React.Component {
         >
             {/* TODO: elements */}
             <List component="nav" className={classes.noPadding}>
-                <List className={classes.noPadding}>
-                  <ListItem button onClick={this.handleDrawerToggle}>
-                      <ListItemIcon>
-                        {this.state.open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                      </ListItemIcon>
-                    <ListItemText primary="Moviecast" />
-                  </ListItem>
-                </List>
+                <NavExpander
+                  styling={classes.noPadding}
+                  open={this.state.open}
+                  click={this.handleDrawerToggle}
+                />
+                
                 <Divider/>
                 {/* Content */}
-                <ListItem button>
-                  <ListItemIcon>
-                      <MovieIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="Movies" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                      <OndemandVideoIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="Series" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                      <FavoriteIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="Favourite" />
-                </ListItem>
+                <NavListItem text="Movies" onClick={this.clicked}><MovieIcon/></NavListItem>
+                <NavListItem text="Series"><OndemandVideoIcon/></NavListItem>
+                <NavListItem text="Anime"><BrushIcon/></NavListItem>
+                <NavListItem text="Favourite"><FavoriteIcon/></NavListItem>
 
                 <Divider/>
 
-                {/* Settings */}
-                <ListItem button>
-                  <ListItemIcon>
-                      <SettingsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Settings" />
-                </ListItem>
+                <NavListItem text="Settings"><SettingsIcon/></NavListItem>
             </List>
         </Drawer>
         <main className={classes.content}>
