@@ -6,9 +6,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 let mainWindow;
 
-app.on('ready', () => {
-
-  createWindow();
+app.on('ready', (e) => {
+  const splashWindow = createSplashScreen();
+  setTimeout(() => createWindow(splashWindow), 1000);   //Just adding a VERY small delay so this actually shows: Smooth loading is better than fast loading.
+  
 
   app.on("activate", () => {
     // Re-create a window in the app when the dock icon
@@ -27,7 +28,8 @@ app.on('ready', () => {
   });
 });
 
-function createWindow() {
+async function createWindow(splashWindow) {
+  
   // Create the browser window...
   mainWindow = new BrowserWindow({
     width: 800, height: 600,
@@ -45,22 +47,51 @@ function createWindow() {
   
   if (isDevelopment) {
     mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
-  }
-  else {
+  } else {
     mainWindow.loadURL(url.format({
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file',
       slashes: true
     }))
   }
-  
+
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.webContents.openDevTools({ mode: "detach" });
   });
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
+    splashWindow.close();
   });
 
   mainWindow.on("closed", () => mainWindow = null);
+}
+
+function createSplashScreen() {
+  const splash = {
+    center: true,
+    show: false,
+    frame: false,
+    width: 500, height: 500,
+    minWidth: 500, minHeight: 500,
+    transparent: true,
+  };
+
+  const splashWindow = new BrowserWindow(splash);
+
+  if (isDevelopment) {
+    splashWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/splash.html`)
+  } else {
+    splashWindow.loadURL(url.format({
+      pathname: path.join(__dirname, 'splash.html'),
+      protocol: 'file',
+      slashes: true
+    }))
+  }
+
+  splashWindow.once("ready-to-show", () => {
+    splashWindow.show();
+  });
+
+  return splashWindow;
 }

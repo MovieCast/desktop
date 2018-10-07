@@ -16,7 +16,7 @@ const styles = theme => ({
     WebkitAppRegion: 'drag',
     height: process.platform !== 'darwin' ? 23 : 22, // Sorry for this hack will be fixed later
     width: '100%',
-    backgroundColor: /*theme.palette.primary[700]*/ '#002f6c',
+    backgroundColor: /*'linear-gradient(to right, #3f51b5, #138068)' theme.palette.primary[700]*/ '#002f6c',
     zIndex: 1400,
     position: 'relative',
     transition: theme.transitions.create(['opacity']),

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import FrameControls from './FrameControls';
-import FrameContent from './FrameContent';
+import FrameLayouts from './FrameLayouts';
 
 class Frame extends Component {
   render() {
@@ -9,7 +9,7 @@ class Frame extends Component {
         <div>
             {/* add title to Redux */}
             <FrameControls  title="Moviecast"/>
-            <FrameContent />
+            <FrameLayouts />
         </div>
     );
   }
