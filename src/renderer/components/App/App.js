@@ -6,6 +6,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import JssProvider from 'react-jss/lib/JssProvider';
 
 import { CssBaseline, withStyles } from '@material-ui/core';
+import FrameContainer from '../../containers/FrameContainer';
 
 const styles = {
   html: {
@@ -42,7 +43,7 @@ class App extends Component {
           theme={this.styleContext.theme}
           sheetsManager={this.styleContext.sheetsManager}
         >
-          <Frame></Frame>
+          <FrameContainer />
         </MuiThemeProvider>
       </JssProvider>
     </div>

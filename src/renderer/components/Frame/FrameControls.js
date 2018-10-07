@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Minimize from './Controls/Minimize';
 import Maximize from './Controls/Maximize';
 import Close from './Controls/Close';
+import ElectronStore from '../../stores/ElectronStore';
 
 
 const styles = theme => ({
@@ -66,54 +67,49 @@ const styles = theme => ({
 });
 
 class FrameControls extends Component {
-  state = {
-    isMaximized: false,
-    isFullScreen: false
-  }
+  // componentWillMount() {
+  //   this.updateState();
+  // }
 
-  componentWillMount() {
-    this.updateState();
-  }
+  // componentDidMount() {
+  //   window.addEventListener('resize', this.updateState);
+  // }
 
-  componentDidMount() {
-    window.addEventListener('resize', this.updateState);
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('resize', this.updateState);
+  // }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateState);
-  }
+  // updateState = () => {
+  //   this.setState({
+  //     isMaximized: remote.getCurrentWindow().isMaximized(),
+  //     isFullScreen: remote.getCurrentWindow().isFullScreen()
+  //   });
+  // }
 
-  updateState = () => {
-    this.setState({
-      isMaximized: remote.getCurrentWindow().isMaximized(),
-      isFullScreen: remote.getCurrentWindow().isFullScreen()
-    });
-  }
+  // handleMaximize = () => {
+  //   const window = remote.getCurrentWindow();
 
-  handleMaximize = () => {
-    const window = remote.getCurrentWindow();
+  //   if (this.state.isMaximized) {
+  //     window.unmaximize();
+  //   } else {
+  //     window.maximize();
+  //   }
 
-    if (this.state.isMaximized) {
-      window.unmaximize();
-    } else {
-      window.maximize();
-    }
+  //   this.setState({
+  //     isMaximized: window.isMaximized()
+  //   });
+  // }
 
-    this.setState({
-      isMaximized: window.isMaximized()
-    });
-  }
+  // handleMinimize = () => {
+  //   remote.getCurrentWindow().minimize();
+  // }
 
-  handleMinimize = () => {
-    remote.getCurrentWindow().minimize();
-  }
-
-  handleClose = () => {
-    remote.getCurrentWindow().close();
-  }
+  // handleClose = () => {
+  //   remote.getCurrentWindow().close();
+  // }
 
   render() {
-    const { classes, transparent, visible } = this.props;
+    const { classes, transparent, visible, electron, minimize, maximize, close } = this.props;
 
     const rootClassName = classNames(classes.root, {
       [classes.rootTransparent]: transparent,
@@ -124,28 +120,22 @@ class FrameControls extends Component {
       return (
         <div className={rootClassName}>
           <div className={classes.resizeBar} />
-          {process.platform !== 'darwin' && (
             <div className={classes.wrapper}>
               <div className={classes.title}>
                 <Typography>{this.props.title}</Typography>
               </div>
               <div className={classes.controls}>
-                {!this.state.isFullScreen && (
-                  <div role="presentation" onClick={this.handleMinimize} className={classes.controlButton}>
-                    <Minimize />
-                  </div>
-                )}
-                {!this.state.isFullScreen && (
-                  <div role="presentation" onClick={this.handleMaximize} className={classes.controlButton}>
-                    <Maximize isMaximized={this.state.isMaximized} />
-                  </div>
-                )}
-                <div role="presentation" onClick={this.handleClose} className={classes.controlButton}>
+                <div role="presentation" onClick={minimize} className={classes.controlButton}>
+                  <Minimize />
+                </div>
+                <div role="presentation" onClick={maximize} className={classes.controlButton}>
+                  <Maximize isMaximized={electron.get('maximized')} />
+                </div>
+                <div role="presentation" onClick={close} className={classes.controlButton}>
                   <Close />
                 </div>
               </div>
             </div>
-          )}
         </div>
       );
     //}

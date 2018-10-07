@@ -105,7 +105,7 @@ class NavLayout extends React.Component {
                       <ListItemIcon>
                         {this.state.open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                       </ListItemIcon>
-                    <ListItemText primary="Moviecast" />
+                    <ListItemText primary="MovieCast" />
                   </ListItem>
                 </List>
                 <Divider/>

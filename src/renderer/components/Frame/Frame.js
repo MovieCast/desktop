@@ -4,12 +4,18 @@ import FrameControls from './FrameControls';
 import FrameContent from './FrameContent';
 
 class Frame extends Component {
+  // static propTypes = {
+    
+  // }
+
   render() {
+    const { electron, minimize, maximize, close } = this.props;
+
     return (
         <div>
             {/* add title to Redux */}
-            <FrameControls  title="Moviecast"/>
-            <FrameContent />
+            <FrameControls electron={electron} minimize={minimize} maximize={maximize} close={close} title="MovieCast"/>
+            <FrameContent/>
         </div>
     );
   }
