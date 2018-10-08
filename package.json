@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/MovieCast/desktop#readme",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps && npm run compile:dll",
+    "postinstall": "electron-builder install-app-deps",
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "compile:dll": "electron-webpack dll",
