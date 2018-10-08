@@ -17,6 +17,10 @@ linux:
   target:
     - AppImage
     - tar.xz
+nsis:
+  perMachine: true
+  oneClick: false
+  allowToChangeInstallationDirectory: true
 nodeGypRebuild: false
 npmRebuild: true
 
