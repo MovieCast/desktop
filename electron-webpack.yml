@@ -1,2 +1,6 @@
 commonDistDirectory: src/dist
 
+renderer:
+  dll:
+    - "@material-ui/core"
+    - "@material-ui/icons"

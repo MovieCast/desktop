@@ -84,7 +84,7 @@ function createSplashScreen() {
     splashWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/splash.html`)
   } else {
     splashWindow.loadURL(url.format({
-      pathname: path.join(__dirname, 'splash.html'),
+      pathname: path.join(__dirname, '../static/splash.html'),
       protocol: 'file',
       slashes: true
     }))

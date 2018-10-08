@@ -6,7 +6,7 @@ compression: maximum
 copyright: "Copyright © 2018 MovieCast"
 directories:
   app: src
-  buildResources: assets
+  buildResources: resources
   output: releases
 forceCodeSigning: false
 mac:

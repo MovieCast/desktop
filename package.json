@@ -13,9 +13,10 @@
   },
   "homepage": "https://github.com/MovieCast/desktop#readme",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps && npm run compile:dll",
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
+    "compile:dll": "electron-webpack dll",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir",
     "dist:nightly": "yarn dist -mlw -p never"
