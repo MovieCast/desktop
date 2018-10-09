@@ -7,7 +7,7 @@ export default class Page extends Component {
     const { path, title, component, isSelected } = this.props;
 
     return (
-      <Route path={path} component={component} />
+      <Route path={path} component={component} {...this.props} />
     );
   }
 }

@@ -22,10 +22,10 @@ class App extends Component {
   render() {
     return (
       <FrameContainer>
-        <Page path="/movies" title="Movies" icon={MovieIcon} component={DashboardPage}/>
-        <Page path="/" title="Series" icon={OndemandVideoIcon}/>
-        <Page title="Anime" icon={BrushIcon}/>
-        <Page title="Favourite" icon={FavoriteIcon}/>
+        <Page exact={true} path="/" title="Movies" icon={MovieIcon} component={DashboardPage}/>
+        <Page path="/shows" title="Series" icon={OndemandVideoIcon}/>
+        <Page path="/anime" title="Anime" icon={BrushIcon}/>
+        <Page path="/favorite" title="Favorite" icon={FavoriteIcon}/>
       </FrameContainer>
     );
   }

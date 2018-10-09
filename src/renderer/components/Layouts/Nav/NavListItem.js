@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -22,12 +22,19 @@ class NavListItem extends React.Component {
     const { className, text, icon, to, onClick } = this.props;
 
     return (
-      <ListItem button component={Link} className={className} to={to} onClick={onClick}>
-        <ListItemIcon>
-          { React.createElement(icon) }
-        </ListItemIcon>
-        <ListItemText primary={text} />
-      </ListItem>
+      <Route
+        path={to}
+        exact={true}
+        children={({ match }) => (
+          <ListItem button component={Link} className={className} to={to} selected={!!match} onClick={onClick}>
+            <ListItemIcon>
+              { React.createElement(icon) }
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        )}
+      />
+      
     );
   }
 }
