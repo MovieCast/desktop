@@ -1,8 +1,8 @@
 import { Container } from 'flux/utils';
 import React, { Component } from 'react';
-import ElectronStore from '../stores/ElectronStore';
-import ElectronActions from '../actions/ElectronActions';
-import Frame from '../components/Frame/Frame';
+import ElectronStore from '@/stores/ElectronStore';
+import ElectronActions from '@/actions/ElectronActions';
+import Frame from './Frame';
 
 class FrameContainer extends Component {
   static getStores() {
@@ -20,7 +20,7 @@ class FrameContainer extends Component {
   }
 
   render() {
-    return <Frame {...this.state} />;
+    return <Frame {...this.props} {...this.state} />;
   }
 }
 

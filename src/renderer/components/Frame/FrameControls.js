@@ -18,7 +18,8 @@ const styles = theme => ({
     //backgroundColor: theme.palette.primary[900],
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: 10
+    paddingLeft: 10,
+    flex: '0 0 auto'
   },
   resizeBar: {
     WebkitAppRegion: 'no-drag',

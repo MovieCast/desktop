@@ -1,30 +1,43 @@
 import React, { Component } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import NavLayout from './Layouts/Nav/NavLayout';
+import NavLayout from '@/components/Layouts/NavLayout';
+import FlexLayout from '@/components/Layouts/FlexLayout';
 
 const styles = theme => ({
   root: {
     display: 'flex',
     flexGrow: 1,
-    width: "100%"
+    width: "100%",
+    position: 'relative'
   },
-
-  layout: {
-    flex: "0 1 auto",
-  }
 });
+
+function getNavItemsFromChildren(children) {
+  return React.Children.map(children, child => ({
+    text: child.props.title,
+    path: child.props.path,
+    icon: child.props.icon
+  }));
+}
 
 class FrameLayouts extends Component {
   // Add Layouts here, only mainpage is displayed here
   render() {
-    const {classes} = this.props;
+    const { classes, children } = this.props;
+
     return (
-      <div className={classes.root}>
-        <NavLayout /> {/* This one is always visible, except when watching content */}
-        {/* <DetailsLayout/> */}
-      </div>
+      <BrowserRouter>
+        <div className={classes.root}>
+          <NavLayout items={getNavItemsFromChildren(children)}>
+            <FlexLayout>
+              {children}
+            </FlexLayout>
+          </NavLayout>
+        </div>
+      </BrowserRouter>
     );
   }
 }

@@ -8,10 +8,13 @@ let mainWindow;
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = false;
 
-app.on('ready', (e) => {
+app.on('ready', async (e) => {
   const splashWindow = createSplashScreen();
   setTimeout(() => createWindow(splashWindow), 3000);   //Just adding a VERY small delay so this actually shows: Smooth loading is better than fast loading.
   
+  if(isDevelopment) {
+    await (require('./extensions')).init();
+  }
 
   app.on("activate", () => {
     // Re-create a window in the app when the dock icon

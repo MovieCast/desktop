@@ -1,10 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
-const drawerWidth = 240;
 
 class NavListItem extends React.Component {
   state = {
@@ -20,14 +19,14 @@ class NavListItem extends React.Component {
   };
 
   render() {
-    const { props } = this;
+    const { className, text, icon, to, onClick } = this.props;
 
     return (
-      <ListItem button className={props.className} onClick={props.onClick}>
-          <ListItemIcon>
-              { props.children }
-          </ListItemIcon>
-          <ListItemText primary={props.text} />
+      <ListItem button component={Link} className={className} to={to} onClick={onClick}>
+        <ListItemIcon>
+          { React.createElement(icon) }
+        </ListItemIcon>
+        <ListItemText primary={text} />
       </ListItem>
     );
   }
@@ -35,7 +34,12 @@ class NavListItem extends React.Component {
 
 NavListItem.propTypes = {
   text: PropTypes.string.isRequired,
+  icon: PropTypes.func,
   className: PropTypes.string
 };
+
+NavListItem.defaultProps = {
+  to: "#"
+}
 
 export default NavListItem;

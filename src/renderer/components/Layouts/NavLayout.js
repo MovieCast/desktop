@@ -4,20 +4,15 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
-import NavListItem from './NavListItem';
-
-
-import MovieIcon from '@material-ui/icons/Movie';
 import SettingsIcon from '@material-ui/icons/Settings';
-import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import BrushIcon from '@material-ui/icons/Brush';
-import NavExpander from './NavExpander';
 
-const drawerWidth = 240;
+import NavExpander from './Nav/NavExpander';
+import NavListItem from './Nav/NavListItem';
+
+
+//import Page from '../../../Page/Page';
 
 const styles = theme => ({
   root: {
@@ -27,13 +22,10 @@ const styles = theme => ({
     position: 'relative',
     display: 'flex',
   },
-  hide: {
-    display: 'none',
-  },
   drawerPaper: {
     position: 'absolute',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
+    overflowX: 'hidden',
+    width: 240,
     border: 'none',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -41,36 +33,25 @@ const styles = theme => ({
     }),
   },
   drawerPaperClose: {
-    overflowX: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 6,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9,
-    },
+    width: theme.spacing.unit * 9,
   },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 11px',
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-  },
-  noPadding: {
+  nav: {
     padding: 0,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'inherit',
     flexGrow: 1,
-    overflowX: 'hidden'
+    position: 'relative'
   },
   settings: {
     marginTop: 'auto'
+  },
+  content: {
+    flexGrow: 1,
+    paddingLeft: theme.spacing.unit * 9
   }
 });
 
@@ -83,16 +64,15 @@ class NavLayout extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
-
-  clicked = () => {
-    console.log("clicked");
-  };
+  renderNavListItems() {
+    const { items } = this.props;
+    return items.map(item => (
+      <NavListItem key={item.text} text={item.text} icon={item.icon} to={item.path}/>
+    ));
+  }
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, children } = this.props;
 
     return (
       <div className={classes.root}>
@@ -104,28 +84,23 @@ class NavLayout extends React.Component {
           open={this.state.open}
         >
             {/* TODO: elements */}
-            <List component="nav" className={classes.noPadding}>
+            <List component="nav" className={classes.nav}>
                 <NavExpander
-                  styling={classes.noPadding}
                   open={this.state.open}
                   click={this.handleDrawerToggle}
                 />
                 
                 <Divider/>
-                {/* Content */}
-                <NavListItem text="Movies" onClick={this.clicked}><MovieIcon/></NavListItem>
-                <NavListItem text="Series"><OndemandVideoIcon/></NavListItem>
-                <NavListItem text="Anime"><BrushIcon/></NavListItem>
-                <NavListItem text="Favourite"><FavoriteIcon/></NavListItem>
-
+                {this.renderNavListItems()}
                 <Divider/>
 
-                <NavListItem text="Settings" className={classes.settings}><SettingsIcon/></NavListItem>
+                <NavListItem text="Settings" icon={SettingsIcon} className={classes.settings}/>
             </List>
         </Drawer>
-        <main className={classes.content}>
-          <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
-        </main>
+
+        <div className={classes.content}>
+          {children}
+        </div>
       </div>
     );
   }

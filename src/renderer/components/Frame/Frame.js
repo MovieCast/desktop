@@ -24,7 +24,7 @@ class Frame extends Component {
         <div className={classes.root}>
           {/* add title to Redux */}
           <FrameControls electron={electron} minimize={minimize} maximize={maximize} close={close} title="MovieCast"/>
-          <FrameLayouts/>
+          <FrameLayouts children={this.props.children}/>
         </div>
     );
   }
