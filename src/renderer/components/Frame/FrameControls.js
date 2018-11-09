@@ -15,7 +15,7 @@ const styles = theme => ({
     WebkitAppRegion: 'drag',
     height: 23,
     width: '100%',
-    //backgroundColor: theme.palette.primary[900],
+    backgroundColor: theme.palette.primary[800],
     display: 'flex',
     alignItems: 'center',
     paddingLeft: 10,

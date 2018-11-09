@@ -19,14 +19,14 @@ class NavListItem extends React.Component {
   };
 
   render() {
-    const { className, text, icon, to, onClick } = this.props;
+    const { className, text, icon, to, onClick, selected } = this.props;
 
     return (
       <Route
         path={to}
         exact={true}
         children={({ match }) => (
-          <ListItem button component={Link} className={className} to={to} selected={!!match} onClick={onClick}>
+          <ListItem button component={Link} className={className} to={to} selected={!!match || selected} onClick={onClick}>
             <ListItemIcon>
               { React.createElement(icon) }
             </ListItemIcon>

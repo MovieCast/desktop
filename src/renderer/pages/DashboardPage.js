@@ -10,7 +10,7 @@ const styles = {
   inner: {
     display: 'flex',
     
-    height: 10000
+    height: 100000
   }
 }
 
@@ -19,7 +19,7 @@ class DashboardPage extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <div className={classes.inner}></div>
+        <div className={classes.inner}>sdfsdfsdfsdfsdfsdf</div>
       </div>
     );
   }

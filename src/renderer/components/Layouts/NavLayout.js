@@ -11,6 +11,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import NavExpander from './Nav/NavExpander';
 import NavListItem from './Nav/NavListItem';
 
+import Settings from './Settings';
+
 
 //import Page from '../../../Page/Page';
 
@@ -58,6 +60,7 @@ const styles = theme => ({
 class NavLayout extends React.Component {
   state = {
     open: false,
+    showSettings: false
   };
 
   handleDrawerToggle = () => {
@@ -69,6 +72,10 @@ class NavLayout extends React.Component {
     return items.map(item => (
       <NavListItem key={item.text} text={item.text} icon={item.icon} to={item.path}/>
     ));
+  }
+
+  openSettings = () => {
+    this.setState({ showSettings: !this.state.showSettings });
   }
 
   render() {
@@ -84,7 +91,7 @@ class NavLayout extends React.Component {
           open={this.state.open}
         >
             {/* TODO: elements */}
-            <List component="nav" className={classes.nav}>
+            <List component="nav" className={classes.nav} >
                 <NavExpander
                   open={this.state.open}
                   click={this.handleDrawerToggle}
@@ -94,12 +101,13 @@ class NavLayout extends React.Component {
                 {this.renderNavListItems()}
                 <Divider/>
 
-                <NavListItem text="Settings" icon={SettingsIcon} className={classes.settings}/>
+                <NavListItem text="Settings" icon={SettingsIcon} className={classes.settings} onClick={this.openSettings} selected={this.state.showSettings}/>
             </List>
         </Drawer>
 
         <div className={classes.content}>
           {children}
+              <Settings open={this.state.showSettings}/>
         </div>
       </div>
     );
